@@ -77,6 +77,18 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .coverage-state{font-size:12px;color:#41655e;background:#edf4ee;padding:5px 8px;border-radius:5px}
 
 .harvest-quality{padding:13px 16px;background:#f3f4ed;border:1px solid #d7dbc7;color:#526056;border-radius:9px;font-size:13px;line-height:1.55;margin:16px 0}
+
+.candidate-queue{margin-top:19px;background:white}
+.candidate-filter-label{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:750;color:#3c6261;max-width:550px}
+.candidate-filter-label input{padding:12px 13px;font-size:14px;border-radius:8px;border:1px solid #afc9bd;width:100%}
+#electro-queue-status{font-size:12px;color:#56736c;margin:13px 0}
+.candidate-queue .ranking-scroll{margin-top:12px;max-height:650px;overflow:auto}
+.candidate-queue table{min-width:640px}
+.candidate-queue td{font-size:13px}
+.candidate-queue td:nth-child(2){min-width:250px;max-width:400px}
+.candidate-queue .screening-status{display:inline-block;font-size:11px;line-height:1.4;color:#396159}
+@media(max-width:720px){.candidate-queue .ranking-scroll{max-height:none;overflow:visible}.candidate-queue .ranking-scroll td:nth-child(2){max-width:none;min-width:0}}
+
 </style>
 </head>
 <body>
@@ -132,6 +144,20 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
  <tbody id="electro-audit-body"><tr><td colspan="3">Awaiting the updated coverage-audit dataset.</td></tr></tbody></table>
  </div>
  <p class="coverage-footer"><a href="data/electrochemical_coverage_audit.csv" download>Download the full DOI coverage audit (CSV) ↗</a></p>
+<details class="ranking-method candidate-queue">
+ <summary>Explore additional electrochemical literature candidates (<span id="electro-queue-count">loading…</span>)</summary>
+ <p>The documents below are DOI- or OpenAlex-linked screening leads, not automatically credited to scientists in the numerical rankings. Source and identity checks may still be missing. Reviews and non-therapeutic platforms are labelled separately.</p>
+ <label class="candidate-filter-label">Search publication title or author <input id="electro-queue-search" type="search" placeholder="Search drug delivery, bipolar, ion pump, researcher…"/></label>
+ <div id="electro-queue-status" role="status">Loading discovery bibliography…</div>
+ <div class="ranking-scroll">
+  <table aria-label="Electrochemical papers awaiting review"><thead><tr><th>Year</th><th>Publication</th><th>Researchers in source metadata</th><th>Screening status</th></tr></thead>
+  <tbody id="electro-queue-body"><tr><td colspan="4">Loading…</td></tr></tbody></table>
+ </div>
+ <div class="ranking-bottom">
+  <button id="electro-queue-more" type="button" hidden>Show more papers</button>
+  <a href="data/electrochemical_screening_queue.csv" download>Download candidate publications (CSV) ↗</a>
+ </div>
+</details>
 </div>
 <details class="ranking-method"><summary>How these scores are calculated</summary>
 <p><strong>Composite score (0–100):</strong> 35% within-harvest publication-year/modality citation percentile; 25% publication-output score; 20% first/last-authorship score; 10% title-indicated translational activity; and 10% publication-years active. Counts are logarithmically scaled. Overall requires at least three machine-matched papers; pathways require at least two.</p>
@@ -192,6 +218,29 @@ get("rank-category").addEventListener("change",function(){render(true);});
 get("rank-search").addEventListener("input",function(){render(true);});
 get("rank-more").addEventListener("click",function(){page++;render(false);});
 get("rank-body").addEventListener("click",function(e){var button=e.target.closest("button[data-evidence]");if(button)showEvidence(Number(button.getAttribute("data-evidence")));});
+
+var paperQueue=[], queuePage=0;
+function showQueue(reset){
+  if(reset)queuePage=0;
+  var term=(get("electro-queue-search").value||"").trim().toLowerCase();
+  var found=paperQueue.filter(function(p){return !term||(p.title+" "+p.author_names.join(" ")).toLowerCase().includes(term);});
+  var show=found.slice(0,(queuePage+1)*30);
+  get("electro-queue-body").innerHTML=show.length?show.map(function(p){
+    var href=p.url&&/^https:\/\/(doi\.org|openalex\.org)\//.test(p.url)?p.url:"#";
+    var by=p.author_names.slice(0,4).join(", ")+(p.author_names.length>4?" et al.":"");
+    var mode=p.screening_status==="citation_eligible_machine_candidate"?"Machine eligible":
+      p.screening_status==="review/background_reference"?"Review/background":"Awaiting review";
+    return '<tr><td data-label="Year">'+esc(p.year)+'</td><td data-label="Publication"><a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a></td><td data-label="Authors">'+esc(by)+'</td><td data-label="Status"><span class="screening-status">'+esc(mode)+'</span></td></tr>';
+  }).join(""):'<tr><td colspan="4">No matching candidate publications.</td></tr>';
+  get("electro-queue-more").hidden=show.length>=found.length;
+  get("electro-queue-status").textContent=found.length+" candidate publications matching this filter; "+show.length+" displayed. This is not a peer-reviewed eligibility count.";
+}
+get("electro-queue-search").addEventListener("input",function(){showQueue(true);});
+get("electro-queue-more").addEventListener("click",function(){queuePage++;showQueue(false);});
+fetch("data/electrochemical_screening_queue.json",{cache:"no-store"})
+ .then(function(res){if(!res.ok)throw new Error("Candidate queue unavailable");return res.json();})
+ .then(function(d){paperQueue=d.papers||[];get("electro-queue-count").textContent=paperQueue.length.toLocaleString()+" records";showQueue(true);})
+ .catch(function(){get("electro-queue-count").textContent="unavailable";get("electro-queue-status").textContent="The additional publication directory has not yet been deployed.";});
 fetch("data/search_summary.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Search audit not available");return res.json();})
  .then(function(s){
