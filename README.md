@@ -2,7 +2,7 @@
 
 An open, reproducible evidence map of research on externally activated molecular and cellular therapies.
 
-**Status: Research infrastructure under development. No global researcher rankings have been validated or published.**
+**Status: Provisional machine-screened researcher rankings are published on the GitHub Pages website. No exhaustive or validated world-ranking claim is made.**
 
 ## Scope
 
@@ -41,3 +41,9 @@ One-time owner setup: **Settings → Pages → Build and deployment → Source: 
 **Actions → Literature census (candidate harvest) → Run workflow.** Choose a page limit. Artifacts are uploaded as `literature-candidates-and-audit`, including JSON/CSV and the dual-review screening form. The number of candidate records is *not* the number of eligible studies. A page cap or failed query prevents any completeness claim.
 
 The dedicated **Scholarly API connectivity smoke test** workflow confirms Europe PMC/OpenAlex connectivity independently of collection.
+
+## Current provisional rankings
+
+The published website reads `data/provisional_rankings.json` and `data/provisional_rankings.csv`, generated on each deployment from the latest successful Europe PMC/OpenAlex candidate-harvest artifact. Rankings are supplied for overall, ultrasound, magnetic, optical, radiofrequency, electrochemical and hybrid pathways. A category with fewer than ten scored researchers shows evidence records without ordinal rankings.
+
+The provisional score is 35% harvested-cohort citation percentiles, 25% machine-matched original-paper output, 20% first/last authorship, 10% title-based translational indicators, and 10% active publication years. The overall table requires 3 matched papers and pathway tables require 2. Source DOIs, OpenAlex IDs, included papers and score breakdowns are included. These are not independent full-text-verified, exhaustive, Scopus-harmonised or global field-normalised rankings. Some major researchers may be missing until identities and publication histories are reconciled. The site will automatically update when a successful new harvest completes.
