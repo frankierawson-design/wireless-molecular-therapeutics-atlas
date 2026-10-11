@@ -46,6 +46,19 @@ def classify(records):
         conference_abstract_dois={"10.1093/neuonc/noaf185.039"}
         if str(r.get("doi") or "").casefold() in conference_abstract_dois:
             excluded["conference_abstract_not_full_paper"]+=1;continue
+        # Document-type guard. A dissertation, book, meeting abstract or
+        # standalone review is not a peer-reviewed original research article,
+        # even when title keywords and OpenAlex citations look promising.
+        work_type=str(r.get("openalex_work_type") or "").strip().casefold()
+        nonoriginal_types={"dissertation","conference-paper","conference-abstract",
+                           "review","book","book-chapter","preprint","editorial",
+                           "erratum","report","peer-review","paratext","retraction"}
+        if work_type in nonoriginal_types:
+            excluded["nonoriginal_openalex_work_type_"+work_type]+=1;continue
+        # A record lacking BOTH a DOI and PMID cannot currently substantiate
+        # peer-reviewed original-paper status; retain it for manual review.
+        if not r.get("doi") and not r.get("pmid"):
+            excluded["unverified_work_without_doi_or_pmid"]+=1;continue
         pubtypes="; ".join(str(x) for x in (r.get("publication_types") or []))
         curated_review_dois={"10.1039/d3bm01946b", "10.1016/j.elecom.2024.107832"}
         # Data-in-Brief supporting datasets must not be double-counted as
@@ -264,7 +277,8 @@ def main():
                 "Search queries and per-query pagination are bounded and may omit major researchers.",
                 "Works with OpenAlex citation counts plus OpenAlex author IDs or ORCID-anchored bylines; identity-uncertain names remain excluded.",
                 "Institutions represent the most recent affiliation documented on harvested OpenAlex work records; they are not verified current employers.",
-                "Preprints are excluded from the primary score to avoid counting preprint/article pairs twice.",
+                "Preprints, dissertations, books and conference materials are excluded by OpenAlex document type when available; works without DOI or PMID require review.",
+                "Original-publication status cannot be verified for many older records lacking source document-type metadata.",
                 "Citations are ranked within the harvested year/modality cohort, not global field-normalized citations.",
                 "Clinical translation is a title-keyword proxy, not validated clinical impact.",
                 "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking.",
