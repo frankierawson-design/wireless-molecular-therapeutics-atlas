@@ -20,6 +20,7 @@ on:
       - "methods/build_electrochemical_queue.py"
       - "methods/collect_literature.py"
       - "methods/electrical_treatment_coverage_audit.py"
+      - "methods/build_electrical_treatment_queue.py"
       - ".github/workflows/electrical-therapies-expansion.yml"
       - ".github/workflows/doi-reconciliation.yml"
       - "tests/**"
@@ -148,6 +149,18 @@ jobs:
           assert {p["pathway"] for p in audit["pathways"]}==expected
           assert audit["validation_status"]=="MACHINE_SCREENED_NOT_INDEPENDENTLY_VALIDATED"
           print("DOI provenance report present; scientific eligibility still not independently validated")
+          PY
+      - name: Export independently reviewable six-pathway electrical literature register
+        run: |
+          python methods/build_electrical_treatment_queue.py \
+            --input _harvest/candidates.json \
+            --output _site/data/electrical_treatment_screening_queue.json
+          python - <<'PY'
+          import json
+          d=json.load(open("_site/data/electrical_treatment_screening_queue.json"))
+          assert d["status"]=="UNVERIFIED_SCREENING_CANDIDATES_NOT_WORLD_CENSUS"
+          assert d["independent_full_text_screening_completed"]==0
+          print("Separate paper-level screening leads:",d["total_candidate_records"])
           PY
       - name: Publish electrochemical screening queue independently of citation eligibility
         run: |

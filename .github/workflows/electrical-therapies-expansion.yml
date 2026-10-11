@@ -14,6 +14,7 @@ on:
       - "methods/collect_literature.py"
       - "methods/build_provisional_rankings.py"
       - "methods/electrical_treatment_coverage_audit.py"
+      - "methods/build_electrical_treatment_queue.py"
       - "tests/test_electrical_treatment_expansion.py"
       - ".github/workflows/electrical-therapies-expansion.yml"
 permissions:
@@ -79,6 +80,9 @@ jobs:
             --input output/candidates.json \
             --query-audit output/query_audit.json \
             --output output/electrical_treatment_coverage_audit.json
+          python methods/build_electrical_treatment_queue.py \
+            --input output/candidates.json \
+            --output output/electrical_treatment_screening_queue.json
           python methods/electrochemical_seed_audit.py \
             --input output/candidates.json \
             --output output/electrochemical_coverage_audit.json
