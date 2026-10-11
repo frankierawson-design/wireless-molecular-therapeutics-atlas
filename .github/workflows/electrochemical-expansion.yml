@@ -1,0 +1,91 @@
+name: Electrochemical expansion harvest
+on:
+  workflow_dispatch:
+    inputs:
+      pages_per_query:
+        description: "OpenAlex and Europe PMC pages for each targeted electrochemical query"
+        type: choice
+        options: ["2", "3", "6", "10"]
+        required: true
+        default: "3"
+  push:
+    branches: [main]
+    paths:
+      - "methods/collect_literature.py"
+      - "methods/build_provisional_rankings.py"
+      - "methods/electrochemical_seed_audit.py"
+      - ".github/workflows/electrochemical-expansion.yml"
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: electrochemical-expansion-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  discover-electrochemical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run identity and electrochemical screening regression tests
+        run: |
+          python -m py_compile methods/collect_literature.py methods/build_provisional_rankings.py methods/electrochemical_seed_audit.py
+          python -m unittest discover -s tests -v
+      - name: Obtain most recent successful full or expanded harvest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p baseline
+          RUN_ID="$(gh run list --repo "$REPO" --status success --limit 70 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | last | .databaseId')"
+          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
+            echo "::error::No successful baseline harvest to expand."
+            exit 1
+          fi
+          echo "BASELINE_RUN_ID=$RUN_ID" >> "$GITHUB_ENV"
+          echo "Baseline run: $RUN_ID"
+          gh run download "$RUN_ID" --repo "$REPO" --name "literature-candidates-and-audit" --dir baseline
+          test -s baseline/candidates.json
+      - name: Expand electrochemical and molecular actuation literature
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          PAGES_INPUT: ${{ inputs.pages_per_query }}
+        run: |
+          python methods/collect_literature.py \
+            --baseline baseline/candidates.json \
+            --baseline-audit baseline/query_audit.json \
+            --only-modalities electrochemical \
+            --pages "${PAGES_INPUT:-3}" \
+            --output output
+      - name: Build provisional researcher tables and DOI sentinel audit
+        run: |
+          python methods/build_provisional_rankings.py \
+            --input output/candidates.json \
+            --output output/provisional_rankings.json \
+            --csv output/provisional_rankings.csv
+          python methods/electrochemical_seed_audit.py \
+            --input output/candidates.json \
+            --output output/electrochemical_coverage_audit.json
+          python - <<'PY'
+          import json
+          b=json.load(open("baseline/provisional_rankings.json"))
+          n=json.load(open("output/provisional_rankings.json"))
+          print("BASELINE electrochemical papers", b["summary"]["paper_modalities"].get("Electrochemical"))
+          print("NEW electrochemical papers", n["summary"]["paper_modalities"].get("Electrochemical"))
+          print("BASELINE electrochemical scored people",len(b["rankings"].get("Electrochemical",[])))
+          print("NEW electrochemical scored people",len(n["rankings"].get("Electrochemical",[])))
+          assert n["summary"]["candidate_records"] >= b["summary"]["candidate_records"]
+          assert n["summary"]["paper_modalities"].get("Electrochemical",0) >= b["summary"]["paper_modalities"].get("Electrochemical",0)
+          assert n["rankings"]["Overall"]
+          PY
+      - name: Upload complete reproducible expanded dataset
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-candidates-and-audit
+          path: output/
+          retention-days: 90
+          if-no-files-found: warn
