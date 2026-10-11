@@ -12,7 +12,7 @@ MODALITIES={
  "Magnetic":r"\b(?:magnetothermal|magnetoelectric|magnetomechanical|magnetically.trigger\w*|magnetic.hyperthermia|magnetic.field|magnetic.actuat\w*|magnetic.stimulation|magnetically.control\w*)\b",
  "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
  "Radiofrequency":r"\b(?:radiofrequency|radio.frequency|RF.trigger\w*|RF.activat\w*|microwave.trigger\w*)\b",
- "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|electrochemical.drug|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*)\b"
+ "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|electrochemical.drug|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*)\b"
 }
 THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|cell.modulat\w*)\b"
 REVIEW=r"\b(?:review|overview|bibliometric|meta.analysis|perspective|scientometric|recent.advances|current.progress|state.of.the.art|prospects|research.progress|roadmap|survey|abstract \d+)\b"
@@ -30,6 +30,8 @@ def classify(records):
         if not 2000<=year<=2026:excluded["publication_year_out_of_scope"]+=1;continue
         if not r.get("openalex_id") or not isinstance(r.get("citations_openalex"),int):
             excluded["no_linked_openalex_work_or_citation"]+=1;continue
+        if re.match(r"^10\\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
+            excluded["preprint_not_in_primary_ranking"]+=1;continue
         if matches(REVIEW,title) or matches(REVIEW_ABSTRACT,r.get("abstract") or ""):
             excluded["possible_review_or_nonoriginal"]+=1;continue
         mods=[m for m,p in MODALITIES.items() if matches(p,title)]
@@ -70,26 +72,90 @@ def score(papers):
     total=sum(components[k]*SCORING_WEIGHTS[k] for k in SCORING_WEIGHTS)
     return round(total,2),components
 
-def make_ranks(included):
+def norm_orcid(value):
+    m=re.search(r"\b\d{4}-\d{4}-\d{4}-[\dX]{4}\b",str(value or ""),re.I)
+    return m.group(0).upper() if m else ""
+
+def norm_aid(value):
+    m=re.search(r"(?:openalex\.org/)?(A\d+)\b",str(value or ""),re.I)
+    return "https://openalex.org/"+m.group(1).upper() if m else ""
+
+def identity_map(records):
+    # ORCID-only bylines can be linked to a unique OpenAlex identity when
+    # another record supplies both stable identifiers. Never merge by names.
+    seen=collections.defaultdict(set)
+    for r in records:
+        for a in (r.get("authors") or []):
+            orcid=norm_orcid(a.get("orcid"))
+            aid=norm_aid(a.get("openalex_author_id"))
+            if orcid and aid:seen[orcid].add(aid)
+    return {k:next(iter(v)) for k,v in seen.items() if len(v)==1}, sum(len(v)>1 for v in seen.values())
+
+def author_key(a,links):
+    aid=norm_aid(a.get("openalex_author_id"))
+    orcid=norm_orcid(a.get("orcid"))
+    if aid:return aid
+    if orcid:return links.get(orcid) or "https://orcid.org/"+orcid
+    return ""
+
+def rank_institution(a):
+    # This is a dated affiliation on the cited paper, NOT guaranteed current.
+    return [{"name":i.get("name",""),"id":i.get("id","")}
+            for i in (a.get("institutions") or [])
+            if isinstance(i,dict) and i.get("name")]
+
+def institution_lookup(all_records,links):
+    # Use metadata from *all* harvested works, even where the paper is not
+    # eligible for scoring, so affiliated names are not truncated by filters.
+    observed=collections.defaultdict(list)
+    for r in all_records:
+        try: year=int(r.get("year") or 0)
+        except (ValueError,TypeError):year=0
+        for a in (r.get("authors") or []):
+            key=author_key(a,links)
+            if not key:continue
+            for inst in rank_institution(a):
+                observed[key].append((year,inst["name"],inst["id"],r.get("openalex_id") or "",r.get("doi") or ""))
+    out={}
+    for key,values in observed.items():
+        byname={}
+        for year,name,iid,work,doi in values:
+            ident=iid or name.casefold()
+            state=byname.setdefault(ident,{"name":name,"id":iid,"last_year":year,"count":0,"work":work,"doi":doi})
+            state["count"]+=1
+            if year>=state["last_year"]:
+                state.update({"name":name,"id":iid,"last_year":year,"work":work,"doi":doi})
+        # Most recent documented affiliation, with repeated entries as tie-break.
+        out[key]=sorted(byname.values(),key=lambda z:(-z["last_year"],-z["count"],z["name"].casefold()))
+    return out
+
+def make_ranks(included, all_records):
+    links,conflicts=identity_map(all_records)
+    institution_by_author=institution_lookup(all_records,links)
     cohorts=collections.defaultdict(list)
     for r in included:
         for mod in r["modalities"]:cohorts[(r["year"],mod)].append(r["citations_openalex"])
-    authors=collections.defaultdict(lambda:{"name":"","orcid":"","papers":{}})
+    authors=collections.defaultdict(lambda:{"name":"","orcid":"","papers":{},"identity_sources":set()})
     for r in included:
         mods=r["modalities"]
         percentile=round(sum(cohort_percentile(r["citations_openalex"],r["year"],m,cohorts) for m in mods)/len(mods),2)
-        a_list=[a for a in r.get("authors",[]) if a.get("openalex_author_id")]
+        a_list=r.get("authors") or []
         for i,a in enumerate(a_list):
-            aid=a["openalex_author_id"]
-            person=authors[aid]
-            person["name"]=a.get("name") or person["name"]
-            person["orcid"]=a.get("orcid") or person["orcid"]
+            key=author_key(a,links)
+            if not key:continue
+            person=authors[key]
+            name=a.get("name") or ""
+            # A complete institutional author name is more informative than initials.
+            if len(name)>len(person["name"]):person["name"]=name
+            person["orcid"]=norm_orcid(a.get("orcid")) or person["orcid"]
+            person["identity_sources"].add("OpenAlex" if norm_aid(a.get("openalex_author_id")) else "ORCID")
             position=a.get("position") or ("first" if i==0 else "last" if i==len(a_list)-1 else "middle")
             evidence={"title":r["title"],"doi":r.get("doi"),"url":r.get("openalex_id"),"year":r["year"],
                       "citations":r["citations_openalex"],"citation_percentile":percentile,
-                      "modalities":mods,"authorship":position}
-            key=r.get("doi") or r.get("openalex_id")
-            person["papers"][key]=evidence
+                      "modalities":mods,"authorship":position,
+                      "institutions":rank_institution(a)}
+            k=r.get("doi") or r.get("openalex_id")
+            person["papers"][k]=evidence
     ranks={}
     for group in ["Overall",*MODALITIES,"Hybrid"]:
         rows=[]
@@ -99,7 +165,15 @@ def make_ranks(included):
             if len(papers)<minimum:continue
             total,parts=score(papers)
             papers.sort(key=lambda p:(p["citations"],p["year"]),reverse=True)
-            rows.append({"name":a["name"],"openalex_author_id":aid,"orcid":a["orcid"],
+            insts=institution_by_author.get(aid,[])
+            current=insts[0] if insts else None
+            rows.append({"name":a["name"],"openalex_author_id":aid if aid.startswith("https://openalex.org/") else "",
+                         "orcid":a["orcid"], "identity_method":", ".join(sorted(a["identity_sources"])),
+                         "institution":current["name"] if current else "Not available",
+                         "institution_year":current["last_year"] if current else None,
+                         "institution_source_work":current["work"] if current else "",
+                         "institution_record_source":"OpenAlex work-level affiliation" if current else "Not verified",
+                         "institutions":insts[:5],
                          "score":total,"publication_count":len(papers),
                          "indexed_citations":sum(p["citations"] for p in papers),
                          "first_last_papers":sum(p["authorship"] in ("first","last") for p in papers),
@@ -107,7 +181,7 @@ def make_ranks(included):
         rows.sort(key=lambda a:(-a["score"],-a["publication_count"],a["name"].casefold(),a["openalex_author_id"]))
         for i,a in enumerate(rows,1):a["rank"]=i if len(rows)>=10 else None
         ranks[group]=rows
-    return ranks,len(authors)
+    return ranks,len(authors),conflicts
 
 def main():
     ap=argparse.ArgumentParser()
@@ -118,9 +192,10 @@ def main():
     raw=json.loads(pathlib.Path(opts.input).read_text(encoding="utf-8"))
     input_records=raw["records"]
     included,excluded=classify(input_records)
-    ranked,author_count=make_ranks(included)
+    ranked,author_count,conflicts=make_ranks(included,input_records)
     stats={"candidate_records":len(input_records),"machine_screened_papers":len(included),
-           "openalex_author_id_candidates":author_count,
+           "identifier_matched_author_candidates":author_count,
+           "ambiguous_orcid_to_openalex_mappings":conflicts,
            "ranked_researchers":{k:len(v) for k,v in ranked.items()},
            "paper_modalities":dict(collections.Counter(m for r in included for m in r["modalities"])),
            "exclusions":dict(excluded)}
@@ -132,7 +207,9 @@ def main():
             "limitations":[
                 "Automated title/abstract inclusion is not a human full-text systematic review.",
                 "Search queries and per-query pagination are bounded and may omit major researchers.",
-                "Only works with OpenAlex citation counts AND linked OpenAlex author IDs score; Europe PMC-only and unresolved identities are excluded from numerical positions.",
+                "Works with OpenAlex citation counts plus OpenAlex author IDs or ORCID-anchored bylines; identity-uncertain names remain excluded.",
+                "Institutions represent the most recent affiliation documented on harvested OpenAlex work records; they are not verified current employers.",
+                "Preprints are excluded from the primary score to avoid counting preprint/article pairs twice.",
                 "Citations are ranked within the harvested year/modality cohort, not global field-normalized citations.",
                 "Clinical translation is a title-keyword proxy, not validated clinical impact.",
                 "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking.",
@@ -142,12 +219,14 @@ def main():
     out.write_text(json.dumps(result,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     csvpath=pathlib.Path(opts.csv);csvpath.parent.mkdir(parents=True,exist_ok=True)
     with csvpath.open("w",newline="",encoding="utf-8-sig") as f:
-        fields=["category","rank","researcher","openalex_author_id","orcid","score","machine_matched_papers","indexed_citations","first_last_papers",*SCORING_WEIGHTS]
+        fields=["category","rank","researcher","openalex_author_id","orcid","institution","institution_year","institution_source_work","identity_method","score","machine_matched_papers","indexed_citations","first_last_papers",*SCORING_WEIGHTS]
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
         for category,rows in ranked.items():
             for r in rows:
                 w.writerow({"category":category,"rank":r["rank"],"researcher":r["name"],
                             "openalex_author_id":r["openalex_author_id"],"orcid":r["orcid"],
+                            "institution":r["institution"],"institution_year":r["institution_year"],
+                            "institution_source_work":r["institution_source_work"],"identity_method":r["identity_method"],
                             "score":r["score"],"machine_matched_papers":r["publication_count"],
                             "indexed_citations":r["indexed_citations"],"first_last_papers":r["first_last_papers"],
                             **r["components"]})
