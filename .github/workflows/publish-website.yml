@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "atlas_site.zip"
       - ".github/workflows/publish-website.yml"
 permissions:
   contents: read
@@ -21,9 +22,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare full Atlas when optional ZIP is uploaded
+        run: |
+          mkdir -p _site
+          if [ -f atlas_site.zip ]; then
+            unzip -oq atlas_site.zip -d _site
+          else
+            cp index.html _site/index.html
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
