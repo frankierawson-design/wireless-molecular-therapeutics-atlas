@@ -5,7 +5,7 @@ Public API sources: Europe PMC (includes PubMed); OpenAlex (optional API key).
 Every search is bounded and logged, so results must never be called exhaustive.
 Python 3.11+, standard library only.
 """
-import argparse, csv, datetime, json, os, pathlib, re, time, urllib.error, urllib.parse, urllib.request
+import argparse, csv, datetime, sys, json, os, pathlib, re, time, urllib.error, urllib.parse, urllib.request
 
 QUERIES = {
  "electrochemical": [
