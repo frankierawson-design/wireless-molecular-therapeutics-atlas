@@ -40,6 +40,7 @@ def classify(records):
         if "Radiofrequency" in mods and matches(r"\b(?:atrial.fibrillation|cardiac|catheter|arrhythmia)\b",title) and not matches(r"\b(?:drug|nanoparticle|delivery|molecular)\b",title):
             mods.remove("Radiofrequency")
         if not mods:excluded["nonmolecular_radiofrequency"]+=1;continue
+        if len(mods)>=2: mods.append("Hybrid")
         if not any(a.get("openalex_author_id") for a in (r.get("authors") or [])):
             excluded["author_identifier_missing"]+=1;continue
         r2=dict(r);r2["year"]=year;r2["modalities"]=mods
@@ -90,7 +91,7 @@ def make_ranks(included):
             key=r.get("doi") or r.get("openalex_id")
             person["papers"][key]=evidence
     ranks={}
-    for group in ["Overall",*MODALITIES]:
+    for group in ["Overall",*MODALITIES,"Hybrid"]:
         rows=[]
         minimum=3 if group=="Overall" else 2
         for aid,a in authors.items():
