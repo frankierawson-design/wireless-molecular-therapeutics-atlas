@@ -69,7 +69,7 @@ def classify(records):
         if not any(a.get("openalex_author_id") or norm_orcid(a.get("orcid")) for a in (r.get("authors") or [])):
             excluded["author_identifier_missing"]+=1;continue
         r2=dict(r);r2["year"]=year;r2["modalities"]=mods
-        if matches(r"\\b(?:apoptos\\w*|cancer.cell.death|wound.heal\\w*|tumou?r.regress\\w*|neur\\w*.regenerat\\w*|cell.stimulation|clinical.treat\\w*|cancer.therap\\w*)\\b",title):
+        if matches(r"\b(?:apoptos\w*|cancer.cell.death|wound.heal\w*|tumou?r.regress\w*|neur\w*.regenerat\w*|cell.stimulation|clinical.treat\w*|cancer.therap\w*)\b",title):
             tier="therapeutic_biological_candidate"
         elif matches(ELECTRO_DELIVERY,title+" "+abstract):
             tier="molecular_delivery_platform_candidate"
