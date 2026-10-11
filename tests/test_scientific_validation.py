@@ -30,6 +30,14 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual({x["record_id"] for x in blind},{x["record_id"] for x in key})
         self.assertTrue(all(float(x["inverse_probability_weight"])>=1 for x in key))
 
+    def test_doi_less_queue_work_resolves_to_frozen_openalex_record(self):
+        item=paper("Wireless bipolar electrochemistry cancer cell therapy","")
+        item["openalex_id"]="https://openalex.org/W9922001"
+        frames,blind,key,sizes=gen.make_packets([item],n_negative=2,seed=42)
+        self.assertEqual(sizes["electro_queue_census"],1)
+        self.assertEqual(len(blind),1)
+        self.assertEqual(key[0]["openalex_work_id"],"https://openalex.org/W9922001")
+
     def test_blind_packets_reproducible(self):
         records=[paper("Wireless molecular drug delivery cancer cell","10.1000/"+str(x))
                  for x in range(7)]
