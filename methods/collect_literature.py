@@ -72,8 +72,26 @@ def merge(out,record):
         old=out[key]
         old["source_databases"]=sorted(set(old["source_databases"]+record["source_databases"]))
         old["source_queries"]=sorted(set(old["source_queries"]+record["source_queries"]))
-        for k in ("doi","pmid","openalex_id","title","year","abstract","authors","citations_openalex"):
-            if not old.get(k) and record.get(k): old[k]=record[k]
+        for k in ("doi","pmid","openalex_id","title","year","abstract","citations_openalex"):
+            if old.get(k) is None or old.get(k) == "":
+                if record.get(k) is not None and record.get(k) != "":
+                    old[k]=record[k]
+        # Crucial: Europe PMC often arrives first with initials/ORCIDs but no
+        # OpenAlex author IDs. Prefer the exact-DOI matched OpenAlex authorship
+        # array, which also records each author's institution on this paper.
+        old_authors=old.get("authors") or []
+        new_authors=record.get("authors") or []
+        old_ids=sum(bool(a.get("openalex_author_id")) for a in old_authors)
+        new_ids=sum(bool(a.get("openalex_author_id")) for a in new_authors)
+        if new_ids > old_ids:
+            if len(old_authors)==len(new_authors):
+                for a,b in zip(new_authors,old_authors):
+                    if not a.get("orcid") and b.get("orcid"):
+                        a["orcid"]=b["orcid"]
+            old["authors"]=new_authors
+            old["author_source"]="OpenAlex authorships (exact work/DOI)"
+        elif not old_authors and new_authors:
+            old["authors"]=new_authors
         return
     out[key]=record
 def epmc_authors(hit):
@@ -116,14 +134,20 @@ def openalex_search(phrase,pages,perpage,output,audit):
                 authors=[{"name":(a.get("author") or {}).get("display_name") or "",
                            "orcid":(a.get("author") or {}).get("orcid") or "",
                            "openalex_author_id":(a.get("author") or {}).get("id") or "",
-                           "position":a.get("author_position") or ""}
+                           "position":a.get("author_position") or "",
+                           "institutions":[{"name":i.get("display_name") or "",
+                                            "id":i.get("id") or ""}
+                                            for i in a.get("institutions") or []
+                                            if i.get("display_name")],
+                           "raw_affiliations":a.get("raw_affiliation_strings") or []}
                          for a in hit.get("authorships") or []]
                 merge(output,{"title":hit.get("title") or hit.get("display_name") or "",
                     "doi":doi_norm(hit.get("doi")),"pmid":(hit.get("ids") or {}).get("pmid") or "",
                     "openalex_id":hit.get("id") or "", "year":hit.get("publication_year"),
                     "abstract":"","authors":authors,"citations_openalex":hit.get("cited_by_count"),
                     "source_databases":["OpenAlex"],"source_queries":[phrase],
-                    "review_status":"UNSCREENED","identity_status":"UNVERIFIED"})
+                    "review_status":"UNSCREENED","identity_status":"UNVERIFIED",
+                    "author_source":"OpenAlex authorships (exact work/DOI)"})
             next_cursor=(data.get("meta") or {}).get("next_cursor")
             audit.append({"source":"OpenAlex","query":phrase,"page":page+1,"retrieved":len(hits),
                 "reported_total":(data.get("meta") or {}).get("count"),"error":"",
