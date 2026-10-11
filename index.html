@@ -65,6 +65,17 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .ranking-scroll td[data-label="Researcher"]{font-weight:750;color:#153c3d}
 .ranking-scroll td[data-label="Position"] strong{font-size:20px;color:#0b6664}
 }
+.electro-coverage{padding:32px 0 12px;margin-top:28px;border-top:1px solid #d7e5de}
+.electro-coverage>h3{font-size:24px;letter-spacing:-.02em;margin:13px 0}
+.electro-coverage>p{color:#52706d;line-height:1.7;max-width:850px}
+.electro-coverage .coverage-metrics .panel{padding:16px}
+.electro-coverage .coverage-metrics h3{font-size:27px;color:#164f50;margin-top:10px}
+.electro-coverage .ranking-scroll{margin-top:17px}
+.electro-coverage table{min-width:500px}
+.electro-coverage td:nth-child(2),.electro-coverage td:nth-child(3){text-align:left}
+.coverage-footer{font-size:13px}
+.coverage-state{font-size:12px;color:#41655e;background:#edf4ee;padding:5px 8px;border-radius:5px}
+
 </style>
 </head>
 <body>
@@ -105,6 +116,21 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </div>
 <div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
 <div id="rank-detail" class="rank-detail" hidden></div>
+<div id="electro-coverage" class="electro-coverage">
+ <div class="eyebrow">Electrochemical literature coverage</div>
+ <h3>Which publications are actually represented?</h3>
+ <p>The electrochemical category is built from the latest machine-screened OpenAlex/Europe PMC candidate set. This audit checks known, independently identifiable studies—including wireless redox therapies, ion pumps and model-drug release—against the harvested records. Missing studies expose search gaps; reviews and mechanistic-only studies remain separately labelled.</p>
+ <div class="grid coverage-metrics">
+  <div class="panel"><div class="label">Electrochemical studies</div><h3 id="electro-paper-count">—</h3></div>
+  <div class="panel"><div class="label">Ranked researchers</div><h3 id="electro-author-count">—</h3></div>
+  <div class="panel"><div class="label">DOI sentinel recovery</div><h3 id="electro-sentinel-count">—</h3></div>
+ </div>
+ <div class="ranking-scroll">
+ <table aria-label="Known publication DOI coverage audit"><thead><tr><th>Publication family</th><th>Year / DOI</th><th>Search status</th></tr></thead>
+ <tbody id="electro-audit-body"><tr><td colspan="3">Awaiting the updated coverage-audit dataset.</td></tr></tbody></table>
+ </div>
+ <p class="coverage-footer"><a href="data/electrochemical_coverage_audit.csv" download>Download the full DOI coverage audit (CSV) ↗</a></p>
+</div>
 <details class="ranking-method"><summary>How these scores are calculated</summary>
 <p><strong>Composite score (0–100):</strong> 35% within-harvest publication-year/modality citation percentile; 25% publication-output score; 20% first/last-authorship score; 10% title-indicated translational activity; and 10% publication-years active. Counts are logarithmically scaled. Overall requires at least three machine-matched papers; pathways require at least two.</p>
 <p><strong>Limitations:</strong> Classification uses titles and review indicators, not completed human full-text screening. Institutional affiliations are from dated publication metadata, not verified current appointments. Ranking uses only papers with OpenAlex citation and author IDs. The search is bounded; some scientists and their publications will be missing. Translation scoring is a title-keyword proxy, not proof of clinical efficacy. All metrics are dataset-relative, not globally field-normalised. Ambiguous author matches may remain. Read the methodology and source paper links before citing positions.</p>
@@ -164,6 +190,16 @@ get("rank-category").addEventListener("change",function(){render(true);});
 get("rank-search").addEventListener("input",function(){render(true);});
 get("rank-more").addEventListener("click",function(){page++;render(false);});
 get("rank-body").addEventListener("click",function(e){var button=e.target.closest("button[data-evidence]");if(button)showEvidence(Number(button.getAttribute("data-evidence")));});
+fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
+ .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
+ .then(function(a){
+   get("electro-sentinel-count").textContent=a.retrieved+"/"+a.total_sentinels;
+   get("electro-audit-body").innerHTML=(a.records||[]).map(function(r){
+     var klass=r.machine_status==="machine_included"?"Included in machine screen":r.machine_status==="not_harvested"?"Not retrieved":"Retrieved; not scored";
+     return '<tr><td>'+esc(r.topic)+'</td><td><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td><td><span class="coverage-state">'+esc(klass)+'</span></td></tr>';
+   }).join("");
+ })
+ .catch(function(){get("electro-audit-body").innerHTML='<tr><td colspan="3">Publication audit will appear when the expanded literature harvest finishes.</td></tr>';});
 fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if(!res.ok)throw new Error("HTTP "+res.status);return res.json();}).then(function(d){
  if(!d.rankings||!Array.isArray(d.rankings.Overall))throw new Error("Dataset has no ranking rows.");
  data=d;
@@ -171,6 +207,8 @@ fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if
  get("metric-candidates").textContent=(sm.candidate_records||0).toLocaleString();
  get("metric-papers").textContent=(sm.machine_screened_papers||0).toLocaleString();
  get("metric-people").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Overall||0).toLocaleString();
+ get("electro-paper-count").textContent=(sm.paper_modalities&&sm.paper_modalities.Electrochemical||0).toLocaleString();
+ get("electro-author-count").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Electrochemical||0).toLocaleString();
  render(true);
 }).catch(function(err){get("rank-summary").textContent="Ranking data are not yet deployed ("+err.message+"). The literature harvest is available through the GitHub Actions link.";get("rank-body").innerHTML='<tr><td colspan="7">Waiting for a published ranking artifact.</td></tr>';});
 })();
