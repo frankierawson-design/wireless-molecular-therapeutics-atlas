@@ -53,6 +53,18 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 @media(max-width:720px){.ranking-metrics{grid-template-columns:1fr 1fr}.ranking-metrics .panel:last-child{grid-column:span 2}.ranking-tools label{min-width:100%}.ranking-scroll{margin-left:-3px;margin-right:-3px}.ranking-metrics .panel h3{font-size:26px}}
 
 .inst-cell{min-width:160px;max-width:290px}.inst-cell small{display:block;color:#657e79;font-size:11px;margin-top:4px}.unverified{color:#748582;font-size:12px}
+@media(max-width:720px){
+.ranking-scroll{overflow:visible;border:0;background:transparent}
+.ranking-scroll table,.ranking-scroll tbody{display:block;width:100%;min-width:0;background:transparent}
+.ranking-scroll thead{display:none}
+.ranking-scroll tr{display:block;background:white;border:1px solid #cbded7;border-radius:12px;padding:8px 13px;margin:0 0 13px;box-shadow:0 2px 8px rgba(0,0,0,.025)}
+.ranking-scroll td,.ranking-scroll td:nth-child(4),.ranking-scroll td:nth-child(5),.ranking-scroll td:nth-child(6){display:flex;justify-content:space-between;align-items:center;text-align:right;gap:14px;padding:10px 0;border-bottom:1px solid #edf2ef;max-width:none;min-width:0}
+.ranking-scroll td:last-child{border-bottom:0}
+.ranking-scroll td::before{content:attr(data-label);font-size:12px;font-weight:750;color:#496e69;flex:0 0 98px;text-align:left}
+.ranking-scroll .inst-cell small{font-size:10px}
+.ranking-scroll td[data-label="Researcher"]{font-weight:750;color:#153c3d}
+.ranking-scroll td[data-label="Position"] strong{font-size:20px;color:#0b6664}
+}
 </style>
 </head>
 <body>
@@ -84,7 +96,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </div>
 <div class="ranking-tools">
  <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical</option><option value="Hybrid">Hybrid</option></select></label>
- <label>Find academic <input type="search" id="rank-search" placeholder="Search researcher names…"/></label>
+ <label>Find academic <input type="search" id="rank-search" placeholder="Search name or institution…"/></label>
 </div>
 <div id="rank-summary" role="status">Loading the latest ranking dataset…</div>
 <div class="ranking-scroll">
@@ -124,12 +136,12 @@ function render(reset){
  if(reset)page=0;
  var category=get("rank-category").value, query=get("rank-search").value.trim().toLowerCase();
  var all=data.rankings[category]||[];
- rows=all.filter(function(x){return !query||x.name.toLowerCase().includes(query);});
+ rows=all.filter(function(x){return !query||x.name.toLowerCase().includes(query)||(x.institution||"").toLowerCase().includes(query);});
  var max=Math.min(rows.length,(page+1)*PAGE_SIZE);
  var insufficient=all.length<10;
  var visible=rows.slice(0,max);
  get("rank-body").innerHTML=visible.length?visible.map(function(r,i){
- return '<tr><td><strong>'+(insufficient?'—':r.rank)+'</strong></td><td>'+esc(r.name)+'</td><td class="inst-cell">'+(r.institution&&r.institution!=='Not available'?esc(r.institution)+'<small>Affiliation evidence: '+esc(r.institution_year||'year unknown')+'</small>':'<span class="unverified">Not verified</span>')+'</td><td>'+r.score.toFixed(2)+'</td><td>'+r.publication_count+'</td><td>'+r.indexed_citations.toLocaleString()+'</td><td><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
+ return '<tr><td data-label="Position"><strong>'+(insufficient?'—':r.rank)+'</strong></td><td data-label="Researcher">'+esc(r.name)+'</td><td data-label="Institution" class="inst-cell">'+(r.institution&&r.institution!=='Not available'?esc(r.institution)+'<small>Affiliation evidence: '+esc(r.institution_year||'year unknown')+'</small>':'<span class="unverified">Not verified</span>')+'</td><td data-label="Evidence score">'+r.score.toFixed(2)+'</td><td data-label="Matched papers">'+r.publication_count+'</td><td data-label="Indexed citations">'+r.indexed_citations.toLocaleString()+'</td><td data-label="Publication evidence"><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
  }).join(""):'<tr><td colspan="7">No scored researcher matches this filter.</td></tr>';
  get("rank-more").hidden=max>=rows.length;
  get("rank-summary").textContent=insufficient?category+" currently has only "+all.length+" scored researcher(s); no numerical ranking is meaningful. Showing evidence records only.":rows.length.toLocaleString()+" scored researcher(s) in "+category+" · showing "+visible.length+". Positions are corpus-relative and provisional.";
