@@ -78,7 +78,11 @@ def main():
                        "has_openalex_author_ids":oa_id_present,
                        "expected_author":seed.get("expected_author",""),
                        "expected_orcid":seed.get("expected_orcid",""),
-                       "author_identity_status":author_identity_status(doc,seed)})
+                       "author_identity_status":author_identity_status(doc,seed),
+                       "publisher_orcid_conflict_corrected":bool(doc and doc.get("publisher_orcid_conflict_corrected")),
+                       "publisher_correction_source":doc.get("publisher_orcid_correction_source","") if doc else "",
+                       "original_source_orcid":next((a.get("openalex_original_orcid") for a in (doc.get("authors") or [])
+                           if a.get("openalex_original_orcid")), "") if doc else ""})
     path=pathlib.Path(opts.output)
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps({"purpose":"Non-exhaustive DOI sentinel coverage audit",
