@@ -17,7 +17,7 @@ def paper(title,doi,abstract="",oa="article"):
 class ValidationTests(unittest.TestCase):
     def test_blinded_review_packet_never_contains_rank_or_machine_decision(self):
         works=[
-          paper("Wireless electrical-molecular quantum signalling for cancer cell apoptosis",
+          paper("Wireless bipolar electrochemistry for cancer cell apoptosis",
                 "10.1000/a"),
           paper("Electrochemical drug release for cancer therapy using permanently wired electrodes","10.1000/b"),
           paper("Ultrasound-driven molecule delivery cancer therapy","10.1000/c"),
