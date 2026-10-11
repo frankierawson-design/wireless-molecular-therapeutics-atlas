@@ -110,6 +110,15 @@ DOCUMENTED_DOI_ORCID={
  )
 }
 
+# DOI+byline-specific correction, supported by the original publisher.
+# The original conflicting OpenAlex ORCID remains in the machine-readable audit.
+PUBLISHER_ORCID_CORRECTIONS={
+ "10.1021/acs.langmuir.6c00755":{
+  "verified_orcid":"0000-0001-5079-3123",
+  "evidence_url":"https://pubs.acs.org/doi/10.1021/acs.langmuir.6c00755",
+  "source":"ACS publisher author metadata (Forster byline)"
+ }
+}
 UA="WirelessMolecularTherapeuticsAtlas/0.1 (bibliographic research; https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas)"
 def fetch(url, params, tries=3):
     target=url+"?"+urllib.parse.urlencode(params)
@@ -257,9 +266,18 @@ def reconcile_documented_authorship(record):
     author=matches[0]
     actual=str(author.get("orcid") or "")
     if actual and orcid not in actual.upper():
-        # Conflicting author ORCID: do not override bibliographic metadata.
-        record["documented_identity_conflict"]=True
-        return False
+        correction=PUBLISHER_ORCID_CORRECTIONS.get(doi)
+        if not correction or correction["verified_orcid"]!=orcid:
+            # Unresolved ORCID collisions cannot justify researcher scoring.
+            record["documented_identity_conflict"]=True
+            return False
+        # Original publisher associates this exact DOI and Forster byline
+        # with his ORCID. Retain the inconsistent OpenAlex field verbatim.
+        author["openalex_original_orcid"]=actual
+        author["orcid"]="https://orcid.org/"+orcid
+        author["publisher_orcid_evidence_url"]=correction["evidence_url"]
+        record["publisher_orcid_conflict_corrected"]=True
+        record["publisher_orcid_correction_source"]=correction["source"]
     if not actual:author["orcid"]="https://orcid.org/"+orcid
     author["verified_orcid_from_publication"]=orcid
     record["author_identity_enrichment"]="Primary-publisher DOI and named-byline corroboration"
