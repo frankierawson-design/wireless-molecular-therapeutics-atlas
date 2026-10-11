@@ -35,7 +35,7 @@ jobs:
           test -s frozen/candidates.json
           sha256sum frozen/candidates.json
           test "$(sha256sum frozen/candidates.json | cut -d ' ' -f1)" = "ee79f92617423900368049f5d1e2bbd0c097da8eb424f8a2eef7276e92f2bd59"
-      - name: Generate independent double-blinded review packets
+      - name: Generate two independently masked review packets
         run: |
           python validation/generate_review_packets.py --candidates frozen/candidates.json --output validation_output --negative-per-stratum 70 --seed 20261011
           python - <<'PY'
@@ -86,12 +86,15 @@ jobs:
           name: independent-reviewer-B
           path: validation_output/reviewer_B_blinded.csv
           retention-days: 90
-      - name: Coordinator — do NOT give key to reviewers before lock
+      # This repository is public: GitHub Actions artifacts cannot provide
+      # confidential storage for the source-to-record identity key. It stays
+      # ephemeral on the runner; a coordinator regenerates it offline from the
+      # checksum-verified frozen input and fixed seed.
+      - name: Publish blank coordinator templates (NO hidden source key)
         uses: actions/upload-artifact@v4
         with:
-          name: validation-coordinator-only
+          name: validation-coordinator-templates-no-key
           path: |
-            validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv
             validation_output/adjudication_BLANK.csv
             validation_output/independent_reference_set_BLANK.csv
             validation_output/author_identity_audit_BLANK.csv
