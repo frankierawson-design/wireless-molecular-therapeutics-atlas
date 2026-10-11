@@ -3,7 +3,7 @@
 
 Coverage audit, NOT a declaration of a complete literature review.
 """
-import argparse, csv, json, pathlib
+import argparse, csv, json, pathlib, re
 from build_provisional_rankings import classify
 
 SEEDS=[
@@ -16,12 +16,33 @@ SEEDS=[
   {"doi":"10.1038/s41528-019-0060-6","topic":"Photovoltaic wireless electronic ion pump","expected":"molecular-delivery-platform"},
   {"doi":"10.1039/d5lc00708a","topic":"Remote-controlled electrochemical drug pump","expected":"molecular-delivery-platform"},
   {"doi":"10.1039/d3bm01946b","topic":"Wireless nerve growth BPE (review, exclude ranking)","expected":"review-not-ranked"},
+  {"doi":"10.1016/j.elecom.2024.107832","topic":"Forster / DCU: Wirefree electrochemistry for detection and treatment of disease","expected":"review-not-ranked","expected_author":"Robert J. Forster","expected_orcid":"0000-0001-5079-3123"},
+  {"doi":"10.1039/d4cc03996c","topic":"Forster / DCU: Regio-selective wireless electropolymerisation","expected":"enabling-not-automatically-ranked","expected_author":"Robert J. Forster","expected_orcid":"0000-0001-5079-3123"},
+  {"doi":"10.1021/acs.analchem.4c04454","topic":"Forster / DCU: Wirefree PEDOT field distribution","expected":"enabling-not-automatically-ranked","expected_author":"Robert J. Forster","expected_orcid":"0000-0001-5079-3123"},
+  {"doi":"10.1002/celc.202400506","topic":"Forster / DCU: Bipolar polymer deposition and modelling","expected":"enabling-not-automatically-ranked","expected_author":"Robert J. Forster","expected_orcid":"0000-0001-5079-3123"},
 ]
 def normalize(value):
     s=str(value or "").strip().lower()
     for prefix in ("https://doi.org/","http://doi.org/","https://dx.doi.org/"):
         if s.startswith(prefix):s=s[len(prefix):]
     return s
+
+def author_identity_status(doc, seed):
+    """Only an exact work-level ORCID is positive identity evidence."""
+    if not seed.get("expected_author"):
+        return "not_applicable"
+    if doc is None:
+        return "not_harvested"
+    target=seed.get("expected_orcid","").upper()
+    authors=doc.get("authors") or []
+    if target and any(target in str(a.get("orcid") or "").upper() for a in authors):
+        return "orcid_verified_in_work_metadata"
+    if any("forster" in str(a.get("name") or "").casefold() and
+           re.search(r"\b(?:robert|r\.?\s*j\.?)\b",str(a.get("name") or ""),re.I)
+           for a in authors):
+        return "name_only_identity_not_verified"
+    return "expected_author_absent_from_work_metadata"
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--input",required=True)
@@ -48,7 +69,10 @@ def main():
                        "retrieved":bool(doc),"machine_status":status,
                        "reason":explanation,"title":doc.get("title","") if doc else "",
                        "openalex_work_id":doc.get("openalex_id","") if doc else "",
-                       "has_openalex_author_ids":oa_id_present})
+                       "has_openalex_author_ids":oa_id_present,
+                       "expected_author":seed.get("expected_author",""),
+                       "expected_orcid":seed.get("expected_orcid",""),
+                       "author_identity_status":author_identity_status(doc,seed)})
     path=pathlib.Path(opts.output)
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps({"purpose":"Non-exhaustive DOI sentinel coverage audit",
