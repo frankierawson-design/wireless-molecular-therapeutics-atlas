@@ -1,14 +1,21 @@
 name: Publish atlas website
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Literature census (candidate harvest)
+    types:
+      - completed
   push:
     branches: [main]
     paths:
       - "index.html"
       - "atlas_site.zip"
+      - "methods/build_provisional_rankings.py"
       - ".github/workflows/publish-website.yml"
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -16,20 +23,60 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Prepare full Atlas when optional ZIP is uploaded
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Prepare Atlas website
         run: |
-          mkdir -p _site
+          mkdir -p _site/data
           if [ -f atlas_site.zip ]; then
             unzip -oq atlas_site.zip -d _site
           else
             cp index.html _site/index.html
           fi
+      - name: Retrieve latest completed candidate harvest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPO: ${{ github.repository }}
+          COMPLETED_HARVEST_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
+        run: |
+          mkdir -p _harvest
+          RUN_ID="${COMPLETED_HARVEST_ID}"
+          if [ -z "$RUN_ID" ]; then
+            RUN_ID="$(gh run list --repo "$GITHUB_REPO" --workflow "Literature census (candidate harvest)" --status success --limit 1 --json databaseId --jq '.[0].databaseId')"
+          fi
+          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
+            echo "::error::No successful harvest run. Rankings cannot be updated."
+            exit 1
+          fi
+          echo "Candidate harvest run: $RUN_ID"
+          gh run download "$RUN_ID" --repo "$GITHUB_REPO" --name "literature-candidates-and-audit" --dir _harvest
+          test -s _harvest/candidates.json
+      - name: Calculate provisional, paper-backed rankings
+        run: |
+          python methods/build_provisional_rankings.py \
+            --input _harvest/candidates.json \
+            --output _site/data/provisional_rankings.json \
+            --csv _site/data/provisional_rankings.csv
+          python - <<'PY'
+          import json
+          d=json.load(open("_site/data/provisional_rankings.json"))
+          assert d["summary"]["machine_screened_papers"] > 100
+          assert len(d["rankings"]["Overall"]) > 10
+          assert "Provisional" in d["ranking_label"]
+          print("Ranked overall:",len(d["rankings"]["Overall"]))
+          print("Screened papers:",d["summary"]["machine_screened_papers"])
+          print("Top 5:",[(r["name"],r["score"]) for r in d["rankings"]["Overall"][:5]])
+          PY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
