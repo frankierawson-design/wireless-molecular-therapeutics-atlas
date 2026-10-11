@@ -261,6 +261,7 @@ def reconcile_documented_authorship(record):
         record["documented_identity_conflict"]=True
         return False
     if not actual:author["orcid"]="https://orcid.org/"+orcid
+    author["verified_orcid_from_publication"]=orcid
     record["author_identity_enrichment"]="Primary-publisher DOI and named-byline corroboration"
     return True
 
