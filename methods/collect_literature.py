@@ -251,8 +251,8 @@ def reconcile_documented_authorship(record):
     orcid=DOCUMENTED_DOI_ORCID.get(doi)
     if not orcid:return False
     matches=[a for a in (record.get("authors") or []) if
-             re.search(r"\\bforster\\b",str(a.get("name") or ""),re.I)
-             and re.search(r"\\b(?:robert|r\\.?\\s*j\\.?)\\b",str(a.get("name") or ""),re.I)]
+             re.search(r"\bforster\b",str(a.get("name") or ""),re.I)
+             and re.search(r"\b(?:robert|r\.?\s*j\.?)\b",str(a.get("name") or ""),re.I)]
     if len(matches)!=1:return False
     author=matches[0]
     actual=str(author.get("orcid") or "")
