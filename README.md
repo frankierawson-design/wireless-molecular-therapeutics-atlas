@@ -66,3 +66,26 @@ See [the 11 October 2026 quality and reliability report](methods/QUALITY_AND_REL
 The Atlas now has a named public correction case for Robert J. Forster (Dublin City University; ORCID `0000-0001-5079-3123`). Four papers are DOI sentinels: `10.1016/j.elecom.2024.107832` (review), `10.1039/d4cc03996c` (wireless polymer deposition), `10.1021/acs.analchem.4c04454` (wirefree deposition mechanism), and `10.1002/celc.202400506` (polymer deposition and modelling). The four authorship records are independently supported by publisher or university sources, but DOI retrieval into *this* corpus and the exact work-level machine author-ID assignment need checking separately.
 
 The DOI audit independently reports: **not harvested**, **retrieved but not machine included**, or **machine included**; and **ORCID matched in work metadata**, **name-only match**, or **author absent/unresolved**. Review and enabling-only research is **not** automatically eligible for a therapeutic researcher score. A missing ranking position must **not** be interpreted as the scientist having no relevant work. No missing item is silently imputed and no synthetic rank is manufactured. Other unresolved author-matching issues remain in the quality audit.
+
+## Expansion: therapeutic electric fields, neuromodulation and electrochemistry
+
+**October 2026 development status: broadened automated literature capture; NOT a validated exhaustive census.**
+
+The original Atlas was biased toward contactless/molecular drug delivery. This missed important electrical treatments, including those using wired electrodes. The new taxonomy explicitly separates:
+
+- **TTFields** — tumour-treating intermediate-frequency alternating fields, oncology mechanisms and trials.
+- **Electrochemotherapy** — pulses facilitating anticancer-drug transport (including ESOPE, bleomycin and cisplatin).
+- **Electroporation** — reversible/irreversible electroporation, nanosecond pulses, H-FIRE, tumour and cardiac pulsed-field ablation, electrotransfer.
+- **Neuromodulation** — DBS, VNS, spinal-cord stimulation, tDCS/tACS, peripheral and transcutaneous electrical nerve stimulation.
+- **Electrical Stimulation** — cell and tissue electrical stimulation, wound healing, bone repair and rehabilitation.
+- **Electrochemical** — electrode-mediated redox, remotely driven bipolar electrochemistry and electrochemical release.
+
+These are related but **not mechanistically interchangeable**. Conventional wired delivery is permitted for the five new therapeutic intervention classes, but does not automatically make an intervention "electrochemical" or "hybrid". An article enters Hybrid only when independent physical energy families are evidenced. Eligibility requires human checks of article type, treatment delivery, molecular/cellular effect, mechanisms and actual intervention.
+
+### Capture and reporting
+
+The new [Electrical therapies expansion harvest](.github/workflows/electrical-therapies-expansion.yml) incrementally merges OpenAlex and Europe PMC retrieval for all five previously neglected pathways with a substantial baseline; exact DOI lookups check a documented reference set and all query failures or caps are recorded. The [electrical treatment coverage audit](methods/electrical_treatment_coverage_audit.py) discloses individual known-paper DOI recovery, machine-classification status, query errors and category-level candidate counts. Its zero independent full-text reviews and incomplete searches must not be interpreted as coverage validated.
+
+**Release limitations:** DOI sentinel recall is a smoke test, not statistical recall or field saturation; a minimum number of candidates does not show worldwide coverage. The score weights were designed for an earlier narrower corpus; no overall comparison should be used professionally until prospective search saturation, field-specific recall/precision assessment, independent dual full-text screening, clinical/translational classification, ORCID author reconciliation and external field/year normalisation are finished. Expansion necessarily changes the comparison population and past ranks are not directly comparable.
+
+Landmark DOI sentinels include EF-14 2015/2017 (TTFields), ESOPE 2006 (electrochemotherapy), first-in-man renal IRE and ADVENT PFA (electroporation), Deuschl et al. DBS 2006 and ELECT-tDCS 2017 (neuromodulation), and randomised electrical wound-healing studies. The exact bibliographic evidence is listed in the audit code, not hardcoded as scored researcher contributions.
