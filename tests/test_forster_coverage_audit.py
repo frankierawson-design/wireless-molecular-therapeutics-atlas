@@ -15,6 +15,10 @@ class ForsterCoverageTests(unittest.TestCase):
     def test_known_forster_dois_have_auditable_expectations(self):
         rows = [s for s in audit.SEEDS if s.get("expected_author") == "Robert J. Forster"]
         self.assertEqual({s["doi"] for s in rows}, {
+            "10.1016/j.apmt.2020.100804",
+            "10.1016/j.apmt.2022.101481",
+            "10.1016/j.elecom.2023.107626",
+            "10.1021/acs.langmuir.6c00755",
             "10.1016/j.elecom.2024.107832",
             "10.1039/d4cc03996c",
             "10.1021/acs.analchem.4c04454",
@@ -44,7 +48,8 @@ class ForsterCoverageTests(unittest.TestCase):
 
     def test_visible_correction_and_explicit_unavailable_fallback(self):
         page = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("publication and author-identity reconciliation pending", page)
+        self.assertIn("source-backed ranking reconciliation", page)
+        self.assertIn("ranking reconciliation still incomplete", page)
         self.assertIn("DOI evidence file unavailable", page)
         self.assertIn("not</strong> evidence of a lack of relevant research", page)
 

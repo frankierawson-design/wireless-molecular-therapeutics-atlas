@@ -73,6 +73,43 @@ QUERIES = {
   "remote controlled nanomedicine therapy",
  ],
 }
+# DOI-level retrieval is applied to *all* documented electrochemical sentinels,
+# not only a favoured researcher. A sentinel forces discovery, never ranking eligibility.
+DOI_SENTINELS=(
+ "10.1038/s41565-023-01496-y",
+ "10.1002/advs.202516561",
+ "10.1021/acsomega.1c03547",
+ "10.1038/s41598-024-71236-2",
+ "10.1021/acs.langmuir.6c00755",
+ "10.1038/s43246-025-00750-1",
+ "10.1038/s41528-019-0060-6",
+ "10.1039/d5lc00708a",
+ "10.1039/d3bm01946b",
+ "10.1016/j.elecom.2024.107832",
+ "10.1039/d4cc03996c",
+ "10.1021/acs.analchem.4c04454",
+ "10.1002/celc.202400506",
+ "10.1016/j.apmt.2020.100804",
+ "10.1016/j.apmt.2022.101481",
+ "10.1016/j.elecom.2023.107626",
+ "10.1016/j.coelec.2023.101297",
+)
+# These named bylines and ORCID links were checked against primary publisher or
+# institutional records. Do not attribute identities solely from a surname match.
+DOCUMENTED_DOI_ORCID={
+ doi:"0000-0001-5079-3123" for doi in (
+  "10.1021/acs.langmuir.6c00755",
+  "10.1016/j.apmt.2020.100804",
+  "10.1016/j.apmt.2022.101481",
+  "10.1016/j.elecom.2023.107626",
+  "10.1016/j.elecom.2024.107832",
+  "10.1039/d4cc03996c",
+  "10.1021/acs.analchem.4c04454",
+  "10.1002/celc.202400506",
+  "10.1016/j.coelec.2023.101297",
+ )
+}
+
 UA="WirelessMolecularTherapeuticsAtlas/0.1 (bibliographic research; https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas)"
 def fetch(url, params, tries=3):
     target=url+"?"+urllib.parse.urlencode(params)
@@ -203,6 +240,74 @@ def openalex_search(phrase,pages,perpage,output,audit):
         except Exception as e:
             audit.append({"source":"OpenAlex","query":phrase,"page":page+1,"retrieved":0,"error":str(e),"complete_for_query":False})
             break
+
+def reconcile_documented_authorship(record):
+    """Restore independently publisher-verified ORCID on exact DOI-and-byline match.
+    
+    Never fabricate an OpenAlex author ID. A surname-only or absent byline
+    cannot be repaired. This provenance is not an independent full-text screen.
+    """
+    doi=doi_norm(record.get("doi"))
+    orcid=DOCUMENTED_DOI_ORCID.get(doi)
+    if not orcid:return False
+    matches=[a for a in (record.get("authors") or []) if
+             re.search(r"\\bforster\\b",str(a.get("name") or ""),re.I)
+             and re.search(r"\\b(?:robert|r\\.?\\s*j\\.?)\\b",str(a.get("name") or ""),re.I)]
+    if len(matches)!=1:return False
+    author=matches[0]
+    actual=str(author.get("orcid") or "")
+    if actual and orcid not in actual.upper():
+        # Conflicting author ORCID: do not override bibliographic metadata.
+        record["documented_identity_conflict"]=True
+        return False
+    if not actual:author["orcid"]="https://orcid.org/"+orcid
+    author["verified_orcid_from_publication"]=orcid
+    record["author_identity_enrichment"]="Primary-publisher DOI and named-byline corroboration"
+    return True
+
+def openalex_doi_sentinels(output,audit):
+    """Exact DOI lookups ensure that capped keyword rankings expose known misses."""
+    for doi in DOI_SENTINELS:
+        try:
+            params={}
+            if os.getenv("OPENALEX_API_KEY"):params["api_key"]=os.environ["OPENALEX_API_KEY"]
+            hit=fetch("https://api.openalex.org/works/https://doi.org/"+doi,params,tries=2)
+            authors=[{"name":(a.get("author") or {}).get("display_name") or "",
+                      "orcid":(a.get("author") or {}).get("orcid") or "",
+                      "openalex_author_id":(a.get("author") or {}).get("id") or "",
+                      "position":a.get("author_position") or "",
+                      "institutions":[{"name":i.get("display_name") or "","id":i.get("id") or ""}
+                                      for i in a.get("institutions") or [] if i.get("display_name")],
+                      "raw_affiliations":a.get("raw_affiliation_strings") or []}
+                     for a in (hit.get("authorships") or [])]
+            found=doi_norm(hit.get("doi"))
+            if found!=doi:
+                raise ValueError("API returned unexpected DOI "+found)
+            rec={"title":hit.get("title") or hit.get("display_name") or "",
+                 "doi":found,"pmid":(hit.get("ids") or {}).get("pmid") or "",
+                 "openalex_id":hit.get("id") or "",
+                 "year":hit.get("publication_year"),"abstract":openalex_abstract(hit.get("abstract_inverted_index")),
+                 "openalex_work_type":hit.get("type") or "",
+                 "authors":authors,"citations_openalex":hit.get("cited_by_count"),
+                 "source_databases":["OpenAlex"],"source_queries":["exact-doi:"+doi],
+                 "review_status":"UNSCREENED","identity_status":"UNVERIFIED",
+                 "author_source":"OpenAlex authorships (exact work/DOI)"}
+            merge(output,rec)
+            row=output[matchkey(rec)]
+            checked=reconcile_documented_authorship(row)
+            audit.append({"source":"OpenAlex DOI lookup","query":doi,"page":1,
+                          "retrieved":1,"reported_total":1,"error":"",
+                          "complete_for_query":True,
+                          "documented_byline_reconciled":checked})
+        except Exception as e:
+            # A sentinel failing lookup cannot become a synthetic paper.
+            audit.append({"source":"OpenAlex DOI lookup","query":doi,"page":1,
+                          "retrieved":0,"reported_total":0,"error":str(e),
+                          "complete_for_query":False})
+    # Earlier keyword records may have the exact DOI already but incomplete ORCID.
+    for record in output.values():
+        reconcile_documented_authorship(record)
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--output",default="output")
@@ -213,6 +318,7 @@ def main():
     p.add_argument("--only-modalities",default="",help="Comma-separated modality names, defaults to all")
     p.add_argument("--baseline",default="",help="Existing candidates.json for incremental merge")
     p.add_argument("--baseline-audit",default="",help="Existing query_audit.json to preserve source provenance")
+    p.add_argument("--doi-only",action="store_true",help="Only reconcile registered DOI sentinels against a substantial existing harvest")
     a=p.parse_args()
     folder=pathlib.Path(a.output);folder.mkdir(parents=True,exist_ok=True)
     records={};audit=[]
@@ -226,12 +332,14 @@ def main():
     selected={x.strip().casefold() for x in a.only_modalities.split(",") if x.strip()}
     invalid=selected-set(QUERIES)
     if invalid:p.error("Unknown modalities: "+", ".join(sorted(invalid)))
-    selected_queries={k:qs for k,qs in QUERIES.items() if not selected or k in selected}
+    selected_queries={} if a.doi_only else {k:qs for k,qs in QUERIES.items() if not selected or k in selected}
+    if a.doi_only and not a.baseline:p.error("--doi-only requires --baseline")
     for modality,qs in selected_queries.items():
         for phrase in qs:
             print("SEARCH",modality,phrase,flush=True)
             if a.source in ("both","epmc"): epmc_search(phrase,a.pages,a.epmc_page_size,records,audit)
             if a.source in ("both","openalex"):openalex_search(phrase,a.pages,a.openalex_page_size,records,audit)
+    openalex_doi_sentinels(records,audit)
     arr=sorted(records.values(),key=lambda r: int(r.get('year') or 0) if str(r.get('year') or '').isdigit() else 0,reverse=True)
     now=datetime.datetime.now(datetime.timezone.utc).isoformat()
     (folder/"candidates.json").write_text(json.dumps({"generated_utc":now,"scope":"candidate discovery only; not screened or exhaustive","records":arr},ensure_ascii=False,indent=2),encoding="utf8")
@@ -247,7 +355,8 @@ def main():
              "search_strings_executed":sum(map(len,selected_queries.values())),
              "incremental_baseline":bool(a.baseline),"candidate_records":len(arr),
              "query_page_events":len(audit),"errors":errors,"pages_at_end_of_result_set":complete,
-             "bounded_by_page_limits":True,"rankings_permitted":False,"full_text_screened":0,
+             "bounded_by_page_limits":True,"doi_only_reconciliation":bool(a.doi_only),"doi_sentinels_checked":len(DOI_SENTINELS),
+             "rankings_permitted":False,"full_text_screened":0,
              "note":"A successful run does not establish exhaustive retrieval, author identity or eligible field publications."}
     (folder/"summary.json").write_text(json.dumps(summary,indent=2),encoding="utf8")
     # Export a dual-review-ready CSV; leave all eligibility decisions empty.

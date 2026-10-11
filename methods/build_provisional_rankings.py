@@ -62,7 +62,7 @@ def classify(records):
         if not r.get("doi") and not r.get("pmid"):
             excluded["unverified_work_without_doi_or_pmid"]+=1;continue
         pubtypes="; ".join(str(x) for x in (r.get("publication_types") or []))
-        curated_review_dois={"10.1039/d3bm01946b", "10.1016/j.elecom.2024.107832"}
+        curated_review_dois={"10.1039/d3bm01946b", "10.1016/j.elecom.2024.107832", "10.1016/j.coelec.2023.101297"}
         # Data-in-Brief supporting datasets must not be double-counted as
         # separate original biological interventions.
         if matches(r"^data on\b", title) or matches(r"\b(?:data article|data descriptor)\b",pubtypes):
@@ -163,6 +163,11 @@ def identity_map(records):
 def author_key(a,links):
     aid=norm_aid(a.get("openalex_author_id"))
     orcid=norm_orcid(a.get("orcid"))
+    # A paper-level publisher-corroborated ORCID is a stronger identity
+    # key than a fragmented OpenAlex author ID *for this specific paper*.
+    # This does not merge generic name matches or unverified ORCID collisions.
+    if orcid and norm_orcid(a.get("verified_orcid_from_publication"))==orcid:
+        return "https://orcid.org/"+orcid
     if aid:return aid
     if orcid:return links.get(orcid) or "https://orcid.org/"+orcid
     return ""
@@ -235,7 +240,7 @@ def make_ranks(included, all_records):
             # A complete institutional author name is more informative than initials.
             if len(name)>len(person["name"]):person["name"]=name
             person["orcid"]=norm_orcid(a.get("orcid")) or person["orcid"]
-            person["identity_sources"].add("OpenAlex" if norm_aid(a.get("openalex_author_id")) else "ORCID")
+            person["identity_sources"].add("Publisher-corroborated work ORCID" if a.get("verified_orcid_from_publication") else "OpenAlex" if norm_aid(a.get("openalex_author_id")) else "ORCID")
             position=a.get("position") or ("first" if i==0 else "last" if i==len(a_list)-1 else "middle")
             evidence={"title":r["title"],"doi":r.get("doi"),"url":r.get("openalex_id"),"year":r["year"],
                       "citations":r["citations_openalex"],"citation_percentile":percentile,
