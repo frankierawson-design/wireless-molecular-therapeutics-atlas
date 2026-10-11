@@ -44,13 +44,32 @@ def write_csv(path,fields,rows):
         w.writeheader();w.writerows(rows)
 def make_packets(records,n_negative=70,seed=SEED):
     queue=collect(records)
-    qindex={record_id(q):q for q in queue}
     identified={}
+    doi_to_id={}
+    title_year_to_id={}
     for r in records:
         rid=record_id(r)
         if rid not in identified:identified[rid]=r
-        # A DOI and identical OpenAlex work may be recorded under different keys
-        # by upstream providers; earliest occurrence has preserved provenance.
+        doi=normal_doi(r.get("doi"))
+        if doi:doi_to_id.setdefault(doi,rid)
+        titleyear=(str(r.get("year") or ""),str(r.get("title") or "").strip().casefold())
+        title_year_to_id.setdefault(titleyear,rid)
+    # Queue exports can lack their originating OpenAlex ID when DOI is absent.
+    # Reconcile by exact DOI, or only exact (title, year); never drop such rows.
+    qindex={}
+    unmatched=[]
+    for q in queue:
+        doi=normal_doi(q.get("doi"))
+        key=(str(q.get("year") or ""),str(q.get("title") or "").strip().casefold())
+        rid=(doi_to_id.get(doi) if doi else None) or title_year_to_id.get(key)
+        if not rid:unmatched.append(q);continue
+        if rid in qindex and qindex[rid].get("title")!=q.get("title"):
+            raise ValueError("Two different queue papers mapped to one record ID")
+        qindex[rid]=q
+    if unmatched:
+        raise ValueError("Unable to reconcile "+str(len(unmatched))+" electrochemical queue items with corpus")
+    if len(qindex)!=len(queue):
+        raise ValueError("Duplicate queue identities: "+str(len(queue))+" queue rows versus "+str(len(qindex))+" distinct works")
     frames={"electro_queue_census":[],"title_electrical_excluded":[],"remote_therapy_non_electrical":[],"background_random":[]}
     for rid,r in identified.items():
         title=r.get("title") or "";abstract=r.get("abstract") or ""
