@@ -63,6 +63,30 @@ class DOICorroborationTests(unittest.TestCase):
         self.assertFalse(collector.reconcile_documented_authorship(record))
         self.assertTrue(record["documented_identity_conflict"])
 
+    def test_acs_publisher_corrects_exact_doi_orcid_discrepancy(self):
+        doi="10.1021/acs.langmuir.6c00755"
+        record=paper(doi,2026,"Spatially Controlled, Wirefree, Drug Release along a Single PEDOT Film",
+                     "https://openalex.org/A5008053499")
+        record["authors"][0]["name"]="Robert Forster"
+        record["authors"][0]["orcid"]="https://orcid.org/0000-0002-2896-4712"
+        self.assertTrue(collector.reconcile_documented_authorship(record))
+        self.assertTrue(record["publisher_orcid_conflict_corrected"])
+        self.assertEqual(record["authors"][0]["openalex_original_orcid"],
+                         "https://orcid.org/0000-0002-2896-4712")
+        self.assertEqual(record["authors"][0]["verified_orcid_from_publication"],ORCID)
+        self.assertEqual(record["authors"][0]["publisher_orcid_evidence_url"],
+                         "https://pubs.acs.org/doi/"+doi)
+        self.assertEqual(rank.author_key(record["authors"][0],{}),
+                         "https://orcid.org/"+ORCID)
+
+    def test_same_mismatched_orcid_on_unverified_doi_is_rejected(self):
+        doi="10.1016/j.apmt.2022.101481"
+        record=paper(doi,2022,"Enhanced wireless cell stimulation using soft and improved bipolar electroactive conducting polymer templates",
+                     "https://openalex.org/A5008053499")
+        record["authors"][0]["orcid"]="https://orcid.org/0000-0002-2896-4712"
+        self.assertFalse(collector.reconcile_documented_authorship(record))
+        self.assertTrue(record["documented_identity_conflict"])
+
     def test_review_excluded_by_same_rules(self):
         record=paper("10.1016/j.elecom.2024.107832",2024,
                      "Wirefree Electrochemistry for Enhanced Detection and Treatment of Disease",
