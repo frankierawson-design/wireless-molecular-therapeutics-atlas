@@ -28,3 +28,16 @@ From **Actions → Literature census → Run workflow**. A push to main also ini
 6. Do not publish numerical researcher ranks from an incomplete or unvalidated candidate harvest.
 
 This research atlas is independent, not an official Stanford–Elsevier or institutional scientist ranking. Contributions, correction requests, and methodological feedback can be submitted as GitHub issues.
+
+
+## Publish the website
+
+The repository contains a lightweight responsive landing page. The original full interactive Atlas may be uploaded as **`atlas_site.zip`** (ZIP must contain `index.html` and `assets/`, `data/`, `methods/` at its root). The deployment workflow will unpack it automatically and publish the complete site.
+
+One-time owner setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Because GitHub's default workflow token cannot enable Pages itself, this must be set by a repository administrator. Then run **Actions → Publish atlas website → Run workflow**. The deployed Pages URL will be visible on the successful workflow run.
+
+## Running and reviewing the literature search
+
+**Actions → Literature census (candidate harvest) → Run workflow.** Choose a page limit. Artifacts are uploaded as `literature-candidates-and-audit`, including JSON/CSV and the dual-review screening form. The number of candidate records is *not* the number of eligible studies. A page cap or failed query prevents any completeness claim.
+
+The dedicated **Scholarly API connectivity smoke test** workflow confirms Europe PMC/OpenAlex connectivity independently of collection.
