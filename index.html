@@ -209,6 +209,31 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
   <div class="ranking-scroll"><table aria-label="Electrical therapy DOI sentinels"><thead><tr><th>Pathway</th><th>Reference publication</th><th>DOI</th><th>Machine status</th></tr></thead>
    <tbody id="electrical-sentinel-body"><tr><td colspan="4">Coverage report pending.</td></tr></tbody></table></div>
  </details>
+ <details class="ranking-method" id="electrical-paper-directory">
+ <summary>Search the electrical-treatment publication directory (<span id="electrical-queue-count">loading…</span>)</summary>
+ <p>Discovery leads, not verified qualifying articles. Individual author attributions and intervention relevance require independent screening. Reviews are retained as contextual evidence, never automatically credited as original research.</p>
+ <div class="ranking-tools">
+  <label>Research pathway <select id="electrical-queue-category">
+   <option value="all">All electrical treatments</option>
+   <option value="TTFields">Tumour Treating Fields</option>
+   <option value="Electrochemotherapy">Electrochemotherapy</option>
+   <option value="Electroporation">Electroporation and ablation</option>
+   <option value="Neuromodulation">Electrical neuromodulation</option>
+   <option value="Electrical Stimulation">Electrical cell and tissue stimulation</option>
+   <option value="Electrochemical">Electrochemical / redox</option>
+  </select></label>
+  <label>Find publication or researcher <input type="search" id="electrical-queue-search" placeholder="Search titles, researchers, DOI…"/></label>
+ </div>
+ <p id="electrical-queue-status" role="status">Loading full candidate register…</p>
+ <div class="ranking-scroll"><table aria-label="Electrical-therapy literature screening candidates">
+   <thead><tr><th>Year</th><th>Publication</th><th>Source authors</th><th>Pathways</th><th>Review status</th></tr></thead>
+   <tbody id="electrical-queue-body"><tr><td colspan="5">Screening directory has not yet loaded.</td></tr></tbody>
+ </table></div>
+ <div class="ranking-bottom"><button id="electrical-queue-more" type="button" hidden>Show more publications</button>
+  <a href="data/electrical_treatment_screening_queue.csv" download>Download screening register (CSV) ↗</a>
+  <a href="data/electrical_treatment_screening_queue.json" download>Download screening evidence (JSON) ↗</a>
+ </div>
+ </details>
  <p><a href="data/electrical_treatment_coverage_audit.json" download>Download complete evidence audit (JSON) ↗</a> · <a href="data/electrical_treatment_coverage_audit.csv" download>Download landmark DOI checks (CSV) ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/electrical-therapies-expansion.yml">Inspect the expanded search workflow ↗</a></p>
 </section>
 <div id="electro-coverage" class="electro-coverage">
@@ -345,6 +370,46 @@ fetch("data/quality_audit.json",{cache:"no-store"})
    get("quality-status").textContent="Automated audit: "+Number(a.unique_scored_work_records||0).toLocaleString()+" distinct scored-work records, of which "+Number(row.explicit_article||0).toLocaleString()+" explicitly identify an article document type. Duplicate-score groups: "+Number(a.duplicate_score_evidence_groups||0)+". Status: not a validated worldwide ranking.";
  })
  .catch(function(){get("quality-status").textContent="The independent ranking quality report is unavailable. Do not interpret provisional positions as verified.";});
+var electricalPapers=[], electricalPage=0, ELECTRICAL_PAGE_SIZE=30;
+function showElectricalPapers(reset){
+ if(reset)electricalPage=0;
+ var selected=get("electrical-queue-category").value;
+ var term=(get("electrical-queue-search").value||"").trim().toLowerCase();
+ var matches=electricalPapers.filter(function(p){
+    return (selected==="all"||(p.pathways||[]).includes(selected)) &&
+      (!term||((p.title||"")+" "+(p.doi||"")+" "+(p.author_names||[]).join(" ")).toLowerCase().includes(term));
+ });
+ var shown=matches.slice(0,(electricalPage+1)*ELECTRICAL_PAGE_SIZE);
+ get("electrical-queue-body").innerHTML=shown.length?shown.map(function(p){
+    var href=p.url&&/^https:\/\/(doi\.org|openalex\.org)\//i.test(p.url)?p.url:"#";
+    var names=(p.author_names||[]).slice(0,4);
+    var authors=names.join(", ")+((p.author_names||[]).length>4?" et al.":"");
+    var state=p.screening_status==="review_or_background_candidate"?"Review/background":
+      p.screening_status==="machine_score_eligible_not_independently_screened"?"Machine eligible · not verified":"Needs screening";
+    return '<tr><td>'+esc(p.year||"—")+'</td><td><a target="_blank" rel="noopener" href="'+esc(href)+'">'+
+       esc(p.title)+'</a><small style="display:block">'+esc(p.doi||"OpenAlex identifier only")+'</small></td>'+
+       '<td>'+esc(authors||"Not identified")+'</td><td>'+esc((p.pathways||[]).join(", "))+
+       '</td><td>'+esc(state)+'</td></tr>';
+ }).join(""):'<tr><td colspan="5">No matching candidate publications.</td></tr>';
+ get("electrical-queue-more").hidden=shown.length>=matches.length;
+ get("electrical-queue-status").textContent=matches.length.toLocaleString()+" publication leads matching this filter; "+
+   shown.length.toLocaleString()+" displayed. No independent full-text review completed.";
+}
+get("electrical-queue-category").addEventListener("change",function(){showElectricalPapers(true);});
+get("electrical-queue-search").addEventListener("input",function(){showElectricalPapers(true);});
+get("electrical-queue-more").addEventListener("click",function(){electricalPage++;showElectricalPapers(false);});
+fetch("data/electrical_treatment_screening_queue.json",{cache:"no-store"})
+ .then(function(response){if(!response.ok)throw new Error("Candidate dataset unavailable");return response.json();})
+ .then(function(result){
+    if(result.status!=="UNVERIFIED_SCREENING_CANDIDATES_NOT_WORLD_CENSUS")throw new Error("Dataset lacks scientific review warning");
+    electricalPapers=result.papers||[];
+    get("electrical-queue-count").textContent=electricalPapers.length.toLocaleString()+" candidates";
+    showElectricalPapers(true);
+ })
+ .catch(function(){
+    get("electrical-queue-count").textContent="pending";
+    get("electrical-queue-status").textContent="Publication-level electrical therapy directory is not deployed yet. No completeness claim can be made.";
+ });
 fetch("data/electrical_treatment_coverage_audit.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Expanded treatment data not yet published");return res.json();})
  .then(function(a){
