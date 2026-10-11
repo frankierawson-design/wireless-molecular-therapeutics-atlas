@@ -12,9 +12,14 @@ MODALITIES={
  "Magnetic":r"\b(?:magnetothermal|magnetoelectric|magnetomechanical|magnetically.trigger\w*|magnetic.hyperthermia|magnetic.field|magnetic.actuat\w*|magnetic.stimulation|magnetically.control\w*)\b",
  "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|photovoltaic.{0,55}ion.pump\w*|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
  "Radiofrequency":r"\b(?:radiofrequency|radio.frequency|RF.trigger\w*|RF.activat\w*|microwave.trigger\w*)\b",
- "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|bipolar.electroactive|bipolar.electrostimul\w*|wireless.cell.stimulation|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
+ "TTFields":r"\b(?:tumou?r[ -]?treating[ -]?fields?|ttfields?|alternating[ -]electric[ -]fields?.{0,70}(?:cancer|tumou?r|glioblastoma)|novottf|optune)\b",
+ "Electrochemotherapy":r"\b(?:electrochemotherap\w*|electropermeabili[sz]ation.{0,55}(?:bleomycin|cisplatin|tumou?r|cancer)|electrochemotherapeutic)\b",
+ "Electroporation":r"\b(?:irreversible[ -]electroporat\w*|reversible[ -]electroporat\w*|high[ -]frequency[ -]irreversible[ -]electroporat\w*|h[ -]?fire|pulsed[ -]field.{0,45}ablat\w*|nanosecond[ -]pulsed[ -]electric[ -]fields?|electroporation[ -]gene[ -]transfer|electrotransfer|electroporation.{0,35}(?:therap\w*|ablat\w*|drug|cancer|tumou?r))\b",
+ "Neuromodulation":r"\b(?:deep[ -]brain[ -]stimulation|vagus[ -]nerve[ -]stimulation|spinal[ -]cord[ -]stimulation|transcranial[ -](?:direct[ -]current|alternating[ -]current|electrical)[ -]stimulation|t[ -]?dcs|t[ -]?acs|peripheral[ -]nerve[ -]stimulation|transcutaneous[ -]electrical[ -]nerve[ -]stimulation|electrical[ -]direct[ -]current[ -]therap\w*|electrical[ -]neuromodulat\w*|neurostimulat\w*|nerve[ -]stimulation)\b",
+ "Electrical Stimulation":r"\b(?:(?:electrical|electric[ -]field|bioelectric)[ -]stimulation.{0,90}(?:wound|cell|tissue|bone|regenerat|muscle|heal|rehabilitat|cancer)|(?:wound|cell|tissue|bone|regenerat|muscle|heal|rehabilitat)[a-z -]{0,90}(?:electrical|electric[ -]field)[ -]stimulation|electrical[ -]muscle[ -]stimulation|electric[ -]field[ -]guided[ -]cell[ -]migration)\b",
+ "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|bipolar.electroactive|bipolar.electrostimul\w*|wireless.cell.stimulation|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
 }
-THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|cell.modulat\w*|cell.stimulation|cell.differentiation|neuron\w*.stimulation|neurite\w*|neural.differentiation)\b"
+THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|parkinson\w*|epilepsy|depression|atrial.fibrillation|electrochemotherap\w*|electroporat\w*|ablat\w*|neuromodulat\w*|cell.modulat\w*|cell.stimulation|cell.differentiation|neuron\w*.stimulation|neurite\w*|neural.differentiation)\b"
 REVIEW=r"\b(?:review|overview|bibliometric|meta.analysis|perspective|scientometric|recent.advances|current.progress|state.of.the.art|prospects|research.progress|roadmap|survey|abstract \d+)\b"
 DIAGNOSTIC=r"\b(?:biosens\w*|diagnos\w*|detect\w*|monitor\w*|sensor|aptasens\w*)\b"
 TRANSLATION=r"\b(?:in.vivo|animal|mice|mouse|xenograft|patient|clinical|porcine|human.trial|wound.closure|tumo\w*.regression)\b"
@@ -87,7 +92,9 @@ def classify(records):
                          matches(ELECTRO_PLATFORM_TITLE,title) and
                          matches(ELECTRO_DELIVERY,title+" "+abstract) and
                          matches(ELECTRO_REMOTE,title+" "+abstract))
-        if not therapy_title and not platform_electro:
+        # These established clinical treatment classes can use wired devices.
+        clinical_electrical=bool(set(mods)&{"TTFields","Electrochemotherapy","Electroporation","Neuromodulation","Electrical Stimulation"})
+        if not therapy_title and not platform_electro and not clinical_electrical:
             excluded["no_therapeutic_endpoint_in_title"]+=1;continue
         # A wired electrochemical delivery device is not, by itself, a
         # wireless molecular-therapeutic system. Bipolar electrochemistry
@@ -104,7 +111,14 @@ def classify(records):
         if "Radiofrequency" in mods and matches(r"\b(?:atrial.fibrillation|cardiac|catheter|arrhythmia)\b",title) and not matches(r"\b(?:drug|nanoparticle|delivery|molecular)\b",title):
             mods.remove("Radiofrequency")
         if not mods:excluded["nonmolecular_radiofrequency"]+=1;continue
-        if len(mods)>=2: mods.append("Hybrid")
+        # Multiple electric-treatment labels do not imply distinct energy modalities.
+        energy_family={"Ultrasound":"acoustic","Magnetic":"magnetic",
+                       "Optical":"optical","Radiofrequency":"radiofrequency",
+                       "Electrochemical":"electrical","TTFields":"electrical",
+                       "Electrochemotherapy":"electrical","Electroporation":"electrical",
+                       "Neuromodulation":"electrical","Electrical Stimulation":"electrical"}
+        if len({energy_family[m] for m in mods if m in energy_family})>=2:
+            mods.append("Hybrid")
         if not any(a.get("openalex_author_id") or norm_orcid(a.get("orcid")) for a in (r.get("authors") or [])):
             excluded["author_identifier_missing"]+=1;continue
         r2=dict(r);r2["year"]=year;r2["modalities"]=mods
@@ -322,6 +336,7 @@ def main():
                 "Citations are ranked within the harvested year/modality cohort, not global field-normalized citations.",
                 "Clinical translation is a title-keyword proxy, not validated clinical impact.",
                 "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking.",
+                "Clinical electric-field and neurostimulation pathways must not be equated with electrochemical redox or double counted as hybrid solely because of overlapping terminology.",
                 "A category with fewer than 10 scorable researchers is not assigned ordinal positions."
             ],"rankings":ranked}
     out=pathlib.Path(opts.output);out.parent.mkdir(parents=True,exist_ok=True)
