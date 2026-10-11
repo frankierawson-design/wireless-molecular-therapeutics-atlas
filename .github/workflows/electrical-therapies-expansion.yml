@@ -1,0 +1,106 @@
+name: Electrical therapies expansion harvest
+on:
+  workflow_dispatch:
+    inputs:
+      pages_per_query:
+        description: "OpenAlex and Europe PMC search pages for each electrical treatment query"
+        type: choice
+        options: ["3", "6", "10"]
+        default: "3"
+        required: true
+  push:
+    branches: [main]
+    paths:
+      - "methods/collect_literature.py"
+      - "methods/build_provisional_rankings.py"
+      - "methods/electrical_treatment_coverage_audit.py"
+      - "tests/test_electrical_treatment_expansion.py"
+      - ".github/workflows/electrical-therapies-expansion.yml"
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: electrical-therapies-expansion-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scientific classification, identity and scope regression tests
+        run: |
+          python -m py_compile methods/*.py
+          python -m unittest discover -s tests -v
+      - name: Select substantial baseline with bibliographic identifiers
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p baseline
+          RUNS="$(gh run list --repo "$REPO" --status completed --limit 100 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation" or .name == "Electrical therapies expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          SELECTED=""
+          for RUN_ID in $RUNS; do
+            rm -rf baseline; mkdir -p baseline
+            if ! gh run download "$RUN_ID" --repo "$REPO" --name "literature-candidates-and-audit" --dir baseline >/dev/null 2>&1; then continue; fi
+            if python - <<'PY'
+          import json,pathlib
+          f=pathlib.Path("baseline/candidates.json")
+          if not f.exists():raise SystemExit(1)
+          items=json.loads(f.read_text(encoding="utf-8")).get("records") or []
+          if len(items)<10000 or sum(bool(x.get("openalex_id")) for x in items)<5000:raise SystemExit(1)
+          print("Validated bibliographic baseline",len(items))
+          PY
+            then SELECTED="$RUN_ID"; break; fi
+          done
+          if [ -z "$SELECTED" ]; then echo "::error::No substantial candidate baseline available"; exit 1; fi
+          echo "BASELINE_RUN=$SELECTED" >> "$GITHUB_ENV"
+      - name: Discover TTFields, electrochemotherapy, electroporation, neuromodulation and electrical-stimulation studies
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          PAGES_INPUT: ${{ inputs.pages_per_query }}
+        run: |
+          python methods/collect_literature.py \
+            --baseline baseline/candidates.json \
+            --baseline-audit baseline/query_audit.json \
+            --only-modalities ttfields,electrochemotherapy,electroporation,neuromodulation,electrical_stimulation \
+            --pages "${PAGES_INPUT:-3}" \
+            --output output
+      - name: Rebuild provisional scores and treatment coverage report
+        run: |
+          python methods/build_provisional_rankings.py \
+            --input output/candidates.json \
+            --output output/provisional_rankings.json \
+            --csv output/provisional_rankings.csv
+          python methods/electrical_treatment_coverage_audit.py \
+            --input output/candidates.json \
+            --query-audit output/query_audit.json \
+            --output output/electrical_treatment_coverage_audit.json
+          python methods/electrochemical_seed_audit.py \
+            --input output/candidates.json \
+            --output output/electrochemical_coverage_audit.json
+          python - <<'PY'
+          import json
+          report=json.load(open("output/electrical_treatment_coverage_audit.json"))
+          ranking=json.load(open("output/provisional_rankings.json"))
+          old=json.load(open("baseline/candidates.json"))
+          new=json.load(open("output/candidates.json"))
+          if len(new["records"]) < len(old["records"]):raise SystemExit("Unexpected bibliographic record loss")
+          for path in report["pathways"]:
+              if path["sentinels_retrieved"]<1 or path["sentinels_machine_included"]<1:
+                  raise SystemExit("Important "+path["pathway"]+" discovery/eligibility sentinel not retrieved and classified; no release")
+              if path["machine_matched_papers"]<1:raise SystemExit("Missing clinical research: "+path["pathway"])
+              if path["completeness_confirmed"]:raise SystemExit("Cannot assert exhaustive coverage")
+          assert ranking["rankings"]["Overall"]
+          print("Machine-screened pathway coverage gates passed. Not a validated world ranking.")
+          PY
+      - name: Upload reproducible expanded publications and reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-candidates-and-audit
+          path: output/
+          retention-days: 90
+          if-no-files-found: error
