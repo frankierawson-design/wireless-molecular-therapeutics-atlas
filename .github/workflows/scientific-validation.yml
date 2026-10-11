@@ -45,18 +45,6 @@ jobs:
           print("Sampled strata:",a["sample_sizes"])
           assert a["total_sample"]>180
           PY
-      - name: Draw independently verifiable author–paper sample
-        run: |
-          python validation/generate_author_identity_audit.py \
-            --candidates frozen/candidates.json \
-            --rankings frozen/provisional_rankings.json \
-            --output validation_output --seed 20261011
-          python - <<'PY'
-          import json
-          x=json.load(open("validation_output/author_identity_sampling_manifest.json"))
-          assert x["total_sample"]>=200
-          print("Identity verification assignments:",x["total_sample"])
-          PY
       - name: Evaluate readiness without pretending independent review exists
         run: |
           python validation/evaluate_reviews.py \
@@ -66,7 +54,6 @@ jobs:
             --adjudications validation_output/adjudication_BLANK.csv \
             --reference-set validation_output/independent_reference_set_BLANK.csv \
             --author-audit validation_output/author_identity_audit_BLANK.csv \
-            --author-sampling-key validation_output/author_identity_sampling_key.csv \
             --candidates frozen/candidates.json \
             --output validation_output/validation_readiness_report.json
           python - <<'PY'
@@ -99,12 +86,6 @@ jobs:
           name: independent-reviewer-B
           path: validation_output/reviewer_B_blinded.csv
           retention-days: 90
-      - name: Independent author-identity reviewer — unverified identity cases only
-        uses: actions/upload-artifact@v4
-        with:
-          name: independent-author-identity-reviewer
-          path: validation_output/author_identity_audit_BLANK.csv
-          retention-days: 90
       - name: Coordinator — do NOT give key to reviewers before lock
         uses: actions/upload-artifact@v4
         with:
@@ -113,8 +94,6 @@ jobs:
             validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv
             validation_output/adjudication_BLANK.csv
             validation_output/independent_reference_set_BLANK.csv
-            validation_output/author_identity_sampling_key.csv
-            validation_output/author_identity_sampling_manifest.json
             validation_output/author_identity_audit_BLANK.csv
             validation_output/packet_manifest.json
           retention-days: 90

@@ -1,0 +1,18 @@
+{
+  "protocol_version": "1.0",
+  "freeze_date_utc": "2026-10-11",
+  "git_repository": "frankierawson-design/wireless-molecular-therapeutics-atlas",
+  "source_workflow_name": "Electrochemical expansion harvest",
+  "source_github_run_id": 38142034213,
+  "source_github_artifact_id": 11703571158,
+  "source_artifact_name": "literature-candidates-and-audit",
+  "source_candidates_sha256": "ee79f92617423900368049f5d1e2bbd0c097da8eb424f8a2eef7276e92f2bd59",
+  "source_query_audit_sha256": "254b783379e69a756f4568885fca141a5f7260925ce5fa45810900b38db270ef",
+  "source_summary_sha256": "d83a8a1511017cd9366a6eb70cb405b3728acd1e6da40e96d21178b401c04529",
+  "frozen_candidate_count": 24904,
+  "full_text_screened_at_freeze": 0,
+  "independent_human_reviewers_at_freeze": 0,
+  "sampling_seed": "atlas-validation-2026-10-11-pilot-v1",
+  "holdout_reference_set_status": "not_created",
+  "note": "Prior exploratory analysis preceded this protocol; do not claim retrospective preregistration or prospective blindness for prior results."
+}

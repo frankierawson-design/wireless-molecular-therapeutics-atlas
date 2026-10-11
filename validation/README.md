@@ -7,7 +7,6 @@
 - The source is the exact 24,904-record harvest from successful GitHub Actions run [38142034213](https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/runs/38142034213).
 - SHA-256 `candidates.json`: `ee79f92617423900368049f5d1e2bbd0c097da8eb424f8a2eef7276e92f2bd59`.
 - The screening pilot has **352 records**: 142 electrochemical queue papers (census), 70 title-electrical excluded controls from 1,662, 70 remote-therapy non-electrical controls from 3,417, and 70 random background controls from 19,683. Sampling seed = 20261011.
-- Identity-verification sampling adds **270 author–paper candidate pairs** drawn reproducibly from 150,789 possible source byline links: 40 conflicting ORCIDs, 60 prominent researcher links, 60 electrochemical links, 50 missing-ID bylines, and 60 field-wide random controls. Verify all independently; these are not pre-validated.
 - The stratified audit samples **cannot themselves establish recall for all missing literature**; an independent DOI reference set is needed.
 - Researcher-ranking sensitivity is evaluated *conditionally* on the frozen dataset; moving ranks do not measure worldwide scientific influence.
 
@@ -38,7 +37,7 @@ A paper with `include` at abstract stage is **provisional** until original publi
 3. Check both reviewers provided distinct reviewer codes, date, decision, type, energy and rationale.
 4. Give the adjudicator the full publisher references, masked model classifications until adjudication is complete, and document source URL/pages/evidence.
 5. Populate `independent_reference_set_BLANK.csv` with 30–50 independently discovered original T2/T3 references in **each** modality, excluding the nine known software sentinels from the blind recall denominator. Record that the reference was chosen before the Atlas match lookup, and document verification.
-6. Populate the 270-row `author_identity_audit_BLANK.csv` using original publisher bylines, ORCID and institution. The sample is pre-selected beyond named researchers and its independent source-based outcome fields are blank. Keep `author_identity_sampling_key.csv` from the reviewers.
+6. Populate `author_identity_audit_BLANK.csv` using original publisher bylines/ORCID/institution. Sample beyond known named researchers.
 7. Run the evaluation (exact command below). Blank material produces only `NOT_STARTED_OR_INCOMPLETE`, **never** fictitious recall or precision.
 8. Report strata-weighted screening metrics, uncertainty, reviewer kappa, per-modality independent recall, unresolved identities and failure/stop criteria. The definitive rank release requires separate scientific sign-off.
 
@@ -56,7 +55,6 @@ python validation/evaluate_reviews.py \
   --adjudications validation_output/adjudication_BLANK.csv \
   --reference-set validation_output/independent_reference_set_BLANK.csv \
   --author-audit validation_output/author_identity_audit_BLANK.csv \
-  --author-sampling-key validation_output/author_identity_sampling_key.csv \
   --candidates frozen/candidates.json \
   --output validation_output/validation_readiness_report.json
 python validation/ranking_sensitivity.py \
@@ -75,9 +73,3 @@ In the frozen *older* candidate ranking (405 overall researchers), 382 people's 
 ## Protocol provenance and sign-off
 
 Read [PROTOCOL_v1.md](PROTOCOL_v1.md). This protocol is **prospectively timestamped for future independent screening**, not a retrospectively registered completed systematic review. Document review start, amendments, reviewer conflicts, exclusion reasons, data-access limitations and final independent sign-off. A peer-reviewed research-methods report is a possible future output only when a real independent review has been completed.
-
-## Data-integrity safeguards (follow-up)
-
-The reference-set calculator now rejects duplicate DOIs, the nine calibration sentinels, missing independent reviewer identity/source record, nonoriginal references, entries lacking remote actuation, and material-only T0/T1 studies. Reference recall requires 30–50 *independent* T2/T3 papers per modality.
-
-The author-identity audit requires every sampled link's independent reviewer name/code, date, published evidence URL and publisher-bylines match decision. It applies inverse-probability sampling weights to point accuracy. Unweighted Wilson bounds must not be interpreted as a valid confidence interval for the weighted estimate. Scientific sign-off remains mandatory; this automated pipeline cannot declare world standings validated.

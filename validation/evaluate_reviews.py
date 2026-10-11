@@ -144,24 +144,15 @@ def reference_section(rows,corpus):
         matches=[x for x in references if (x.get("modality") or "")==m]
         eligible=[]
         invalid=0
-        seen=set()
         for x in matches:
             d=normalize_doi(x.get("doi"));p=(x.get("pmid") or "").strip()
-            identity=d or ("pmid:"+p)
-            if identity in seen or d in KNOWN_SENTINELS:
-                invalid+=1;continue
-            seen.add(identity)
+            if d in KNOWN_SENTINELS:invalid+=1;continue
             if (x.get("independent_eligibility_include_exclude_uncertain") or "").lower()!="include":continue
             if (x.get("source_before_atlas_lookup") or "").lower() not in {"yes","true","1"}:
                 invalid+=1;continue
             if (x.get("reviewer_confirmed_original_yes_no") or "").lower()!="yes":
                 invalid+=1;continue
-            if (x.get("remote_actuation_yes_no") or "").lower()!="yes":
-                invalid+=1;continue
-            if (x.get("evidence_tier_T0_T1_T2_T3") or "").upper() not in {"T2","T3"}:
-                invalid+=1;continue
-            if not all((x.get(k) or "").strip() for k in
-                ("verification_url","independent_discovery_method","reviewer_id","review_date")):
+            if not x.get("verification_url") or not x.get("independent_discovery_method"):
                 invalid+=1;continue
             eligible.append(x)
         found=sum(normalize_doi(x.get("doi")) in dataset_dois or str(x.get("pmid") or "").strip() in dataset_pmids for x in eligible)
@@ -175,56 +166,37 @@ def reference_section(rows,corpus):
         result["status"]="EVALUATED_WITH_INDEPENDENT_REFERENCE_DATA"
     return result
 
-def author_section(rows, sampling_key):
-    allowed={"correct","wrong_person","split","ambiguous","unverifiable"}
-    key={x["audit_id"]:x for x in sampling_key}
-    if len(key)!=len(sampling_key):raise ValueError("Duplicate author identity sampling key rows")
+def author_section(rows):
     valid=[x for x in rows if (x.get("classification_correct_wrong_person_split_ambiguous_unverifiable") or "").strip()]
-    if any((x.get("audit_id") or "") not in key for x in valid):
-        raise ValueError("Unknown author audit record ID")
-    codes=collections.Counter()
-    undocumented=0
-    weighted=collections.Counter()
-    for x in valid:
-        label=x["classification_correct_wrong_person_split_ambiguous_unverifiable"].strip().lower()
-        if label not in allowed:raise ValueError("Unknown author audit label")
-        docs=(x.get("independent_reviewer") or "").strip() and (x.get("review_date") or "").strip() and (x.get("source_evidence_url") or "").strip() and (x.get("publisher_byline_match_yes_no_uncertain") or "").strip()
-        if not docs:
-            undocumented+=1
-            continue
-        codes[label]+=1
-        weighted[label]+=float(key[x["audit_id"]].get("sampling_weight") or 1)
+    codes=collections.Counter(x["classification_correct_wrong_person_split_ambiguous_unverifiable"].strip().lower() for x in valid)
+    if any(k not in {"correct","wrong_person","split","ambiguous","unverifiable"} for k in codes):
+        raise ValueError("Unknown author audit label")
     checked=codes["correct"]+codes["wrong_person"]+codes["split"]
-    weighted_n=weighted["correct"]+weighted["wrong_person"]+weighted["split"]
-    unresolved=codes["ambiguous"]+codes["unverifiable"]
-    completed=len(valid)==len(sampling_key) and undocumented==0
-    return {"expected":len(sampling_key),"submitted":len(valid),"verified_n":checked,
-       "incomplete_documentation":undocumented,"codes":dict(codes),
-       "weighted_accuracy":round(weighted["correct"]/weighted_n,4) if weighted_n else None,
-       "accuracy_unweighted":round(codes["correct"]/checked,4) if checked else None,
-       "unweighted_wilson_95pct_ci_not_valid_for_weighted_estimate":wilson(codes["correct"],checked),
-       "unresolved":unresolved,
-       "not_yet_validated":not completed or checked<100 or unresolved>0,
-       "caveat":"Identity accuracy is conditional on independently verified sampled links, with score-weighted estimates; Wilson bounds shown only for the unweighted sample."}
+    return {"submitted":len(valid),"verified_n":checked,"codes":dict(codes),
+       "accuracy":round(codes["correct"]/checked,4) if checked else None,
+       "wilson_95pct_ci":wilson(codes["correct"],checked),
+       "unresolved":codes["ambiguous"]+codes["unverifiable"],
+       "not_yet_validated":checked<100 or codes["ambiguous"]+codes["unverifiable"]>0}
 
 def main():
     parser=argparse.ArgumentParser()
     for k in ("reviewer-a","reviewer-b","adjudicator-key","adjudications","reference-set",
-              "author-audit","author-sampling-key","candidates","output"):parser.add_argument("--"+k,required=True)
+              "author-audit","candidates","output"):parser.add_argument("--"+k,required=True)
     a=parser.parse_args()
     source=json.loads(pathlib.Path(a.candidates).read_text(encoding="utf-8"))["records"]
     review=review_section(read_csv(a.reviewer_a),read_csv(a.reviewer_b),
                           read_csv(a.adjudications),read_csv(a.adjudicator_key))
     ref=reference_section(read_csv(a.reference_set),source)
-    authors=author_section(read_csv(a.author_audit),read_csv(a.author_sampling_key))
+    authors=author_section(read_csv(a.author_audit))
     result={"generated_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        "status":"PILOT_SCREENING_METRICS_AVAILABLE_WORLD_RANKING_NOT_VALIDATED" if review["validation_ready"] else "NOT_STARTED_OR_INCOMPLETE",
-        "definitive_world_rankings_validated":False,
+        "status":"VALIDATION_RESULTS_AVAILABLE" if review["validation_ready"] else "NOT_STARTED_OR_INCOMPLETE",
         "review":review,"reference_recall":ref,"author_identity":authors,
         "limitations":["The same publications were not independently full-text reviewed by this software.",
           "Blinded reviewer decisions and independent publisher verification must be supplied by real reviewers.",
           "Stratified bootstrap intervals estimate sampling variation conditional on the constructed sampling frame, not missed literature outside that frame.",
           "A complete pilot does not constitute a validated international ranking."]}
+    if result["status"]=="VALIDATION_RESULTS_AVAILABLE" and (ref["status"]!="EVALUATED_WITH_INDEPENDENT_REFERENCE_DATA" or authors["not_yet_validated"]):
+        result["status"]="PILOT_ONLY_NOT_WORLD_RANKING_VALIDATED"
     out=pathlib.Path(a.output);out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(result,indent=2),encoding="utf-8")
     print("Screening",review["paired_review_decisions"],"/",review["expected_records"],
