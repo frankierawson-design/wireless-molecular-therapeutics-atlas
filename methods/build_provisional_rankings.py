@@ -12,9 +12,9 @@ MODALITIES={
  "Magnetic":r"\b(?:magnetothermal|magnetoelectric|magnetomechanical|magnetically.trigger\w*|magnetic.hyperthermia|magnetic.field|magnetic.actuat\w*|magnetic.stimulation|magnetically.control\w*)\b",
  "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|photovoltaic.{0,55}ion.pump\w*|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
  "Radiofrequency":r"\b(?:radiofrequency|radio.frequency|RF.trigger\w*|RF.activat\w*|microwave.trigger\w*)\b",
- "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
+ "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|bipolar.electroactive|bipolar.electrostimul\w*|wireless.cell.stimulation|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
 }
-THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|cell.modulat\w*)\b"
+THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|cell.modulat\w*|cell.stimulation|cell.differentiation|neuron\w*.stimulation|neurite\w*|neural.differentiation)\b"
 REVIEW=r"\b(?:review|overview|bibliometric|meta.analysis|perspective|scientometric|recent.advances|current.progress|state.of.the.art|prospects|research.progress|roadmap|survey|abstract \d+)\b"
 DIAGNOSTIC=r"\b(?:biosens\w*|diagnos\w*|detect\w*|monitor\w*|sensor|aptasens\w*)\b"
 TRANSLATION=r"\b(?:in.vivo|animal|mice|mouse|xenograft|patient|clinical|porcine|human.trial|wound.closure|tumo\w*.regression)\b"
@@ -48,6 +48,10 @@ def classify(records):
             excluded["conference_abstract_not_full_paper"]+=1;continue
         pubtypes="; ".join(str(x) for x in (r.get("publication_types") or []))
         curated_review_dois={"10.1039/d3bm01946b", "10.1016/j.elecom.2024.107832"}
+        # Data-in-Brief supporting datasets must not be double-counted as
+        # separate original biological interventions.
+        if matches(r"^data on\b", title) or matches(r"\b(?:data article|data descriptor)\b",pubtypes):
+            excluded["supporting_data_article"]+=1;continue
         if (matches(REVIEW,title)
             or matches(REVIEW_ABSTRACT,r.get("abstract") or "")
             or matches(r"\b(?:review|meta.analysis|editorial|perspective)\b",pubtypes)
