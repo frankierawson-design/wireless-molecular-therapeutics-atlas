@@ -30,7 +30,7 @@ def classify(records):
         if not 2000<=year<=2026:excluded["publication_year_out_of_scope"]+=1;continue
         if not r.get("openalex_id") or not isinstance(r.get("citations_openalex"),int):
             excluded["no_linked_openalex_work_or_citation"]+=1;continue
-        if re.match(r"^10\\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
+        if re.match(r"^10\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
             excluded["preprint_not_in_primary_ranking"]+=1;continue
         if matches(REVIEW,title) or matches(REVIEW_ABSTRACT,r.get("abstract") or ""):
             excluded["possible_review_or_nonoriginal"]+=1;continue
