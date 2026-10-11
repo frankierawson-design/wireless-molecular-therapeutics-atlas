@@ -14,6 +14,7 @@ on:
       - "atlas_site.zip"
       - "methods/build_provisional_rankings.py"
       - "methods/electrochemical_seed_audit.py"
+      - "methods/audit_ranking_quality.py"
       - "methods/build_electrochemical_queue.py"
       - "methods/collect_literature.py"
       - "tests/**"
@@ -106,6 +107,22 @@ jobs:
           print("Ranked overall:",len(d["rankings"]["Overall"]))
           print("Screened papers:",d["summary"]["machine_screened_papers"])
           print("Top 5:",[(r["name"],r["score"]) for r in d["rankings"]["Overall"][:5]])
+          PY
+      - name: Independently audit scored metadata before deployment
+        run: |
+          python methods/audit_ranking_quality.py \
+            --candidates _harvest/candidates.json \
+            --ranking _site/data/provisional_rankings.json \
+            --search-summary _harvest/summary.json \
+            --output _site/data/quality_audit.json
+          python - <<'PY'
+          import json
+          audit=json.load(open("_site/data/quality_audit.json"))
+          assert audit["status"] == "NOT_VALIDATED_WORLD_RANKING"
+          assert not audit["scored_work_metadata"]["explicit_nonoriginal"]
+          assert audit["duplicate_score_evidence_groups"] == 0
+          assert audit["scored_work_metadata"]["identifier_missing"] == 0
+          print("Scored research integrity checks passed; screening is still provisional")
           PY
       - name: Generate electrochemical DOI coverage audit for the website
         run: |
