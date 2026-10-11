@@ -13,6 +13,7 @@ on:
     paths:
       - ".github/workflows/literature-census.yml"
       - "methods/collect_literature.py"
+      - "methods/build_provisional_rankings.py"
 permissions:
   contents: read
 jobs:
@@ -43,6 +44,24 @@ jobs:
           assert s["candidate_records"] > 0
           assert (root/"candidates.csv").is_file()
           print(s)
+          PY
+      - name: Create provisional field-specific researcher rankings
+        run: |
+          python methods/build_provisional_rankings.py \
+            --input output/candidates.json \
+            --output output/provisional_rankings.json \
+            --csv output/provisional_rankings.csv
+      - name: Validate paper-linked ranking artifact
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open("output/provisional_rankings.json"))
+          assert d["summary"]["machine_screened_papers"] > 0
+          assert d["rankings"]["Overall"]
+          assert "Provisional" in d["ranking_label"]
+          assert d["summary"]["machine_screened_papers"] <= d["summary"]["candidate_records"]
+          print("Scorable candidate papers:",d["summary"]["machine_screened_papers"])
+          print("Scored authors:",len(d["rankings"]["Overall"]))
           PY
       - name: Upload full retrieval artifacts
         if: always()
