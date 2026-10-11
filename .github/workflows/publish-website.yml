@@ -5,6 +5,7 @@ on:
     workflows:
       - Literature census (candidate harvest)
       - Electrochemical expansion harvest
+      - DOI sentinel reconciliation
     types:
       - completed
   push:
@@ -17,6 +18,7 @@ on:
       - "methods/audit_ranking_quality.py"
       - "methods/build_electrochemical_queue.py"
       - "methods/collect_literature.py"
+      - ".github/workflows/doi-reconciliation.yml"
       - "tests/**"
       - ".github/workflows/publish-website.yml"
 permissions:
@@ -58,7 +60,7 @@ jobs:
           mkdir -p _harvest
           # Newer runs can be marked "successful" despite rate limits or
           # severe truncation. Validate their corpus before deployment.
-          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation")] | sort_by(.createdAt) | reverse | .[].databaseId')"
           CHOSEN=""
           for TRY_ID in $COMPLETED_HARVEST_ID $RUNS; do
             rm -rf _harvest
