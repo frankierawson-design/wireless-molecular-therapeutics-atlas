@@ -14,6 +14,7 @@ on:
       - "atlas_site.zip"
       - "methods/build_provisional_rankings.py"
       - "methods/electrochemical_seed_audit.py"
+      - "methods/build_electrochemical_queue.py"
       - "methods/collect_literature.py"
       - "tests/**"
       - ".github/workflows/publish-website.yml"
@@ -111,6 +112,11 @@ jobs:
           python methods/electrochemical_seed_audit.py \
             --input _harvest/candidates.json \
             --output _site/data/electrochemical_coverage_audit.json
+      - name: Publish electrochemical screening queue independently of citation eligibility
+        run: |
+          python methods/build_electrochemical_queue.py \
+            --input _harvest/candidates.json \
+            --output _site/data/electrochemical_screening_queue.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
