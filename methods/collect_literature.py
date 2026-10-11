@@ -204,10 +204,24 @@ def main():
     p.add_argument("--epmc-page-size",type=int,default=250)
     p.add_argument("--openalex-page-size",type=int,default=100)
     p.add_argument("--source",choices=("both","epmc","openalex"),default="both")
+    p.add_argument("--only-modalities",default="",help="Comma-separated modality names, defaults to all")
+    p.add_argument("--baseline",default="",help="Existing candidates.json for incremental merge")
+    p.add_argument("--baseline-audit",default="",help="Existing query_audit.json to preserve source provenance")
     a=p.parse_args()
     folder=pathlib.Path(a.output);folder.mkdir(parents=True,exist_ok=True)
     records={};audit=[]
-    for modality,qs in QUERIES.items():
+    if a.baseline:
+        olddata=json.loads(pathlib.Path(a.baseline).read_text(encoding="utf-8"))
+        for record in olddata.get("records") or []:
+            merge(records,record)
+        if a.baseline_audit:
+            audit=json.loads(pathlib.Path(a.baseline_audit).read_text(encoding="utf-8"))
+        print("Incremental base papers:",len(records),flush=True)
+    selected={x.strip().casefold() for x in a.only_modalities.split(",") if x.strip()}
+    invalid=selected-set(QUERIES)
+    if invalid:p.error("Unknown modalities: "+", ".join(sorted(invalid)))
+    selected_queries={k:qs for k,qs in QUERIES.items() if not selected or k in selected}
+    for modality,qs in selected_queries.items():
         for phrase in qs:
             print("SEARCH",modality,phrase,flush=True)
             if a.source in ("both","epmc"): epmc_search(phrase,a.pages,a.epmc_page_size,records,audit)
@@ -223,7 +237,9 @@ def main():
             w.writerow({k:"; ".join(map(str,r.get(k) or [])) if isinstance(r.get(k),list) else r.get(k) for k in w.fieldnames})
     errors=sum(bool(x.get("error")) for x in audit)
     complete=sum(bool(x.get("complete_for_query")) for x in audit)
-    summary={"generated_utc":now,"search_strings":sum(map(len,QUERIES.values())),"candidate_records":len(arr),
+    summary={"generated_utc":now,"search_strings":sum(map(len,QUERIES.values())),
+             "search_strings_executed":sum(map(len,selected_queries.values())),
+             "incremental_baseline":bool(a.baseline),"candidate_records":len(arr),
              "query_page_events":len(audit),"errors":errors,"pages_at_end_of_result_set":complete,
              "bounded_by_page_limits":True,"rankings_permitted":False,"full_text_screened":0,
              "note":"A successful run does not establish exhaustive retrieval, author identity or eligible field publications."}
