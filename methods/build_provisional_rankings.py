@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 MODALITIES={
  "Ultrasound":r"\b(?:ultrasound|sonodynamic|sonosensiti[sz]\w*|sonoporat\w*|sonochem\w*|acoustic.?(?:trigger|activat|stimulation|drug)|focused.ultrasound)\b",
  "Magnetic":r"\b(?:magnetothermal|magnetoelectric|magnetomechanical|magnetically.trigger\w*|magnetic.hyperthermia|magnetic.field|magnetic.actuat\w*|magnetic.stimulation|magnetically.control\w*)\b",
- "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
+ "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|photovoltaic.{0,55}ion.pump\w*|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
  "Radiofrequency":r"\b(?:radiofrequency|radio.frequency|RF.trigger\w*|RF.activat\w*|microwave.trigger\w*)\b",
  "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
 }
@@ -24,7 +24,7 @@ REVIEW_ABSTRACT=r"\b(?:this review|in this review|here we review|review of curre
 # contains a matching electrical/electroactive device or delivery term.
 ELECTRO_ABSTRACT=r"\b(?:bipolar.electrochem\w*|wirefree.electrochem\w*|wire.less.electrochemical|organic.electronic.ion.pump\w*|wirelessly.controlled.electrochem\w*|wirefree.{0,55}(?:bipolar|drug.release|conducting.polymer)|photovoltaic.{0,90}ion.pump|electrochemically.driven.delivery|redox.controlled.release|electron.transfer.mediated.cell)\b"
 ELECTRO_PLATFORM_TITLE=r"\b(?:wirefree|wire.less|wirelessly|wireless|remote|ion.pump|iontronic|electroactive|conducting.polymer|pedot|electrochemical|electroresponsive|bioelectronic|nanoparticle|molecular|drug.delivery|drug.release|photovoltaic)\b"
-ELECTRO_DELIVERY=r"\b(?:drug.release|drug.delivery|on.demand.drug|molecular.delivery|biomolecular.delivery|(?:release.{0,35}(?:drug|molecule))|(?:delivery.{0,25}drug)|neurotransmitter|acetylcholine|ion.pump|iontronic|release.of.molecules|pharmacologically.active)\b"
+ELECTRO_DELIVERY=r"\b(?:drug.release|drug.delivery|on.demand.drug|molecular.delivery|biomolecular.delivery|(?:release.{0,35}(?:drug|molecule))|(?:delivery.{0,25}drug)|neurotransmitter|acetylcholine|ion.pump\w*|iontronic|release.of.molecules|pharmacologically.active)\b"
 ELECTRO_REMOTE=r"\b(?:wireless|wirefree|wire.free|unwired|remote\w*|contactless|battery.free|near.field.communication|NFC|photovoltaic|photo.powered|light.driven|electromagnetic|ultrasonic|acoustic|inductively.powered|externally.generated.electric.field)\b"
 ELECTRO_BIO=r"\b(?:cancer|glioblastoma|neuron|nerve|wound|cell|biological|apoptos|tumou?r|therapy|disease|nerve.growth|antitumou?r)\b"
 
@@ -41,7 +41,12 @@ def classify(records):
             excluded["no_linked_openalex_work_or_citation"]+=1;continue
         if re.match(r"^10\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
             excluded["preprint_not_in_primary_ranking"]+=1;continue
-        if matches(REVIEW,title) or matches(REVIEW_ABSTRACT,r.get("abstract") or ""):
+        pubtypes="; ".join(str(x) for x in (r.get("publication_types") or []))
+        curated_review_dois={"10.1039/d3bm01946b"}
+        if (matches(REVIEW,title)
+            or matches(REVIEW_ABSTRACT,r.get("abstract") or "")
+            or matches(r"\b(?:review|meta.analysis|editorial|perspective)\b",pubtypes)
+            or str(r.get("doi") or "").casefold() in curated_review_dois):
             excluded["possible_review_or_nonoriginal"]+=1;continue
         abstract=r.get("abstract") or ""
         mods=[m for m,p in MODALITIES.items() if matches(p,title)]
