@@ -140,6 +140,10 @@ DOI_SENTINELS=(
  "10.1016/j.ejcsup.2006.08.002", # ESOPE electrochemotherapy clinical
  "10.1007/s00270-010-9964-1",    # clinical irreversible electroporation
  "10.1056/nejmoa060281",        # deep brain stimulation controlled trial
+ "10.1056/nejmoa2307291",       # randomized pulsed-field cardiac ablation
+ "10.1056/nejmoa1612999",       # trial of tDCS for depression
+ "10.1177/19322968211035128",  # electrical wound-healing clinical trial
+ "10.1016/j.apmr.2009.12.026",  # electrical stimulation pressure ulcers
 )
 # These named bylines and ORCID links were checked against primary publisher or
 # institutional records. Do not attribute identities solely from a surname match.
