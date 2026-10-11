@@ -54,17 +54,37 @@ jobs:
           COMPLETED_HARVEST_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
         run: |
           mkdir -p _harvest
-          RUN_ID="${COMPLETED_HARVEST_ID}"
-          if [ -z "$RUN_ID" ]; then
-            RUN_ID="$(gh run list --repo "$GITHUB_REPO" --status success --limit 80 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | last | .databaseId')"
-          fi
-          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
-            echo "::error::No successful harvest run. Rankings cannot be updated."
+          # Newer runs can be marked "successful" despite rate limits or
+          # severe truncation. Validate their corpus before deployment.
+          RUNS="$(gh run list --repo "$GITHUB_REPO" --status success --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          CHOSEN=""
+          for TRY_ID in $COMPLETED_HARVEST_ID $RUNS; do
+            rm -rf _harvest
+            mkdir -p _harvest
+            if ! gh run download "$TRY_ID" --repo "$GITHUB_REPO" --name "literature-candidates-and-audit" --dir _harvest >/dev/null 2>&1; then
+              continue
+            fi
+            if python - <<'PY'
+          import json,pathlib
+          file=pathlib.Path("_harvest/candidates.json")
+          if not file.is_file():raise SystemExit(1)
+          data=json.loads(file.read_text(encoding="utf8"))
+          works=data.get("records") or []
+          total=len(works)
+          with_ids=sum(bool(w.get("openalex_id")) for w in works)
+          print("Candidate harvest validation: all",total,"OpenAlex linked",with_ids)
+          if total < 10000 or with_ids < 5000:raise SystemExit(1)
+          PY
+            then
+              CHOSEN="$TRY_ID"
+              break
+            fi
+          done
+          if [ -z "$CHOSEN" ]; then
+            echo "::error::No literature artifact passes the ≥10,000-record and ≥5,000 OpenAlex-ID gates. Previous website left intact."
             exit 1
           fi
-          echo "Candidate harvest run: $RUN_ID"
-          gh run download "$RUN_ID" --repo "$GITHUB_REPO" --name "literature-candidates-and-audit" --dir _harvest
-          test -s _harvest/candidates.json
+          echo "Using validated candidate harvest run: $CHOSEN"
       - name: Validate identity, merge and institution regression tests
         run: python -m unittest discover -s tests -v
       - name: Calculate provisional, paper-backed rankings
