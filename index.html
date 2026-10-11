@@ -109,6 +109,17 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .known-coverage h3{font-size:20px;letter-spacing:-.01em;margin:8px 0}
 .known-coverage p{font-size:14px;line-height:1.7;color:#3f5e5b;max-width:890px;margin:8px 0}
 .known-coverage .eyebrow{color:#426f69}
+.therapy-coverage{padding:28px 0;margin:28px 0;border-block:1px solid #cdded7}
+.therapy-coverage table{min-width:650px}
+.therapy-coverage th{font-size:12px}
+.therapy-coverage td{font-size:14px;vertical-align:top}
+.therapy-coverage p{line-height:1.7;color:#45645f;max-width:900px}
+.therapy-coverage a{overflow-wrap:anywhere}
+@media(max-width:720px){.therapy-coverage .ranking-scroll{overflow-x:auto}
+.therapy-coverage table{display:table;min-width:650px}
+.therapy-coverage tr{display:table-row}
+.therapy-coverage td,.therapy-coverage th{display:table-cell!important;text-align:left!important;border-radius:0}
+.therapy-coverage td::before{display:none}}
 </style>
 </head>
 <body>
@@ -126,7 +137,12 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 <div class="panel"><div class="label">Fields</div><h3>Magnetic</h3><p>Magnetothermal, magnetoelectric and magnetomechanical therapeutic pathways.</p></div>
 <div class="panel"><div class="label">Photonic</div><h3>Optical</h3><p>Photopharmacology, photoactivated therapies and NIR-triggered molecular release.</p></div>
 <div class="panel"><div class="label">Electromagnetic</div><h3>Radiofrequency</h3><p>RF-triggered release and remotely actuated molecular and cellular therapies.</p></div>
-<div class="panel"><div class="label">Electrical</div><h3>Electrochemical</h3><p>Wireless bipolar electrochemistry, electrical bioactuation and electro-pharmaceutics.</p></div>
+<div class="panel"><div class="label">Electrical / redox</div><h3>Electrochemical</h3><p>Wireless bipolar electrochemistry, redox-controlled release and ion pumps.</p></div>
+<div class="panel"><div class="label">AC oncology</div><h3>TTFields</h3><p>Tumour Treating Fields and alternating-field cancer therapies.</p></div>
+<div class="panel"><div class="label">Pulse + drugs</div><h3>Electrochemotherapy</h3><p>Electropermeabilisation-assisted delivery of anticancer agents.</p></div>
+<div class="panel"><div class="label">Pulsed fields</div><h3>Electroporation</h3><p>Reversible/irreversible electroporation, H-FIRE and pulsed-field ablation.</p></div>
+<div class="panel"><div class="label">Nervous system</div><h3>Neuromodulation</h3><p>DBS, VNS, spinal cord stimulation and non-invasive neurostimulation.</p></div>
+<div class="panel"><div class="label">Regeneration</div><h3>Electrical Stimulation</h3><p>Wound healing, cell guidance, tissue repair and electrical rehabilitation.</p></div>
 <div class="panel"><div class="label">Combined</div><h3>Hybrid</h3><p>Cross-modality systems whose mechanistic pathways are explicitly documented.</p></div>
 </div></section>
 <section id="ranking">
@@ -171,7 +187,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
  <p>Other unresolved ORCID/OpenAlex conflicts are recorded separately in the automated quality audit. Neither a matching surname nor a passing software test establishes a verified researcher identity.</p>
 </aside>
 <div class="ranking-tools">
- <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical</option><option value="Hybrid">Hybrid</option></select></label>
+ <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall (exploratory)</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical / redox</option><option value="TTFields">Tumour Treating Fields</option><option value="Electrochemotherapy">Electrochemotherapy</option><option value="Electroporation">Electroporation and ablation</option><option value="Neuromodulation">Electrical neuromodulation</option><option value="Electrical Stimulation">Electrical cell and tissue stimulation</option><option value="Hybrid">Hybrid</option></select></label>
  <label>Find academic <input type="search" id="rank-search" placeholder="Search name or institution…"/></label>
 </div>
 <div id="rank-summary" role="status">Loading the latest ranking dataset…</div>
@@ -182,6 +198,19 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 <div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
 <div id="rank-detail" class="rank-detail" hidden></div>
 <div id="harvest-quality" class="harvest-quality" role="status">Retrieval coverage report is loading…</div>
+<section id="electrical-treatment-coverage" class="therapy-coverage" aria-label="Electrical treatment research coverage">
+ <div class="eyebrow">Six clinical and experimental electrical-treatment pathways</div>
+ <h3>Which electrical therapies and landmark publications were retrieved?</h3>
+ <p>These are distinct treatment mechanisms, not synonyms for electrochemistry. The table separately reports machine-classified article candidates and independent reference-DOI retrieval checks. <strong>Neither measure verifies complete literature coverage or researcher ranking validity.</strong></p>
+ <p id="electrical-coverage-status" role="status">Expanded electrical-treatment harvesting and DOI audit are pending. Do not infer complete coverage from older ranking tables.</p>
+ <div class="ranking-scroll"><table aria-label="Electrical treatment evidence coverage"><thead><tr><th>Treatment pathway</th><th>Machine-matched candidates</th><th>Known DOIs retrieved</th><th>DOIs classified</th><th>Scientific validation</th></tr></thead>
+  <tbody id="electrical-coverage-body"><tr><td colspan="5">Awaiting the verified expanded search artifact.</td></tr></tbody></table></div>
+ <details class="ranking-method"><summary>Inspect the landmark study DOI checks</summary>
+  <div class="ranking-scroll"><table aria-label="Electrical therapy DOI sentinels"><thead><tr><th>Pathway</th><th>Reference publication</th><th>DOI</th><th>Machine status</th></tr></thead>
+   <tbody id="electrical-sentinel-body"><tr><td colspan="4">Coverage report pending.</td></tr></tbody></table></div>
+ </details>
+ <p><a href="data/electrical_treatment_coverage_audit.json" download>Download complete evidence audit (JSON) ↗</a> · <a href="data/electrical_treatment_coverage_audit.csv" download>Download landmark DOI checks (CSV) ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/electrical-therapies-expansion.yml">Inspect the expanded search workflow ↗</a></p>
+</section>
 <div id="electro-coverage" class="electro-coverage">
  <div class="eyebrow">Electrochemical literature coverage</div>
  <h3>Which publications are actually represented?</h3>
@@ -213,6 +242,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </div>
 <details class="ranking-method"><summary>How these scores are calculated</summary>
 <p><strong>Composite score (0–100):</strong> 35% within-harvest publication-year/modality citation percentile; 25% publication-output score; 20% first/last-authorship score; 10% title-indicated translational activity; and 10% publication-years active. Counts are logarithmically scaled. Overall requires at least three machine-matched papers; pathways require at least two.</p>
+<p><strong>Important for electrical treatments:</strong> Tumour Treating Fields, electrochemotherapy, electroporation, neuromodulation, tissue stimulation and redox electrochemistry are different clinical or mechanistic fields. New pathway positions are exploratory until field-specific recall, document eligibility and author identity are independently audited. Cross-pathway overall ranks should not be interpreted as a worldwide comparison.</p>
 <p><strong>Limitations:</strong> Classification uses titles and review indicators, not completed human full-text screening. Institutional affiliations are from dated publication metadata, not verified current appointments. Ranking uses only papers with OpenAlex citation and author IDs. The search is bounded; some scientists and their publications will be missing. Translation scoring is a title-keyword proxy, not proof of clinical efficacy. All metrics are dataset-relative, not globally field-normalised. Ambiguous author matches may remain. Read the methodology and source paper links before citing positions.</p>
 </details>
 </section>
@@ -315,6 +345,32 @@ fetch("data/quality_audit.json",{cache:"no-store"})
    get("quality-status").textContent="Automated audit: "+Number(a.unique_scored_work_records||0).toLocaleString()+" distinct scored-work records, of which "+Number(row.explicit_article||0).toLocaleString()+" explicitly identify an article document type. Duplicate-score groups: "+Number(a.duplicate_score_evidence_groups||0)+". Status: not a validated worldwide ranking.";
  })
  .catch(function(){get("quality-status").textContent="The independent ranking quality report is unavailable. Do not interpret provisional positions as verified.";});
+fetch("data/electrical_treatment_coverage_audit.json",{cache:"no-store"})
+ .then(function(res){if(!res.ok)throw new Error("Expanded treatment data not yet published");return res.json();})
+ .then(function(a){
+   var groups=a.pathways||[], refs=a.sentinels||[];
+   if(a.validation_status!=="MACHINE_SCREENED_NOT_INDEPENDENTLY_VALIDATED" || groups.length!==6)
+     throw new Error("Incomplete coverage report");
+   get("electrical-coverage-status").textContent=
+     "Current stage: machine-discovered candidate papers only; 0 independently full-text-reviewed. "+
+     groups.reduce(function(s,x){return s+x.query_errors;},0)+" query-page error reports may include repeated historical runs. "+
+     "This is not a saturated or externally validated scientific census.";
+   get("electrical-coverage-body").innerHTML=groups.map(function(x){
+      return '<tr><td>'+esc(x.pathway)+'</td><td>'+Number(x.machine_matched_papers||0).toLocaleString()+
+       '</td><td>'+Number(x.sentinels_retrieved||0)+' / '+Number(x.known_doi_sentinels||0)+
+       '</td><td>'+Number(x.sentinels_machine_included||0)+' / '+Number(x.known_doi_sentinels||0)+
+       '</td><td>Awaiting independent screening</td></tr>';
+   }).join("");
+   get("electrical-sentinel-body").innerHTML=refs.map(function(r){
+     var state=!r.retrieved?"Not retrieved":r.classified_in_target_pathway?"Machine-classified, unverified":"Retrieved; not classified";
+     return '<tr><td>'+esc(r.pathway)+'</td><td>'+esc(r.label)+'</td>'+
+      '<td><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td>'+
+      '<td>'+esc(state)+'</td></tr>';
+   }).join("");
+ })
+ .catch(function(err){get("electrical-coverage-status").textContent=
+    "The six-pathway electrical-treatment audit is not yet available ("+err.message+
+    "). Existing scores must not be treated as comprehensive electrical-therapy rankings.";});
 fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
  .then(function(a){
