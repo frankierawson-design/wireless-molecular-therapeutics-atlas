@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - main
       - validation-study-v1-2026-10-11
     paths:
       - "validation/**"
