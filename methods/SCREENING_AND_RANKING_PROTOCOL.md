@@ -39,7 +39,7 @@ The present GitHub Actions job has a **user-configurable page cap**. No output f
 
 Use validated ORCID where present; corroborate OpenAlex author identity with byline, institution and coauthor network, DOI/publisher page, and publication chronology. Name-only matches are **unverified**. Do not aggregate unrelated scholars who share names.
 
-## Ranking methodology — withheld until validation
+## Ranking methodology — provisional machine-screened results versus a verified ranking
 
 Proposed scores within field-specific peer groups:
 - 35% field- and year-normalised citation impact, capped sensitivity to single outliers.
@@ -50,8 +50,22 @@ Proposed scores within field-specific peer groups:
 
 Each component must have published definitions, source snapshot dates, confidence/coverage grades, treatment of missing data and sensitivity analyses. Missing values are not automatically scored zero. Keep overall and modality-specific ranks separate. Overall ranks will use normalized within-modality measures to avoid privileging the largest publishing modality.
 
-**Do not release a numeric ranked list** until eligible literature is systematically screened, author identities verified, citation denominators documented and independent review completed. Per-researcher paper lists and evidence grades may be published before rankings.
+**Publication status:** The Atlas currently releases provisional, dataset-relative machine-screened positions for discovery and quality assurance, explicitly labelled as such. It does **not** claim a validated worldwide league table. A definitive field- or career-normalised scientist ranking remains withheld until eligibility, identities, citation denominators, and independent assessment are established. A provisional position must not be used as evidence that a researcher is higher- or lower-impact than researchers whose papers are incompletely harvested.
 
 ## Reproducibility and review status
 
 Downloaded candidate records are available as GitHub Actions artifacts and require human screening. Submission of a DOI via GitHub Issues is not proof of eligibility or influence. Publish the final flow diagram and reproducibility scripts when screening is complete.
+
+## Electrochemical expansion (11 October 2026)
+
+The original five electrochemical searches severely underrepresented wireless bipolar electrochemistry, photo-driven organic ion pumps, wirefree controlled release, bioelectronic tumour interventions and remotely powered therapeutic pumps. A targeted expanded query family now covers those mechanisms with separate search provenance and capped per-query pagination; new records are merged into the broader deduplicated corpus. Abstract-index reconstruction improves recall when a paper's title alone lacks the therapeutic molecular mechanism.
+
+**Remote actuation requirement:** Conventional wired-only electrochemotherapy, electrochemical sensors, and analytical/electrodeposition papers without qualifying remote molecular or cellular therapeutic intervention do not enter the core researcher score merely because they contain relevant electrical vocabulary.
+
+**Evidence tier labels:** Machine-screened papers are preliminarily flagged as biological therapeutic candidate, molecular-delivery platform candidate, or therapeutic-mechanism candidate. These labels are *not* verified efficacy claims. Reviews, title-only misleading matches and preprints are excluded from primary numerical scores under documented rules. Unresolved studies remain in a review queue.
+
+**Sentinel retrieval audit:** Nine independently DOI-identified papers were selected prospectively to test coverage of wireless apoptosis, glioblastoma membrane-potential modulation, bipolar electrode biomolecular platforms, conducting polymer release, photovoltaic ion pumps and device-enabled dosing. A perspective/review and analytical impedance study serve as negative controls. The public DOI audit reports retrieved/missing and machine-included/excluded separately. A missed sentinel is a known search gap, not evidence the study does not exist.
+
+**Provisional score in the live version:** 35% within-harvest, modality/year citation percentile; 25% relevant paper output; 20% first/last author proxy; 10% title-level translation proxy; 10% active publication years. This is **not** robust external field-normalisation or proof of clinical impact. Full source DOIs, evidence titles, recorded institutions and current screening audit must accompany any reported position. Ranking positions can change when query coverage improves.
+
+**Next validation stage:** Independent title/abstract screening, sampled precision/recall review per modality, full-text adjudication, author cross-database reconciliation and defensible career-stage/field-normalised measures.
