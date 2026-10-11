@@ -125,22 +125,23 @@ function render(reset){
  var all=data.rankings[category]||[];
  rows=all.filter(function(x){return !query||x.name.toLowerCase().includes(query);});
  var max=Math.min(rows.length,(page+1)*PAGE_SIZE);
+ var insufficient=all.length<10;
  var visible=rows.slice(0,max);
  get("rank-body").innerHTML=visible.length?visible.map(function(r,i){
- return '<tr><td><strong>'+r.rank+'</strong></td><td>'+esc(r.name)+'</td><td>'+r.score.toFixed(2)+'</td><td>'+r.publication_count+'</td><td>'+r.indexed_citations.toLocaleString()+'</td><td><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
+ return '<tr><td><strong>'+(insufficient?'—':r.rank)+'</strong></td><td>'+esc(r.name)+'</td><td>'+r.score.toFixed(2)+'</td><td>'+r.publication_count+'</td><td>'+r.indexed_citations.toLocaleString()+'</td><td><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
  }).join(""):'<tr><td colspan="6">No scored researcher matches this filter.</td></tr>';
  get("rank-more").hidden=max>=rows.length;
- get("rank-summary").textContent=rows.length.toLocaleString()+' scored researcher(s) in '+category+' · showing '+visible.length+'. Positions are cohort-relative and provisional.';
+ get("rank-summary").textContent=insufficient?category+" currently has only "+all.length+" scored researcher(s); no numerical ranking is meaningful. Showing evidence records only.":rows.length.toLocaleString()+" scored researcher(s) in "+category+" · showing "+visible.length+". Positions are corpus-relative and provisional.";
  get("rank-detail").hidden=true;get("rank-detail").innerHTML="";
 }
 function showEvidence(i){
  var r=rows[i];if(!r)return;
  var parts=r.components||{};
- var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">Position '+r.rank+' · Score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
+ var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">'+(r.rank==null?'No comparative rank':'Position '+r.rank)+' · Evidence score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
  body+='<p><a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> '+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
  body+='<p><strong>Score components:</strong> citation '+(parts.citation_impact||0)+', output '+(parts.relevant_output||0)+', authorship '+(parts.authorship_leadership||0)+', translational proxy '+(parts.translational_indicators||0)+', sustained activity '+(parts.sustained_activity||0)+'.</p>';
  body+='<h4>Linked studies in this ranking</h4><ul>'+r.papers.map(function(p){
-   var link=p.doi?"https://doi.org/"+encodeURIComponent(p.doi):p.url;
+   var link=p.doi?"https://doi.org/"+encodeURI(p.doi):p.url;
    return '<li><a target="_blank" rel="noopener" href="'+url(link)+'">'+esc(p.title)+'</a> ('+esc(p.year)+') · '+esc(p.citations)+' indexed citations · '+esc(p.authorship)+' author · '+esc(p.modalities.join(", "))+'</li>';
  }).join("")+'</ul>';
  var detail=get("rank-detail");detail.innerHTML=body;detail.hidden=false;detail.scrollIntoView({behavior:"smooth",block:"nearest"});
