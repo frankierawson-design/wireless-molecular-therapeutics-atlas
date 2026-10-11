@@ -24,8 +24,8 @@ REVIEW_ABSTRACT=r"\b(?:this review|in this review|here we review|review of curre
 # contains a matching electrical/electroactive device or delivery term.
 ELECTRO_ABSTRACT=r"\b(?:bipolar.electrochem\w*|wirefree.electrochem\w*|wire.less.electrochemical|organic.electronic.ion.pump\w*|wirelessly.controlled.electrochem\w*|wirefree.{0,55}(?:bipolar|drug.release|conducting.polymer)|photovoltaic.{0,90}ion.pump|electrochemically.driven.delivery|redox.controlled.release|electron.transfer.mediated.cell)\b"
 ELECTRO_PLATFORM_TITLE=r"\b(?:wirefree|wire.less|wirelessly|wireless|remote|ion.pump|iontronic|electroactive|conducting.polymer|pedot|electrochemical|electroresponsive|bioelectronic|nanoparticle|molecular|drug.delivery|drug.release|photovoltaic)\b"
-ELECTRO_DELIVERY=r"\b(?:drug.release|drug.delivery|on.demand.drug|molecular.delivery|neurotransmitter|acetylcholine|ion.pump|iontronic|release.of.molecules|pharmacologically.active)\b"
-ELECTRO_REMOTE=r"\b(?:wireless|wirefree|wire.free|unwired|remote|contactless|battery.free|near.field.communication|NFC|photovoltaic|photo.powered|light.driven|electromagnetic|ultrasonic|acoustic|inductively.powered|externally.generated.electric.field)\b"
+ELECTRO_DELIVERY=r"\b(?:drug.release|drug.delivery|on.demand.drug|molecular.delivery|biomolecular.delivery|(?:release.{0,35}(?:drug|molecule))|(?:delivery.{0,25}drug)|neurotransmitter|acetylcholine|ion.pump|iontronic|release.of.molecules|pharmacologically.active)\b"
+ELECTRO_REMOTE=r"\b(?:wireless|wirefree|wire.free|unwired|remote\w*|contactless|battery.free|near.field.communication|NFC|photovoltaic|photo.powered|light.driven|electromagnetic|ultrasonic|acoustic|inductively.powered|externally.generated.electric.field)\b"
 ELECTRO_BIO=r"\b(?:cancer|glioblastoma|neuron|nerve|wound|cell|biological|apoptos|tumou?r|therapy|disease|nerve.growth|antitumou?r)\b"
 
 SCORING_WEIGHTS={"citation_impact":0.35,"relevant_output":0.25,"authorship_leadership":0.20,"translational_indicators":0.10,"sustained_activity":0.10}
