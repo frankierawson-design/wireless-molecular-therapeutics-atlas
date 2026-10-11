@@ -56,3 +56,7 @@ The provisional score is 35% harvested-cohort citation percentiles, 25% machine-
 * Versioned preprints (bioRxiv/ChemRxiv) remain discoverable but are excluded from numerical scoring, to avoid artificially counting a preprint and journal paper as two separate research outputs.
 * Expanded wireless-bioelectronic terms recognise molecular therapy publications that the initial narrow electrochemical classifier missed. We retain the machine-screening and uncertain-completeness labels until full independent literature review.
 * The repository includes offline regression tests in `tests/test_identity_and_affiliations.py`. The Pages deployment will not proceed if an author identity, duplicate-paper or institutional-provenance test fails.
+
+## Ranking data-quality audit
+
+See [the 11 October 2026 quality and reliability report](methods/QUALITY_AND_RELIABILITY_REPORT.md) and the public [machine-readable quality audit](https://frankierawson-design.github.io/wireless-molecular-therapeutics-atlas/data/quality_audit.json). The automated candidate rankings must **not** be presented as confirmed worldwide scientist standings; 0 publications have been independently full-text screened. The Pages publication workflow now blocks known dissertations, other non-original publication types, DOI-less unverified works, and same-title double counting, with regression tests and a numerical quality audit. Passing software tests cannot validate the science.
