@@ -105,6 +105,10 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .validation-stage-grid strong{font-size:22px;color:#145450;display:block}
 .validation-stage-grid span{font-size:12px;color:#4d6a64;display:block;margin-top:5px}
 @media(max-width:720px){.validation-stage-grid{grid-template-columns:1fr}.validation-stage{padding:16px}}
+.known-coverage{border-left:3px solid #426f69;padding:9px 0 12px 19px;margin:23px 0 25px}
+.known-coverage h3{font-size:20px;letter-spacing:-.01em;margin:8px 0}
+.known-coverage p{font-size:14px;line-height:1.7;color:#3f5e5b;max-width:890px;margin:8px 0}
+.known-coverage .eyebrow{color:#426f69}
 </style>
 </head>
 <body>
@@ -158,6 +162,14 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
  <p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/blob/main/validation/PROTOCOL_v1.md">Read the prospective validation protocol ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/scientific-validation.yml">Review validation workflows ↗</a></p>
  <p><strong>Important:</strong> the position numbers shown below are exploratory sensitivity-sensitive research-index comparisons, not confirmed international rankings.</p>
 </section>
+<aside class="known-coverage" aria-label="Documented author coverage and identity issue">
+ <div class="eyebrow">Open correction case · 11 October 2026</div>
+ <h3>Robert J. Forster (Dublin City University): publication and author-identity reconciliation pending</h3>
+ <p>Four publisher- or institution-confirmed DOI records are being audited for retrieval and correct author attribution. The 2024 overview is a review, while the other three are original studies primarily demonstrating wireless polymer deposition or modelling; none should be assigned a therapeutic-research ranking without a documented eligibility decision. An absent numerical position is <strong>not</strong> evidence of a lack of relevant research.</p>
+ <p id="forster-audit-status" role="status">Checking these four DOIs against the published harvest…</p>
+ <p><a href="#electro-coverage">Inspect the DOI-by-DOI coverage checks ↓</a> · <a href="https://orcid.org/0000-0001-5079-3123" target="_blank" rel="noopener">Forster ORCID ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Report another author or publication error ↗</a></p>
+ <p>Other unresolved ORCID/OpenAlex conflicts are recorded separately in the automated quality audit. Neither a matching surname nor a passing software test establishes a verified researcher identity.</p>
+</aside>
 <div class="ranking-tools">
  <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical</option><option value="Hybrid">Hybrid</option></select></label>
  <label>Find academic <input type="search" id="rank-search" placeholder="Search name or institution…"/></label>
@@ -180,8 +192,8 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
   <div class="panel"><div class="label">DOI sentinel recovery</div><h3 id="electro-sentinel-count">—</h3></div>
  </div>
  <div class="ranking-scroll">
- <table aria-label="Known publication DOI coverage audit"><thead><tr><th>Publication family</th><th>Year / DOI</th><th>Search status</th></tr></thead>
- <tbody id="electro-audit-body"><tr><td colspan="3">Awaiting the updated coverage-audit dataset.</td></tr></tbody></table>
+ <table aria-label="Known publication DOI coverage audit"><thead><tr><th>Publication family</th><th>Year / DOI</th><th>Search status</th><th>Author identity in harvested record</th></tr></thead>
+ <tbody id="electro-audit-body"><tr><td colspan="4">Awaiting the updated coverage-audit dataset.</td></tr></tbody></table>
  </div>
  <p class="coverage-footer"><a href="data/electrochemical_coverage_audit.csv" download>Download the full DOI coverage audit (CSV) ↗</a></p>
 <details class="ranking-method candidate-queue">
@@ -307,12 +319,23 @@ fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
  .then(function(a){
    get("electro-sentinel-count").textContent=a.retrieved+"/"+a.total_sentinels;
+   var forster=(a.records||[]).filter(function(r){return r.expected_orcid==="0000-0001-5079-3123";});
+   var retrieved=forster.filter(function(r){return r.retrieved;}).length;
+   var identified=forster.filter(function(r){return r.author_identity_status==="orcid_verified_in_work_metadata";}).length;
+   get("forster-audit-status").textContent=forster.length?
+     "DOI audit: "+retrieved+"/"+forster.length+" retrieved; "+identified+"/"+forster.length+" with work-level ORCID evidence; "+
+     (forster.length-retrieved)+" not retrieved; "+(retrieved-identified)+" require identity checking. Retrieval and identity do not establish ranking eligibility.":
+     "The current coverage file does not yet include the Forster correction records; identity and completeness remain unverified.";
    get("electro-audit-body").innerHTML=(a.records||[]).map(function(r){
-     var klass=r.machine_status==="machine_included"?"Included in machine screen":r.machine_status==="not_harvested"?"Not retrieved":"Retrieved; not scored";
-     return '<tr><td>'+esc(r.topic)+'</td><td><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td><td><span class="coverage-state">'+esc(klass)+'</span></td></tr>';
+     var klass=r.machine_status==="machine_included"?"Machine-included (eligibility unverified)":r.machine_status==="not_harvested"?"Not retrieved":r.expected_role==="review-not-ranked"?"Review (excluded from original-paper scores)":"Retrieved; not scored";
+     var identity=r.author_identity_status==="orcid_verified_in_work_metadata"?"ORCID matched to paper metadata":
+       r.author_identity_status==="name_only_identity_not_verified"?"Name only — verify identity":
+       r.author_identity_status==="expected_author_absent_from_work_metadata"?"Author not linked — investigate":
+       r.author_identity_status==="not_harvested"?"Not retrieved — check discovery":"Not assessed";
+     return '<tr><td data-label="Publication">'+esc(r.topic)+'</td><td data-label="DOI"><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td><td data-label="Coverage"><span class="coverage-state">'+esc(klass)+'</span></td><td data-label="Identity">'+esc(identity)+'</td></tr>';
    }).join("");
  })
- .catch(function(){get("electro-audit-body").innerHTML='<tr><td colspan="3">Publication audit will appear when the expanded literature harvest finishes.</td></tr>';});
+  .catch(function(){get("electro-audit-body").innerHTML='<tr><td colspan="4">Publication audit unavailable; no author attribution has been verified.</td></tr>';get("forster-audit-status").textContent="DOI evidence file unavailable; Robert J. Forster coverage and author identity remain unresolved.";});
 fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if(!res.ok)throw new Error("HTTP "+res.status);return res.json();}).then(function(d){
  if(!d.rankings||!Array.isArray(d.rankings.Overall))throw new Error("Dataset has no ranking rows.");
  data=d;
