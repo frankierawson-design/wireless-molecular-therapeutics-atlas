@@ -89,6 +89,14 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .candidate-queue .screening-status{display:inline-block;font-size:11px;line-height:1.4;color:#396159}
 @media(max-width:720px){.candidate-queue .ranking-scroll{max-height:none;overflow:visible}.candidate-queue .ranking-scroll td:nth-child(2){max-width:none;min-width:0}}
 
+.quality-review{padding:22px;margin:28px 0 20px;border-radius:9px;border:1px solid #bacfc8;background:#f1f7f3}
+.quality-review .eyebrow{color:#336963;letter-spacing:.09em}
+.quality-review>p{color:#375b58;line-height:1.65}
+.quality-audit-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.quality-audit-metrics>div{border:1px solid #ceded5;background:#fff;padding:13px;border-radius:8px}
+.quality-audit-metrics strong{display:block;font-size:26px;font-variant-numeric:tabular-nums;color:#204e4c}
+.quality-audit-metrics span{display:block;font-size:11px;color:#496d67;line-height:1.5;margin-top:5px}
+@media(max-width:720px){.quality-audit-metrics{grid-template-columns:1fr 1fr}.quality-review{padding:16px}}
 </style>
 </head>
 <body>
@@ -111,20 +119,32 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </div></section>
 <section id="ranking">
 <div class="eyebrow">02 / Researcher comparison</div>
-<h2>Current researcher rankings</h2>
-<p>Explore <strong>new, provisional rankings calculated from the 2026 OpenAlex and Europe PMC harvest, with ORCID-based author reconciliation and sourced publication affiliations</strong>. These are positions <em>within the retrieved, machine-screened research set</em>, not certified world rankings. They update when a newly validated harvest is published.</p>
+<h2>Provisional researcher comparisons</h2>
+<p>Explore <strong>new, provisional rankings calculated from the 2026 OpenAlex and Europe PMC harvest, with ORCID-based author reconciliation and sourced publication affiliations</strong>. These are positions <em>within the retrieved, machine-screened research set</em>, not verified rankings of scientists worldwide. They update when a newly validated harvest is published.</p>
 <div class="ranking-metrics">
  <div class="panel"><div class="label">Harvested records</div><h3 class="mono" id="metric-candidates">—</h3><p>Deduplicated literature-search candidates</p></div>
- <div class="panel"><div class="label">Therapy-paper subset</div><h3 class="mono" id="metric-papers">—</h3><p>Automatically matched original-study candidates with author/citation identifiers</p></div>
+ <div class="panel"><div class="label">Therapy-paper subset</div><h3 class="mono" id="metric-papers">—</h3><p>Automatically matched studies with author/citation identifiers; original status not always confirmed</p></div>
  <div class="panel"><div class="label">Researchers scored</div><h3 class="mono" id="metric-people">—</h3><p>Indexed authors meeting the minimum paper threshold for the overall view</p></div>
 </div>
+<section class="quality-review" aria-label="Research ranking reliability">
+ <div class="eyebrow">Independent verification has not been completed</div>
+ <p>The positions below are generated automatically. The international literature search is not exhaustive, and no studies have undergone independent full-text adjudication. Before using a position for a professional decision, check the scored papers and the data-quality audit.</p>
+ <div class="quality-audit-metrics">
+ <div><strong id="quality-unspecified">—</strong><span>Scored works with unconfirmed document type</span></div>
+ <div><strong id="quality-identity">—</strong><span>Ambiguous ORCID mappings in the corpus</span></div>
+ <div><strong id="quality-errors">—</strong><span>Recorded retrieval errors</span></div>
+ <div><strong id="quality-fulltext">—</strong><span>Independently full-text-screened papers</span></div>
+ </div>
+ <p id="quality-status" role="status">Loading the published ranking audit…</p>
+ <p><a href="data/quality_audit.json" download>Inspect full automated quality report (JSON) ↗</a> · <a href="data/quality_audit.csv" download>Download audit findings (CSV) ↗</a></p>
+</section>
 <div class="ranking-tools">
  <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical</option><option value="Hybrid">Hybrid</option></select></label>
  <label>Find academic <input type="search" id="rank-search" placeholder="Search name or institution…"/></label>
 </div>
 <div id="rank-summary" role="status">Loading the latest ranking dataset…</div>
 <div class="ranking-scroll">
- <table aria-label="Provisional researcher rankings"><thead><tr><th>Position</th><th>Researcher</th><th>Institution (documented affiliation)</th><th>Evidence score</th><th>Matched papers</th><th>Indexed citations</th><th></th></tr></thead>
+ <table aria-label="Provisional researcher rankings"><thead><tr><th>Position</th><th>Researcher</th><th>Institution (documented affiliation)</th><th>Automated score</th><th>Matched papers</th><th>Indexed citations</th><th></th></tr></thead>
  <tbody id="rank-body"><tr><td colspan="7">Loading…</td></tr></tbody></table>
 </div>
 <div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
@@ -195,7 +215,7 @@ function render(reset){
  var insufficient=all.length<10;
  var visible=rows.slice(0,max);
  get("rank-body").innerHTML=visible.length?visible.map(function(r,i){
- return '<tr><td data-label="Position"><strong>'+(insufficient?'—':r.rank)+'</strong></td><td data-label="Researcher">'+esc(r.name)+'</td><td data-label="Institution" class="inst-cell">'+(r.institution&&r.institution!=='Not available'?esc(r.institution)+'<small>Affiliation evidence: '+esc(r.institution_year||'year unknown')+'</small>':'<span class="unverified">Not verified</span>')+'</td><td data-label="Evidence score">'+r.score.toFixed(2)+'</td><td data-label="Matched papers">'+r.publication_count+'</td><td data-label="Indexed citations">'+r.indexed_citations.toLocaleString()+'</td><td data-label="Publication evidence"><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
+ return '<tr><td data-label="Position"><strong>'+(insufficient?'—':r.rank)+'</strong></td><td data-label="Researcher">'+esc(r.name)+'</td><td data-label="Institution" class="inst-cell">'+(r.institution&&r.institution!=='Not available'?esc(r.institution)+'<small>Affiliation evidence: '+esc(r.institution_year||'year unknown')+'</small>':'<span class="unverified">Not verified</span>')+'</td><td data-label="Automated score">'+r.score.toFixed(2)+'</td><td data-label="Matched papers">'+r.publication_count+'</td><td data-label="Indexed citations">'+r.indexed_citations.toLocaleString()+'</td><td data-label="Publication evidence"><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
  }).join(""):'<tr><td colspan="7">No scored researcher matches this filter.</td></tr>';
  get("rank-more").hidden=max>=rows.length;
  get("rank-summary").textContent=insufficient?category+" currently has only "+all.length+" scored researcher(s); no numerical ranking is meaningful. Showing evidence records only.":rows.length.toLocaleString()+" scored researcher(s) in "+category+" · showing "+visible.length+". Positions are corpus-relative and provisional.";
@@ -204,9 +224,10 @@ function render(reset){
 function showEvidence(i){
  var r=rows[i];if(!r)return;
  var parts=r.components||{};
- var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">'+(r.rank==null?'No comparative rank':'Position '+r.rank)+' · Evidence score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
+ var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">'+(r.rank==null?'No comparative rank':'Position '+r.rank)+' · Automated score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
  body+='<p><a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> '+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
  body+='<p><strong>Institution:</strong> '+esc(r.institution||'Not verified')+(r.institution_year?' (documented '+esc(r.institution_year)+')':'')+'. <em>Historical publication metadata; current employment not confirmed.</em></p>';
+ body+='<p><strong>Document-type confidence:</strong> '+Number(r.document_types_confirmed||0)+' of '+r.publication_count+' scored works explicitly typed as original articles by source metadata. Exact-title duplicates suppressed: '+Number(r.duplicates_suppressed||0)+'. A type not recorded is not independently verified.</p>';
  body+='<p><strong>Score components:</strong> citation '+(parts.citation_impact||0)+', output '+(parts.relevant_output||0)+', authorship '+(parts.authorship_leadership||0)+', translational proxy '+(parts.translational_indicators||0)+', sustained activity '+(parts.sustained_activity||0)+'.</p>';
  body+='<h4>Linked studies in this ranking</h4><ul>'+r.papers.map(function(p){
    var link=p.doi?"https://doi.org/"+encodeURI(p.doi):p.url;
@@ -251,6 +272,17 @@ fetch("data/search_summary.json",{cache:"no-store"})
       " positions are provisional, not worldwide scientist rankings.";
  })
  .catch(function(){get("harvest-quality").textContent="Search audit unavailable. Positions remain provisional and coverage incomplete.";});
+fetch("data/quality_audit.json",{cache:"no-store"})
+ .then(function(res){if(!res.ok)throw Error("Quality audit not found");return res.json();})
+ .then(function(a){
+   get("quality-unspecified").textContent=Number(a.scored_work_metadata&&a.scored_work_metadata.unspecified_type||0).toLocaleString();
+   get("quality-identity").textContent=Number(a.orcid_mapping_conflicts||0).toLocaleString();
+   get("quality-errors").textContent=Number(a.search_query_errors||0).toLocaleString();
+   get("quality-fulltext").textContent=Number(a.full_text_screened||0).toLocaleString();
+   var row=a.scored_work_metadata||{};
+   get("quality-status").textContent="Automated audit: "+Number(a.unique_scored_work_records||0).toLocaleString()+" distinct scored-work records, of which "+Number(row.explicit_article||0).toLocaleString()+" explicitly identify an article document type. Duplicate-score groups: "+Number(a.duplicate_score_evidence_groups||0)+". Status: not a validated worldwide ranking.";
+ })
+ .catch(function(){get("quality-status").textContent="The independent ranking quality report is unavailable. Do not interpret provisional positions as verified.";});
 fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
  .then(function(a){
