@@ -28,6 +28,30 @@ th{color:#54666d;font-size:12px;background:#edf4f0}
 .status{font-size:12px;display:inline-flex;padding:5px 9px;background:#edf0ef;border-radius:5px;color:#495b5f;font-weight:700}
 ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding:28px max(22px,calc((100% - 1080px)/2));font-size:13px;line-height:1.7}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding-top:50px;padding-bottom:58px}table{font-size:12px}th,td{padding:10px 7px}}
+
+.ranking-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.ranking-metrics .panel h3{font-size:32px;color:#123b3e;margin:7px 0}
+.ranking-tools{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin:18px 0}
+.ranking-tools label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:13px;color:#36595b;min-width:190px;flex:1}
+.ranking-tools select,.ranking-tools input{background:#fff;color:#16373a;border:1px solid #aecbc2;border-radius:8px;padding:13px;font-size:15px;width:100%;font-family:inherit}
+.ranking-scroll{overflow-x:auto;border:1px solid #d5e0dc;border-radius:9px}
+.ranking-scroll table{min-width:570px}
+.ranking-scroll th,.ranking-scroll td{padding:12px;line-height:1.35}
+.ranking-scroll th:nth-child(3),.ranking-scroll th:nth-child(4),.ranking-scroll th:nth-child(5){text-align:right}
+.ranking-scroll td:nth-child(3),.ranking-scroll td:nth-child(4),.ranking-scroll td:nth-child(5){text-align:right;font-variant-numeric:tabular-nums}
+.ranking-scroll button,.ranking-bottom button{border:1px solid #167e76;background:#fff;color:#126b65;padding:8px 12px;border-radius:7px;font-weight:700;cursor:pointer}
+.ranking-scroll button:hover,.ranking-bottom button:hover{background:#e2f1e9}
+.ranking-bottom{display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin-top:17px;font-size:14px}
+.ranking-method{background:#f4f8f5;border:1px solid #cbded4;border-radius:9px;padding:16px 20px;margin-top:23px;max-width:900px;line-height:1.7}
+.ranking-method summary{font-weight:800;cursor:pointer;color:#194a50}
+#rank-summary{font-size:13px;color:#53716d;margin:14px 0 12px}
+.rank-detail{border:1px solid #ccded4;border-radius:9px;padding:19px;margin-top:18px;background:white}
+.rank-detail h3{margin:0 0 10px}
+.rank-detail ul{padding-left:23px;line-height:1.6}
+.rank-detail li{margin:8px 0}
+.rank-detail .rowstat{font-size:13px;color:#4d6a68;margin-bottom:10px}
+@media(max-width:720px){.ranking-metrics{grid-template-columns:1fr 1fr}.ranking-metrics .panel:last-child{grid-column:span 2}.ranking-tools label{min-width:100%}.ranking-scroll{margin-left:-3px;margin-right:-3px}.ranking-metrics .panel h3{font-size:26px}}
+
 </style>
 </head>
 <body>
@@ -36,7 +60,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 <div class="eyebrow">International research atlas · Open methodology</div>
 <h1>Mapping wireless molecular therapeutics.</h1>
 <p>An evidence-led map of scientists and publications studying externally activated therapies, including acoustic, magnetic, optical, radiofrequency, electrical and hybrid systems.</p>
-<a class="btn" href="#ranking">Explore ranking status ↗</a><a class="btn secondary" href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/literature-census.yml">View literature retrieval ↗</a>
+<a class="btn" href="#ranking">View latest rankings ↗</a><a class="btn secondary" href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/literature-census.yml">View literature retrieval ↗</a>
 </header>
 <main>
 <section id="scope"><div class="eyebrow">01 / Research boundaries</div><h2>Wireless describes delivery, not mechanism.</h2><p>Energy modality, transduction mechanism, therapeutic endpoint and experimental evidence are classified independently. A treatment triggered by ultrasound, for example, is not automatically an electrochemical therapy.</p>
@@ -48,16 +72,31 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 <div class="panel"><div class="label">Electrical</div><h3>Electrochemical</h3><p>Wireless bipolar electrochemistry, electrical bioactuation and electro-pharmaceutics.</p></div>
 <div class="panel"><div class="label">Combined</div><h3>Hybrid</h3><p>Cross-modality systems whose mechanistic pathways are explicitly documented.</p></div>
 </div></section>
-<section id="ranking"><div class="eyebrow">02 / Scientist rankings</div><h2>Evidence must precede position.</h2><p>A former 52-paper sample produced misleading positions because it selectively represented particular research networks. That ranking is retired. The international and modality-specific rankings below will remain withheld until the full candidate harvest is screened, identifiers are reconciled and cross-field-normalised impact measures are calculated.</p>
-<table><thead><tr><th>Ranking</th><th>Status</th><th>Publication base</th></tr></thead><tbody>
-<tr><td>Overall wireless molecular therapeutics</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Ultrasound / acoustic</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Magnetic</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Optical</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Radiofrequency</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Electrical / electrochemical</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-<tr><td>Hybrid systems</td><td><span class="status">Pending verification</span></td><td>Systematic search in progress</td></tr>
-</tbody></table></section>
+<section id="ranking">
+<div class="eyebrow">02 / Researcher comparison</div>
+<h2>Current researcher rankings</h2>
+<p>Explore <strong>new, provisional rankings calculated from the 2026 OpenAlex and Europe PMC harvest</strong>. These are positions <em>within the retrieved, machine-screened research set</em>, not certified world rankings. They update when a newly validated harvest is published.</p>
+<div class="ranking-metrics">
+ <div class="panel"><div class="label">Harvested records</div><h3 class="mono" id="metric-candidates">—</h3><p>Deduplicated literature-search candidates</p></div>
+ <div class="panel"><div class="label">Therapy-paper subset</div><h3 class="mono" id="metric-papers">—</h3><p>Automatically matched original-study candidates with author/citation identifiers</p></div>
+ <div class="panel"><div class="label">Researchers scored</div><h3 class="mono" id="metric-people">—</h3><p>Indexed authors meeting the minimum paper threshold for the overall view</p></div>
+</div>
+<div class="ranking-tools">
+ <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical</option><option value="Hybrid">Hybrid</option></select></label>
+ <label>Find academic <input type="search" id="rank-search" placeholder="Search researcher names…"/></label>
+</div>
+<div id="rank-summary" role="status">Loading the latest ranking dataset…</div>
+<div class="ranking-scroll">
+ <table aria-label="Provisional researcher rankings"><thead><tr><th>Position</th><th>Researcher</th><th>Evidence score</th><th>Matched papers</th><th>Indexed citations</th><th></th></tr></thead>
+ <tbody id="rank-body"><tr><td colspan="6">Loading…</td></tr></tbody></table>
+</div>
+<div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
+<div id="rank-detail" class="rank-detail" hidden></div>
+<details class="ranking-method"><summary>How these scores are calculated</summary>
+<p><strong>Composite score (0–100):</strong> 35% within-harvest publication-year/modality citation percentile; 25% publication-output score; 20% first/last-authorship score; 10% title-indicated translational activity; and 10% publication-years active. Counts are logarithmically scaled. Overall requires at least three machine-matched papers; pathways require at least two.</p>
+<p><strong>Limitations:</strong> Classification uses titles and review indicators, not completed human full-text screening. Ranking uses only papers with OpenAlex citation and author IDs. The search is bounded; some scientists and their publications will be missing. Translation scoring is a title-keyword proxy, not proof of clinical efficacy. All metrics are dataset-relative, not globally field-normalised. Ambiguous author matches may remain. Read the methodology and source paper links before citing positions.</p>
+</details>
+</section>
 <section id="methods"><div class="eyebrow">03 / Reproducible research</div><h2>Methodology and quality controls.</h2>
 <ol><li><strong>Discovery:</strong> Run documented queries through Europe PMC (including PubMed) and OpenAlex; retain exact search strings, date, pagination and failures.</li>
 <li><strong>Deduplication:</strong> Merge DOI, PMID and title–year matches, preserve source identifiers, and review ambiguous matches.</li>
@@ -72,4 +111,53 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 <div class="panel"><div class="label">Community review</div><h3>Suggest corrections</h3><p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Submit corrections or missing papers ↗</a></p></div></div></section>
 </main>
 <footer><strong>Wireless Molecular Therapeutics Atlas</strong> — Independent, developing evidence map. No institutional endorsement or certified world scientist ranking is implied. <a style="color:#a8ebcb" href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas">Source repository</a>.</footer>
+<script>
+(function(){
+"use strict";
+var data=null, rows=[], page=0, PAGE_SIZE=30;
+var get=function(id){return document.getElementById(id);};
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
+var url=function(s){return /^https:\/\/(openalex\.org|orcid\.org|doi\.org|pubmed\.ncbi\.nlm\.nih\.gov)\//i.test(s||"")?s:"#";};
+function render(reset){
+ if(!data)return;
+ if(reset)page=0;
+ var category=get("rank-category").value, query=get("rank-search").value.trim().toLowerCase();
+ var all=data.rankings[category]||[];
+ rows=all.filter(function(x){return !query||x.name.toLowerCase().includes(query);});
+ var max=Math.min(rows.length,(page+1)*PAGE_SIZE);
+ var visible=rows.slice(0,max);
+ get("rank-body").innerHTML=visible.length?visible.map(function(r,i){
+ return '<tr><td><strong>'+r.rank+'</strong></td><td>'+esc(r.name)+'</td><td>'+r.score.toFixed(2)+'</td><td>'+r.publication_count+'</td><td>'+r.indexed_citations.toLocaleString()+'</td><td><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
+ }).join(""):'<tr><td colspan="6">No scored researcher matches this filter.</td></tr>';
+ get("rank-more").hidden=max>=rows.length;
+ get("rank-summary").textContent=rows.length.toLocaleString()+' scored researcher(s) in '+category+' · showing '+visible.length+'. Positions are cohort-relative and provisional.';
+ get("rank-detail").hidden=true;get("rank-detail").innerHTML="";
+}
+function showEvidence(i){
+ var r=rows[i];if(!r)return;
+ var parts=r.components||{};
+ var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">Position '+r.rank+' · Score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
+ body+='<p><a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> '+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
+ body+='<p><strong>Score components:</strong> citation '+(parts.citation_impact||0)+', output '+(parts.relevant_output||0)+', authorship '+(parts.authorship_leadership||0)+', translational proxy '+(parts.translational_indicators||0)+', sustained activity '+(parts.sustained_activity||0)+'.</p>';
+ body+='<h4>Linked studies in this ranking</h4><ul>'+r.papers.map(function(p){
+   var link=p.doi?"https://doi.org/"+encodeURIComponent(p.doi):p.url;
+   return '<li><a target="_blank" rel="noopener" href="'+url(link)+'">'+esc(p.title)+'</a> ('+esc(p.year)+') · '+esc(p.citations)+' indexed citations · '+esc(p.authorship)+' author · '+esc(p.modalities.join(", "))+'</li>';
+ }).join("")+'</ul>';
+ var detail=get("rank-detail");detail.innerHTML=body;detail.hidden=false;detail.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+get("rank-category").addEventListener("change",function(){render(true);});
+get("rank-search").addEventListener("input",function(){render(true);});
+get("rank-more").addEventListener("click",function(){page++;render(false);});
+get("rank-body").addEventListener("click",function(e){var button=e.target.closest("button[data-evidence]");if(button)showEvidence(Number(button.getAttribute("data-evidence")));});
+fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if(!res.ok)throw new Error("HTTP "+res.status);return res.json();}).then(function(d){
+ if(!d.rankings||!Array.isArray(d.rankings.Overall))throw new Error("Dataset has no ranking rows.");
+ data=d;
+ var sm=d.summary||{};
+ get("metric-candidates").textContent=(sm.candidate_records||0).toLocaleString();
+ get("metric-papers").textContent=(sm.machine_screened_papers||0).toLocaleString();
+ get("metric-people").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Overall||0).toLocaleString();
+ render(true);
+}).catch(function(err){get("rank-summary").textContent="Ranking data are not yet deployed ("+err.message+"). The literature harvest is available through the GitHub Actions link.";get("rank-body").innerHTML='<tr><td colspan="6">Waiting for a published ranking artifact.</td></tr>';});
+})();
+</script>
 </body></html>
