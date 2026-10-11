@@ -60,6 +60,16 @@ def classify(records):
                          matches(ELECTRO_REMOTE,title+" "+abstract))
         if not therapy_title and not platform_electro:
             excluded["no_therapeutic_endpoint_in_title"]+=1;continue
+        # A wired electrochemical delivery device is not, by itself, a
+        # wireless molecular-therapeutic system. Bipolar electrochemistry
+        # inherently offers wireless polarisation when remotely driven.
+        if "Electrochemical" in mods and not (
+            matches(ELECTRO_REMOTE,title+" "+abstract)
+            or matches(r"\b(?:bipolar.electrochem\w*|wireless.bipolar|unwired.bipolar)\b",title+" "+abstract)
+        ):
+            mods.remove("Electrochemical")
+        if not mods:
+            excluded["no_remote_electrochemical_actuation"]+=1;continue
         if matches(DIAGNOSTIC,title) and not matches(r"\b(?:release|drug.delivery|therap\w*|treat\w*|neurostimulat\w*|wound.healing|cancer.therap\w*)\b",title):
             excluded["diagnostics_only"]+=1;continue
         if "Radiofrequency" in mods and matches(r"\b(?:atrial.fibrillation|cardiac|catheter|arrhythmia)\b",title) and not matches(r"\b(?:drug|nanoparticle|delivery|molecular)\b",title):
