@@ -76,6 +76,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 .coverage-footer{font-size:13px}
 .coverage-state{font-size:12px;color:#41655e;background:#edf4ee;padding:5px 8px;border-radius:5px}
 
+.harvest-quality{padding:13px 16px;background:#f3f4ed;border:1px solid #d7dbc7;color:#526056;border-radius:9px;font-size:13px;line-height:1.55;margin:16px 0}
 </style>
 </head>
 <body>
@@ -116,6 +117,7 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </div>
 <div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
 <div id="rank-detail" class="rank-detail" hidden></div>
+<div id="harvest-quality" class="harvest-quality" role="status">Retrieval coverage report is loading…</div>
 <div id="electro-coverage" class="electro-coverage">
  <div class="eyebrow">Electrochemical literature coverage</div>
  <h3>Which publications are actually represented?</h3>
@@ -190,6 +192,16 @@ get("rank-category").addEventListener("change",function(){render(true);});
 get("rank-search").addEventListener("input",function(){render(true);});
 get("rank-more").addEventListener("click",function(){page++;render(false);});
 get("rank-body").addEventListener("click",function(e){var button=e.target.closest("button[data-evidence]");if(button)showEvidence(Number(button.getAttribute("data-evidence")));});
+fetch("data/search_summary.json",{cache:"no-store"})
+ .then(function(res){if(!res.ok)throw new Error("Search audit not available");return res.json();})
+ .then(function(s){
+    var err=Number(s.errors||0);
+    get("harvest-quality").textContent="Literature harvest: "+Number(s.candidate_records||0).toLocaleString()+
+      " unique candidates · "+Number(s.search_strings_executed||s.search_strings||0)+" new search terms executed · "+
+      err+" recorded query-page errors. "+(err?"Retrieval remains incomplete;":"Retrieval is still bounded by search and page limits;")+
+      " positions are provisional, not worldwide scientist rankings.";
+ })
+ .catch(function(){get("harvest-quality").textContent="Search audit unavailable. Positions remain provisional and coverage incomplete.";});
 fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
  .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
  .then(function(a){
