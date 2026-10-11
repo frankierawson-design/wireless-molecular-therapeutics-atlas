@@ -1,0 +1,54 @@
+name: Literature census (candidate harvest)
+on:
+  workflow_dispatch:
+    inputs:
+      pages_per_query:
+        description: "Maximum pages per database/query; a capped search is not exhaustive"
+        required: true
+        type: choice
+        options: ["1", "3", "8", "20"]
+        default: "3"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/literature-census.yml"
+      - "methods/collect_literature.py"
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate script syntax
+        run: python -m py_compile methods/collect_literature.py
+      - name: Retrieve candidate publications from Europe PMC and OpenAlex
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          PAGES_INPUT: ${{ inputs.pages_per_query }}
+        run: |
+          python methods/collect_literature.py --output output --pages "${PAGES_INPUT:-3}" --source both
+      - name: Validate audit and nonranking safeguards
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("output")
+          s=json.loads((root/"summary.json").read_text())
+          assert s["rankings_permitted"] is False
+          assert s["full_text_screened"] == 0
+          assert s["candidate_records"] > 0
+          assert (root/"candidates.csv").is_file()
+          print(s)
+          PY
+      - name: Upload full retrieval artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-candidates-and-audit
+          path: output/
+          retention-days: 90
+          if-no-files-found: warn
