@@ -1,0 +1,106 @@
+name: Scientific validation pilot (review packets, NOT verified ranking)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - validation-study-v1-2026-10-11
+    paths:
+      - "validation/**"
+      - "tests/test_scientific_validation.py"
+      - ".github/workflows/scientific-validation.yml"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  frozen-validation-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify code and run scientific validation tests
+        run: |
+          python -m compileall -q validation/
+          python -m unittest discover -s tests -v
+      - name: Retrieve frozen 11 October reference harvest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p frozen
+          gh run download 38142034213 --repo "$REPO" --name literature-candidates-and-audit --dir frozen
+          test -s frozen/candidates.json
+          sha256sum frozen/candidates.json
+          test "$(sha256sum frozen/candidates.json | cut -d ' ' -f1)" = "ee79f92617423900368049f5d1e2bbd0c097da8eb424f8a2eef7276e92f2bd59"
+      - name: Generate independent double-blinded review packets
+        run: |
+          python validation/generate_review_packets.py --candidates frozen/candidates.json --output validation_output --negative-per-stratum 70 --seed 20261011
+          python - <<'PY'
+          import json
+          a=json.load(open("validation_output/packet_manifest.json"))
+          print("Review records:",a["total_sample"])
+          print("Sampled strata:",a["sample_sizes"])
+          assert a["total_sample"]>180
+          PY
+      - name: Evaluate readiness without pretending independent review exists
+        run: |
+          python validation/evaluate_reviews.py \
+            --reviewer-a validation_output/reviewer_A_blinded.csv \
+            --reviewer-b validation_output/reviewer_B_blinded.csv \
+            --adjudicator-key validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv \
+            --adjudications validation_output/adjudication_BLANK.csv \
+            --reference-set validation_output/independent_reference_set_BLANK.csv \
+            --author-audit validation_output/author_identity_audit_BLANK.csv \
+            --candidates frozen/candidates.json \
+            --output validation_output/validation_readiness_report.json
+          python - <<'PY'
+          import json
+          d=json.load(open("validation_output/validation_readiness_report.json"))
+          assert d["status"] == "NOT_STARTED_OR_INCOMPLETE"
+          assert "weighted_rates" not in d["review"]
+          assert d["reference_recall"]["status"] != "EVALUATED_WITH_INDEPENDENT_REFERENCE_DATA"
+          print("Correctly withheld unsupplied reviewer metrics.")
+          PY
+      - name: Evaluate conditional ranking weight sensitivity, not validity
+        run: |
+          python validation/ranking_sensitivity.py \
+            --rankings frozen/provisional_rankings.json \
+            --output validation_output/exploratory_ranking_sensitivity.json
+          python - <<'PY'
+          import json
+          d=json.load(open("validation_output/exploratory_ranking_sensitivity.json"))
+          assert d["validity_status"]=="EXPLORATORY_CONDITIONAL_STABILITY_ONLY"
+          PY
+      - name: Reviewer A — provide blinded file only
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-reviewer-A
+          path: validation_output/reviewer_A_blinded.csv
+          retention-days: 90
+      - name: Reviewer B — provide blinded file only
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-reviewer-B
+          path: validation_output/reviewer_B_blinded.csv
+          retention-days: 90
+      - name: Coordinator — do NOT give key to reviewers before lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-coordinator-only
+          path: |
+            validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv
+            validation_output/adjudication_BLANK.csv
+            validation_output/independent_reference_set_BLANK.csv
+            validation_output/author_identity_audit_BLANK.csv
+            validation_output/packet_manifest.json
+          retention-days: 90
+      - name: Exploratory diagnostics, no independent validation claims
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-readiness-and-ranking-sensitivity
+          path: |
+            validation_output/validation_readiness_report.json
+            validation_output/exploratory_ranking_sensitivity.json
+          retention-days: 90
