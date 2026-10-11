@@ -1,0 +1,39 @@
+name: Scholarly API connectivity smoke test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/test-scholarly-apis.yml"
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Europe PMC and OpenAlex separately
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request, urllib.error, sys
+          sources=[
+            ('Europe PMC','https://www.ebi.ac.uk/europepmc/webservices/rest/search', {'query':'sonodynamic therapy','format':'json','pageSize':1}),
+            ('OpenAlex','https://api.openalex.org/works', {'search':'sonodynamic therapy','per-page':1}),
+          ]
+          errors=[]
+          for name,url,params in sources:
+              if name=='OpenAlex' and os.environ.get('OPENALEX_API_KEY'): params['api_key']=os.environ['OPENALEX_API_KEY']
+              try:
+                  full=url+'?'+urllib.parse.urlencode(params)
+                  req=urllib.request.Request(full,headers={'User-Agent':'WirelessMolecularTherapeuticsAtlas/0.1','Accept':'application/json'})
+                  with urllib.request.urlopen(req,timeout=35) as response:
+                      doc=json.loads(response.read())
+                  print(name,'OK records:', len((doc.get('resultList') or {}).get('result') or []) if name=='Europe PMC' else len(doc.get('results') or []))
+              except Exception as e:
+                  print(name,'ERROR',type(e).__name__,str(e)[:250])
+                  errors.append(name)
+          if len(errors)==len(sources): sys.exit('Both scholarly APIs failed; inspect network access and API credentials')
+          PY
