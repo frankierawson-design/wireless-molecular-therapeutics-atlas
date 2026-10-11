@@ -12,13 +12,22 @@ MODALITIES={
  "Magnetic":r"\b(?:magnetothermal|magnetoelectric|magnetomechanical|magnetically.trigger\w*|magnetic.hyperthermia|magnetic.field|magnetic.actuat\w*|magnetic.stimulation|magnetically.control\w*)\b",
  "Optical":r"\b(?:photodynamic|photothermal|photopharmacolog\w*|photoactivat\w*|photoswitch\w*|photocag\w*|light.trigger\w*|light.activated|near.infrared.(?:activat|trigger|respons)|NIR.(?:activat|trigger|respons))\b",
  "Radiofrequency":r"\b(?:radiofrequency|radio.frequency|RF.trigger\w*|RF.activat\w*|microwave.trigger\w*)\b",
- "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|electrochemical.drug|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*)\b"
+ "Electrochemical":r"\b(?:wireless.bipolar|bipolar.electrochem\w*|bipolar.electrod\w*|wirefree.electrochem\w*|wire.free.electrochem\w*|electrochemical.drug|electrochemical.pump|electrochemical.nitric.oxide|electroceutical\w*|electro.pharmaceut\w*|wireless.electrical|wireless.bioelectronic|bioelectronic.modulation|electrical.stimulation|electric.field|electrochemical.therapy|electron.transfer.therapy|electrochemical.release|electrochemical.generation|electric.pulse\w*|organic.electronic.ion.pump\w*|iontronic.click.to.release|electrically.controlled.drug|electrochemically.controlled.release|wirefree.{0,50}(?:drug|release|pedot|polymer|electrode)|(?:electroactive|conducting.polymer).{0,60}(?:drug.delivery|drug.release|neurostimulation|nerve.regeneration|cell.stimulation))\b"
 }
 THERAPY=r"\b(?:therap\w*|treat\w*|drug\w*|deliver\w*|release|cancer|tumou?r\w*|glioblastoma|melanoma|neuron\w*|nerve|neurostimulat\w*|regenerat\w*|heal\w*|apoptos\w*|ablat\w*|immunotherap\w*|pain|wound|disease|cell.death|chemotherap\w*|blood.brain.barrier|brain.stimulation|cell.modulat\w*)\b"
 REVIEW=r"\b(?:review|overview|bibliometric|meta.analysis|perspective|scientometric|recent.advances|current.progress|state.of.the.art|prospects|research.progress|roadmap|survey|abstract \d+)\b"
 DIAGNOSTIC=r"\b(?:biosens\w*|diagnos\w*|detect\w*|monitor\w*|sensor|aptasens\w*)\b"
 TRANSLATION=r"\b(?:in.vivo|animal|mice|mouse|xenograft|patient|clinical|porcine|human.trial|wound.closure|tumo\w*.regression)\b"
 REVIEW_ABSTRACT=r"\b(?:this review|in this review|here we review|review of current|the current review|we summariz|this perspective)\b"
+
+# Additional *strong* abstract evidence is used only when a paper's title
+# contains a matching electrical/electroactive device or delivery term.
+ELECTRO_ABSTRACT=r"\b(?:bipolar.electrochem\w*|wirefree.electrochem\w*|wire.less.electrochemical|organic.electronic.ion.pump\w*|wirelessly.controlled.electrochem\w*|wirefree.{0,55}(?:bipolar|drug.release|conducting.polymer)|photovoltaic.{0,90}ion.pump|electrochemically.driven.delivery|redox.controlled.release|electron.transfer.mediated.cell)\b"
+ELECTRO_PLATFORM_TITLE=r"\b(?:wirefree|wire.less|wirelessly|wireless|remote|ion.pump|iontronic|electroactive|conducting.polymer|pedot|electrochemical|electroresponsive|bioelectronic|nanoparticle|molecular|drug.delivery|drug.release|photovoltaic)\b"
+ELECTRO_DELIVERY=r"\b(?:drug.release|drug.delivery|on.demand.drug|molecular.delivery|neurotransmitter|acetylcholine|ion.pump|iontronic|release.of.molecules|pharmacologically.active)\b"
+ELECTRO_REMOTE=r"\b(?:wireless|wirefree|wire.free|unwired|remote|contactless|battery.free|near.field.communication|NFC|photovoltaic|photo.powered|light.driven|electromagnetic|ultrasonic|acoustic|inductively.powered|externally.generated.electric.field)\b"
+ELECTRO_BIO=r"\b(?:cancer|glioblastoma|neuron|nerve|wound|cell|biological|apoptos|tumou?r|therapy|disease|nerve.growth|antitumou?r)\b"
+
 SCORING_WEIGHTS={"citation_impact":0.35,"relevant_output":0.25,"authorship_leadership":0.20,"translational_indicators":0.10,"sustained_activity":0.10}
 def matches(pattern,text):return bool(re.search(pattern,text or "",re.I))
 def classify(records):
@@ -34,9 +43,23 @@ def classify(records):
             excluded["preprint_not_in_primary_ranking"]+=1;continue
         if matches(REVIEW,title) or matches(REVIEW_ABSTRACT,r.get("abstract") or ""):
             excluded["possible_review_or_nonoriginal"]+=1;continue
+        abstract=r.get("abstract") or ""
         mods=[m for m,p in MODALITIES.items() if matches(p,title)]
+        # Abstract-based recall only for titles that already identify a plausible
+        # electroactive platform: broad unrelated review background is not enough.
+        if "Electrochemical" not in mods and matches(ELECTRO_PLATFORM_TITLE,title) and matches(ELECTRO_ABSTRACT,abstract):
+            if matches(ELECTRO_REMOTE,title+" "+abstract) and (matches(ELECTRO_DELIVERY,title+" "+abstract) or matches(ELECTRO_BIO,title)):
+                mods.append("Electrochemical")
         if not mods:excluded["no_explicit_remote_energy_in_title"]+=1;continue
-        if not matches(THERAPY,title):excluded["no_therapeutic_endpoint_in_title"]+=1;continue
+        # For molecular delivery platforms the mechanism can be in the abstract
+        # even when the title lacks a disease or drug keyword.
+        therapy_title=matches(THERAPY,title)
+        platform_electro=("Electrochemical" in mods and
+                         matches(ELECTRO_PLATFORM_TITLE,title) and
+                         matches(ELECTRO_DELIVERY,title+" "+abstract) and
+                         matches(ELECTRO_REMOTE,title+" "+abstract))
+        if not therapy_title and not platform_electro:
+            excluded["no_therapeutic_endpoint_in_title"]+=1;continue
         if matches(DIAGNOSTIC,title) and not matches(r"\b(?:release|drug.delivery|therap\w*|treat\w*|neurostimulat\w*|wound.healing|cancer.therap\w*)\b",title):
             excluded["diagnostics_only"]+=1;continue
         if "Radiofrequency" in mods and matches(r"\b(?:atrial.fibrillation|cardiac|catheter|arrhythmia)\b",title) and not matches(r"\b(?:drug|nanoparticle|delivery|molecular)\b",title):
@@ -46,6 +69,13 @@ def classify(records):
         if not any(a.get("openalex_author_id") or norm_orcid(a.get("orcid")) for a in (r.get("authors") or [])):
             excluded["author_identifier_missing"]+=1;continue
         r2=dict(r);r2["year"]=year;r2["modalities"]=mods
+        if matches(r"\\b(?:apoptos\\w*|cancer.cell.death|wound.heal\\w*|tumou?r.regress\\w*|neur\\w*.regenerat\\w*|cell.stimulation|clinical.treat\\w*|cancer.therap\\w*)\\b",title):
+            tier="therapeutic_biological_candidate"
+        elif matches(ELECTRO_DELIVERY,title+" "+abstract):
+            tier="molecular_delivery_platform_candidate"
+        else:
+            tier="therapeutic_mechanism_candidate"
+        r2["evidence_tier"]=tier
         included.append(r2)
     return included,excluded
 
@@ -152,7 +182,7 @@ def make_ranks(included, all_records):
             position=a.get("position") or ("first" if i==0 else "last" if i==len(a_list)-1 else "middle")
             evidence={"title":r["title"],"doi":r.get("doi"),"url":r.get("openalex_id"),"year":r["year"],
                       "citations":r["citations_openalex"],"citation_percentile":percentile,
-                      "modalities":mods,"authorship":position,
+                      "modalities":mods,"authorship":position,"evidence_tier":r.get("evidence_tier","unclassified"),
                       "institutions":rank_institution(a)}
             k=r.get("doi") or r.get("openalex_id")
             person["papers"][k]=evidence
@@ -198,6 +228,7 @@ def main():
            "ambiguous_orcid_to_openalex_mappings":conflicts,
            "ranked_researchers":{k:len(v) for k,v in ranked.items()},
            "paper_modalities":dict(collections.Counter(m for r in included for m in r["modalities"])),
+           "evidence_tiers":dict(collections.Counter(r.get("evidence_tier","unclassified") for r in included)),
            "exclusions":dict(excluded)}
     result={"generated_utc":datetime.now(timezone.utc).isoformat(),
             "ranking_label":"Provisional automated literature-index ranking (NOT verified world standing)",
