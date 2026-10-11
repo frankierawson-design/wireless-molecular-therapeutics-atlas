@@ -35,7 +35,9 @@ def author_identity_status(doc, seed):
         return "not_harvested"
     target=seed.get("expected_orcid","").upper()
     authors=doc.get("authors") or []
-    if target and any(target in str(a.get("orcid") or "").upper() for a in authors):
+    if target and any(target in str(a.get("orcid") or "").upper() and
+                      "forster" in str(a.get("name") or "").casefold()
+                      for a in authors):
         return "orcid_verified_in_work_metadata"
     if any("forster" in str(a.get("name") or "").casefold() and
            re.search(r"\b(?:robert|r\.?\s*j\.?)\b",str(a.get("name") or ""),re.I)
