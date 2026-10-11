@@ -41,6 +41,47 @@ QUERIES = {
   "contactless electrochemical therapeutic stimulation",
   "redox controlled drug release electroactive biomaterials",
  ],
+ "ttfields": [
+  "tumor treating fields glioblastoma clinical trial",
+  "tumour treating fields anti mitotic alternating electric fields",
+  "TTFields glioblastoma overall survival",
+  "tumor treating fields non small cell lung cancer ovarian mesothelioma",
+  "alternating electric fields cancer cell division therapy",
+  "Optune NovoTTF tumour treatment",
+ ],
+ "electrochemotherapy": [
+  "electrochemotherapy bleomycin clinical trial cancer",
+  "electrochemotherapy cisplatin tumor metastases",
+  "ESOPE electrochemotherapy procedures outcomes",
+  "electrochemotherapy melanoma head neck cancer",
+  "electropermeabilization bleomycin tumour treatment",
+  "electrochemotherapy endoscopic deep seated tumors",
+ ],
+ "electroporation": [
+  "irreversible electroporation cancer ablation clinical trial",
+  "high frequency irreversible electroporation H FIRE tumor",
+  "reversible electroporation drug delivery therapy",
+  "nanosecond pulsed electric fields cancer cell ablation",
+  "pulsed field ablation cardiac atrial fibrillation trial",
+  "electroporation gene electrotransfer clinical therapy",
+ ],
+ "neuromodulation": [
+  "deep brain stimulation Parkinson disease randomised trial",
+  "vagus nerve stimulation epilepsy depression clinical trial",
+  "spinal cord stimulation chronic pain therapy trial",
+  "transcranial direct current stimulation depression tDCS trial",
+  "transcranial alternating current stimulation tACS clinical",
+  "peripheral nerve stimulation therapeutic bioelectronics",
+  "transcutaneous electrical nerve stimulation pain randomized",
+ ],
+ "electrical_stimulation": [
+  "electrical stimulation wound healing randomized trial",
+  "electric field guided cell migration wound repair",
+  "electrical stimulation tissue regeneration therapy",
+  "electric field stimulation cancer cells apoptosis therapy",
+  "electrical stimulation osteogenesis bone healing",
+  "electrical muscle stimulation rehabilitation trial",
+ ],
  "ultrasound": [
   "sonodynamic therapy nanoparticles cancer",
   "ultrasound triggered drug delivery",
@@ -93,6 +134,12 @@ DOI_SENTINELS=(
  "10.1016/j.apmt.2022.101481",
  "10.1016/j.elecom.2023.107626",
  "10.1016/j.coelec.2023.101297",
+ # Source-verified sentinel studies for distinct electric-field treatment branches.
+ "10.1001/jama.2017.18718",       # TTFields, EF-14 phase 3
+ "10.1001/jama.2015.16669",       # TTFields, EF-14 interim
+ "10.1016/j.ejcsup.2006.08.002", # ESOPE electrochemotherapy clinical
+ "10.1007/s00270-010-9964-1",    # clinical irreversible electroporation
+ "10.1056/nejmoa060281",        # deep brain stimulation controlled trial
 )
 # These named bylines and ORCID links were checked against primary publisher or
 # institutional records. Do not attribute identities solely from a surname match.
