@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows:
       - Literature census (candidate harvest)
+      - Electrochemical expansion harvest
     types:
       - completed
   push:
@@ -12,6 +13,7 @@ on:
       - "index.html"
       - "atlas_site.zip"
       - "methods/build_provisional_rankings.py"
+      - "methods/electrochemical_seed_audit.py"
       - "methods/collect_literature.py"
       - "tests/**"
       - ".github/workflows/publish-website.yml"
@@ -54,7 +56,7 @@ jobs:
           mkdir -p _harvest
           RUN_ID="${COMPLETED_HARVEST_ID}"
           if [ -z "$RUN_ID" ]; then
-            RUN_ID="$(gh run list --repo "$GITHUB_REPO" --workflow "Literature census (candidate harvest)" --status success --limit 1 --json databaseId --jq '.[0].databaseId')"
+            RUN_ID="$(gh run list --repo "$GITHUB_REPO" --status success --limit 80 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | last | .databaseId')"
           fi
           if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
             echo "::error::No successful harvest run. Rankings cannot be updated."
@@ -81,6 +83,11 @@ jobs:
           print("Screened papers:",d["summary"]["machine_screened_papers"])
           print("Top 5:",[(r["name"],r["score"]) for r in d["rankings"]["Overall"][:5]])
           PY
+      - name: Generate electrochemical DOI coverage audit for the website
+        run: |
+          python methods/electrochemical_seed_audit.py \
+            --input _harvest/candidates.json \
+            --output _site/data/electrochemical_coverage_audit.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
