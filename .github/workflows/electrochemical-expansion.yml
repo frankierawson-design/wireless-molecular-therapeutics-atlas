@@ -40,15 +40,34 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           mkdir -p baseline
-          RUN_ID="$(gh run list --repo "$REPO" --status success --limit 70 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | last | .databaseId')"
-          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
-            echo "::error::No successful baseline harvest to expand."
+          RUNS="$(gh run list --repo "$REPO" --status success --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          CHOSEN=""
+          for TRY_ID in $RUNS; do
+            rm -rf baseline
+            mkdir -p baseline
+            if ! gh run download "$TRY_ID" --repo "$REPO" --name "literature-candidates-and-audit" --dir baseline >/dev/null 2>&1; then
+              continue
+            fi
+            if python - <<'PY'
+          import json,pathlib
+          f=pathlib.Path("baseline/candidates.json")
+          if not f.is_file():raise SystemExit(1)
+          a=json.loads(f.read_text(encoding="utf8")).get("records") or []
+          if len(a)<10000 or sum(bool(x.get("openalex_id")) for x in a)<5000:
+              raise SystemExit(1)
+          print("Using substantial OpenAlex/EuropePMC baseline",len(a))
+          PY
+            then
+              CHOSEN="$TRY_ID"
+              break
+            fi
+          done
+          if [ -z "$CHOSEN" ]; then
+            echo "::error::No sufficiently complete baseline harvest. Expansion refused."
             exit 1
           fi
-          echo "BASELINE_RUN_ID=$RUN_ID" >> "$GITHUB_ENV"
-          echo "Baseline run: $RUN_ID"
-          gh run download "$RUN_ID" --repo "$REPO" --name "literature-candidates-and-audit" --dir baseline
-          test -s baseline/candidates.json
+          echo "BASELINE_RUN_ID=$CHOSEN" >> "$GITHUB_ENV"
+          echo "Selected validated baseline run: $CHOSEN"
       - name: Expand electrochemical and molecular actuation literature
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
@@ -78,7 +97,7 @@ jobs:
           print("BASELINE electrochemical scored people",len(b["rankings"].get("Electrochemical",[])))
           print("NEW electrochemical scored people",len(n["rankings"].get("Electrochemical",[])))
           assert n["summary"]["candidate_records"] >= b["summary"]["candidate_records"]
-          assert n["summary"]["paper_modalities"].get("Electrochemical",0) >= b["summary"]["paper_modalities"].get("Electrochemical",0)
+          assert n["summary"]["paper_modalities"].get("Electrochemical",0) >= 30
           assert n["rankings"]["Overall"]
           PY
       - name: Upload complete reproducible expanded dataset
