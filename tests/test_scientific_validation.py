@@ -6,6 +6,7 @@ sys.path.insert(0,str(ROOT/"validation"))
 import generate_review_packets as gen
 import evaluate_reviews as ev
 import ranking_sensitivity as stability
+import generate_author_identity_audit as identities
 
 def paper(title,doi,abstract="",oa="article"):
     return {"title":title,"doi":doi,"pmid":"","year":2024,
@@ -88,6 +89,21 @@ class ValidationTests(unittest.TestCase):
     def test_wilson_bounds_valid(self):
         lo,hi=ev.wilson(49,50)
         self.assertLess(lo,.98);self.assertGreaterEqual(hi,.98)
+
+    def test_author_paper_sampling_has_source_links_without_rank_labels(self):
+        works=[paper("Wireless bipolar electrochemistry cancer cell therapy", "10.1000/a"),
+               paper("Remote conductive polymer drug release in cellular therapy","10.1000/b"),
+               paper("General unrelated study with author affiliation","10.1000/c")]
+        ranks={"rankings":{"Overall":[{"openalex_author_id":"https://openalex.org/A2345"}]}}
+        reviewers,key,manifest=identities.sampling(works,ranks,seed=41,
+            quotas={k:2 for k in identities.QUOTAS})
+        self.assertGreater(len(reviewers),0)
+        self.assertEqual(len(reviewers),len(key))
+        self.assertEqual(len({x["audit_id"] for x in reviewers}),len(reviewers))
+        self.assertTrue(all("rank" not in x and "sampling_weight" not in x for x in reviewers))
+        self.assertTrue(all(not x["classification_correct_wrong_person_split_ambiguous_unverifiable"] for x in reviewers))
+        self.assertEqual(reviewers,identities.sampling(works,ranks,seed=41,
+            quotas={k:2 for k in identities.QUOTAS})[0])
 
     def test_rank_model_is_explicitly_not_world_validated(self):
         data={"methods_version":"fixture","rankings":{"Overall":[
