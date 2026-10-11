@@ -37,6 +37,10 @@ class ForsterCoverageTests(unittest.TestCase):
         self.assertEqual(audit.author_identity_status({
             "authors": [{"name": "Unrelated Author"}]
         }, seed), "expected_author_absent_from_work_metadata")
+        self.assertNotEqual(audit.author_identity_status({
+            "authors": [{"name": "Unrelated Author", "orcid": "0000-0001-5079-3123"},
+                        {"name": "Robert J. Forster"}]
+        }, seed), "orcid_verified_in_work_metadata")
 
     def test_visible_correction_and_explicit_unavailable_fallback(self):
         page = (ROOT / "index.html").read_text(encoding="utf-8")
