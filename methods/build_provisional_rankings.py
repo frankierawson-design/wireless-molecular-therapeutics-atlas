@@ -43,7 +43,7 @@ def classify(records):
             mods.remove("Radiofrequency")
         if not mods:excluded["nonmolecular_radiofrequency"]+=1;continue
         if len(mods)>=2: mods.append("Hybrid")
-        if not any(a.get("openalex_author_id") for a in (r.get("authors") or [])):
+        if not any(a.get("openalex_author_id") or norm_orcid(a.get("orcid")) for a in (r.get("authors") or [])):
             excluded["author_identifier_missing"]+=1;continue
         r2=dict(r);r2["year"]=year;r2["modalities"]=mods
         included.append(r2)
