@@ -277,6 +277,7 @@ def reconcile_documented_authorship(record):
         author["orcid"]="https://orcid.org/"+orcid
         author["publisher_orcid_evidence_url"]=correction["evidence_url"]
         record["publisher_orcid_conflict_corrected"]=True
+        record.pop("documented_identity_conflict",None)
         record["publisher_orcid_correction_source"]=correction["source"]
     if not actual:author["orcid"]="https://orcid.org/"+orcid
     author["verified_orcid_from_publication"]=orcid
