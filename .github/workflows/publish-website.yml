@@ -12,6 +12,8 @@ on:
       - "index.html"
       - "atlas_site.zip"
       - "methods/build_provisional_rankings.py"
+      - "methods/collect_literature.py"
+      - "tests/**"
       - ".github/workflows/publish-website.yml"
 permissions:
   contents: read
@@ -61,6 +63,8 @@ jobs:
           echo "Candidate harvest run: $RUN_ID"
           gh run download "$RUN_ID" --repo "$GITHUB_REPO" --name "literature-candidates-and-audit" --dir _harvest
           test -s _harvest/candidates.json
+      - name: Validate identity, merge and institution regression tests
+        run: python -m unittest discover -s tests -v
       - name: Calculate provisional, paper-backed rankings
         run: |
           python methods/build_provisional_rankings.py \
