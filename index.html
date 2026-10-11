@@ -164,9 +164,9 @@ ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding
 </section>
 <aside class="known-coverage" aria-label="Documented author coverage and identity issue">
  <div class="eyebrow">Open correction case · 11 October 2026</div>
- <h3>Robert J. Forster (Dublin City University): publication and author-identity reconciliation pending</h3>
- <p>Four publisher- or institution-confirmed DOI records are being audited for retrieval and correct author attribution. The 2024 overview is a review, while the other three are original studies primarily demonstrating wireless polymer deposition or modelling; none should be assigned a therapeutic-research ranking without a documented eligibility decision. An absent numerical position is <strong>not</strong> evidence of a lack of relevant research.</p>
- <p id="forster-audit-status" role="status">Checking these four DOIs against the published harvest…</p>
+ <h3 id="forster-case-heading">Robert J. Forster (Dublin City University): source-backed ranking reconciliation</h3>
+ <p>Four original wireless stimulation and molecular-release studies, plus relevant reviews and enabling papers, now have exact DOI checks. Only original studies that pass the same eligibility rules as other researchers contribute to scores. An absent numerical position is <strong>not</strong> evidence of a lack of relevant research.</p>
+ <p id="forster-audit-status" role="status">Checking the independently documented DOI records against the published harvest…</p>
  <p><a href="#electro-coverage">Inspect the DOI-by-DOI coverage checks ↓</a> · <a href="https://orcid.org/0000-0001-5079-3123" target="_blank" rel="noopener">Forster ORCID ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Report another author or publication error ↗</a></p>
  <p>Other unresolved ORCID/OpenAlex conflicts are recorded separately in the automated quality audit. Neither a matching surname nor a passing software test establishes a verified researcher identity.</p>
 </aside>
@@ -257,7 +257,7 @@ function showEvidence(i){
  var r=rows[i];if(!r)return;
  var parts=r.components||{};
  var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">'+(r.rank==null?'No comparative rank':'Position '+r.rank)+' · Automated score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
- body+='<p><a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> '+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
+ body+='<p>'+(r.openalex_author_id?'<a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> ':'')+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
  body+='<p><strong>Institution:</strong> '+esc(r.institution||'Not verified')+(r.institution_year?' (documented '+esc(r.institution_year)+')':'')+'. <em>Historical publication metadata; current employment not confirmed.</em></p>';
  body+='<p><strong>Document-type confidence:</strong> '+Number(r.document_types_confirmed||0)+' of '+r.publication_count+' scored works explicitly typed as original articles by source metadata. Exact-title duplicates suppressed: '+Number(r.duplicates_suppressed||0)+'. A type not recorded is not independently verified.</p>';
  body+='<p><strong>Score components:</strong> citation '+(parts.citation_impact||0)+', output '+(parts.relevant_output||0)+', authorship '+(parts.authorship_leadership||0)+', translational proxy '+(parts.translational_indicators||0)+', sustained activity '+(parts.sustained_activity||0)+'.</p>';
@@ -345,6 +345,14 @@ fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if
  get("metric-people").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Overall||0).toLocaleString();
  get("electro-paper-count").textContent=(sm.paper_modalities&&sm.paper_modalities.Electrochemical||0).toLocaleString();
  get("electro-author-count").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Electrochemical||0).toLocaleString();
+ var fr=(d.rankings.Electrochemical||[]).filter(function(r){return (r.orcid||"").includes("0000-0001-5079-3123");});
+ if(fr.length===1){
+   get("forster-case-heading").textContent="Robert J. Forster (Dublin City University): included in provisional electrochemical comparison";
+   var rank=fr[0].rank==null?"No ordinal position assigned in this cohort":"Provisional electrochemical position "+fr[0].rank;
+   get("forster-case-heading").insertAdjacentText("beforeend"," — "+rank);
+ } else {
+   get("forster-case-heading").textContent="Robert J. Forster (Dublin City University): ranking reconciliation still incomplete";
+ }
  render(true);
 }).catch(function(err){get("rank-summary").textContent="Ranking data are not yet deployed ("+err.message+"). The literature harvest is available through the GitHub Actions link.";get("rank-body").innerHTML='<tr><td colspan="7">Waiting for a published ranking artifact.</td></tr>';});
 })();
