@@ -112,7 +112,11 @@ def merge(out,record):
         if new_ids > old_ids:
             if len(old_authors)==len(new_authors):
                 for a,b in zip(new_authors,old_authors):
-                    if not a.get("orcid") and b.get("orcid"):
+                    # Do not transfer an ORCID to an unrelated author if
+                    # the two providers disagree on byline ordering.
+                    tokens_a={x for x in re.findall(r"[a-z]{4,}",(a.get("name") or "").lower())}
+                    tokens_b={x for x in re.findall(r"[a-z]{4,}",(b.get("name") or "").lower())}
+                    if (tokens_a & tokens_b) and not a.get("orcid") and b.get("orcid"):
                         a["orcid"]=b["orcid"]
             old["authors"]=new_authors
             old["author_source"]="OpenAlex authorships (exact work/DOI)"
@@ -136,7 +140,9 @@ def epmc_search(phrase, pages, perpage, output, audit):
                 merge(output,{"title":hit.get("title") or "", "doi":doi_norm(hit.get("doi")),
                     "pmid":hit.get("pmid") or "", "openalex_id":"", "year":hit.get("pubYear"),
                     "abstract":re.sub("<[^>]*>"," ",hit.get("abstractText") or ""),
-                    "publication_types":[v.get("name") or "" for v in (hit.get("pubTypeList") or {}).get("pubType") or []],
+                    "publication_types":[(v.get("name") or "") if isinstance(v,dict) else str(v)
+                         for v in ((hit.get("pubTypeList") or {}).get("pubType") or [])
+                         if isinstance(v,(str,dict))],
                     "authors":epmc_authors(hit),"citations_openalex":None,
                     "source_databases":["Europe PMC"],"source_queries":[phrase],
                     "review_status":"UNSCREENED","identity_status":"UNVERIFIED"})
