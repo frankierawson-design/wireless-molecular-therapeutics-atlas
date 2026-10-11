@@ -105,7 +105,7 @@ def make_ranks(included):
                          "first_last_papers":sum(p["authorship"] in ("first","last") for p in papers),
                          "components":parts,"papers":papers})
         rows.sort(key=lambda a:(-a["score"],-a["publication_count"],a["name"].casefold(),a["openalex_author_id"]))
-        for i,a in enumerate(rows,1):a["rank"]=i
+        for i,a in enumerate(rows,1):a["rank"]=i if len(rows)>=10 else None
         ranks[group]=rows
     return ranks,len(authors)
 
@@ -135,7 +135,8 @@ def main():
                 "Only works with OpenAlex citation counts AND linked OpenAlex author IDs score; Europe PMC-only and unresolved identities are excluded from numerical positions.",
                 "Citations are ranked within the harvested year/modality cohort, not global field-normalized citations.",
                 "Clinical translation is a title-keyword proxy, not validated clinical impact.",
-                "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking."
+                "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking.",
+                "A category with fewer than 10 scorable researchers is not assigned ordinal positions."
             ],"rankings":ranked}
     out=pathlib.Path(opts.output);out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(result,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
