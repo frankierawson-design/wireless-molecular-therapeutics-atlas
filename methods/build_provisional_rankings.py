@@ -41,8 +41,13 @@ def classify(records):
             excluded["no_linked_openalex_work_or_citation"]+=1;continue
         if re.match(r"^10\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
             excluded["preprint_not_in_primary_ranking"]+=1;continue
+        # Some indexed supplement entries have their own DOIs but are
+        # meeting abstracts, not independent peer-reviewed full articles.
+        conference_abstract_dois={"10.1093/neuonc/noaf185.039"}
+        if str(r.get("doi") or "").casefold() in conference_abstract_dois:
+            excluded["conference_abstract_not_full_paper"]+=1;continue
         pubtypes="; ".join(str(x) for x in (r.get("publication_types") or []))
-        curated_review_dois={"10.1039/d3bm01946b"}
+        curated_review_dois={"10.1039/d3bm01946b", "10.1016/j.elecom.2024.107832"}
         if (matches(REVIEW,title)
             or matches(REVIEW_ABSTRACT,r.get("abstract") or "")
             or matches(r"\b(?:review|meta.analysis|editorial|perspective)\b",pubtypes)
