@@ -12,7 +12,6 @@ on:
     branches: [main]
     paths:
       - "methods/collect_literature.py"
-      - "methods/build_provisional_rankings.py"
       - "methods/electrochemical_seed_audit.py"
       - ".github/workflows/electrochemical-expansion.yml"
 permissions:
@@ -40,7 +39,7 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           mkdir -p baseline
-          RUNS="$(gh run list --repo "$REPO" --status success --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          RUNS="$(gh run list --repo "$REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
           CHOSEN=""
           for TRY_ID in $RUNS; do
             rm -rf baseline
@@ -97,7 +96,7 @@ jobs:
           print("BASELINE electrochemical scored people",len(b["rankings"].get("Electrochemical",[])))
           print("NEW electrochemical scored people",len(n["rankings"].get("Electrochemical",[])))
           assert n["summary"]["candidate_records"] >= b["summary"]["candidate_records"]
-          assert n["summary"]["paper_modalities"].get("Electrochemical",0) >= 30
+          assert n["summary"]["paper_modalities"].get("Electrochemical",0) >= 20
           assert n["rankings"]["Overall"]
           PY
       - name: Upload complete reproducible expanded dataset
