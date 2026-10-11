@@ -4,12 +4,12 @@
 
 ## Review question
 
-Who has contributed to peer-reviewed research on **therapeutic molecular or cellular effects remotely activated by externally delivered energy**, including electrical/inductive, ultrasound/acoustic, magnetic, optical, radiofrequency and hybrid systems?
+Who has contributed to primary research on **electrically, electromagnetically or otherwise externally actuated therapeutic cellular and molecular effects**, including TTFields, electrochemotherapy, electroporation, neuromodulation, tissue electrical stimulation, electrochemical redox therapies, ultrasound, magnetic, optical and hybrid technologies? Wired clinical interventions can qualify within the five expanded electrical-treatment categories. Remote actuation remains a specific requirement only where the stated category definition requires it.
 
 ## Eligibility
 
 Inclusion at full-text review:
-1. Primary research with documented externally applied or wirelessly delivered energy.
+1. Primary research with documented external-field, electrical-stimulation or wirelessly delivered energy. Wired treatment modalities are eligible within their correctly labelled electrical-treatment categories.
 2. Demonstrates a directly relevant molecular/cellular transduction mechanism or therapeutically relevant biological endpoint (e.g., controlled delivery, therapeutic cell modulation, tumour intervention).
 3. Defines experimental system, stimulus, and endpoint with sufficient detail to classify evidence.
 4. Peer-reviewed original study or clearly labelled preprint; retain preprints in a distinct stratum.
@@ -17,7 +17,7 @@ Inclusion at full-text review:
 Exclusions from the **therapeutic research score**:
 - Reviews/editorials (keep as reference expansion leads).
 - Purely diagnostic sensors with no therapeutic biological intervention.
-- Conventional wired-only stimulation without remote actuation (retain as adjacent background).
+- Wired-only electrochemical redox mechanisms that do not meet the Wireless Electrochemical pathway's actuation criteria are excluded from that pathway, but genuine wired electrochemotherapy, electroporation, neuromodulation and tissue stimulation must remain eligible under their distinct treatment categories.
 - Non-therapeutic materials characterization or simulations without linked biological mechanism (retain as enabling evidence, not a demonstrated therapy).
 - Generic radiation oncology or unrelated phototherapy studies without a qualifying molecular-actuation pathway.
 
@@ -60,7 +60,7 @@ Downloaded candidate records are available as GitHub Actions artifacts and requi
 
 The original five electrochemical searches severely underrepresented wireless bipolar electrochemistry, photo-driven organic ion pumps, wirefree controlled release, bioelectronic tumour interventions and remotely powered therapeutic pumps. A targeted expanded query family now covers those mechanisms with separate search provenance and capped per-query pagination; new records are merged into the broader deduplicated corpus. Abstract-index reconstruction improves recall when a paper's title alone lacks the therapeutic molecular mechanism.
 
-**Remote actuation requirement:** Conventional wired-only electrochemotherapy, electrochemical sensors, and analytical/electrodeposition papers without qualifying remote molecular or cellular therapeutic intervention do not enter the core researcher score merely because they contain relevant electrical vocabulary.
+**Mechanism-specific eligibility:** Conventional wired-only electrochemotherapy is now eligible for the separate Electrochemotherapy therapeutic pathway. The remote/contactless criterion remains for the Wireless Electrochemical redox pathway. Electrochemical sensors, analytical-only platforms and deposition papers without a therapeutic biological endpoint do not receive therapeutic score credit.
 
 **Evidence tier labels:** Machine-screened papers are preliminarily flagged as biological therapeutic candidate, molecular-delivery platform candidate, or therapeutic-mechanism candidate. These labels are *not* verified efficacy claims. Reviews, title-only misleading matches and preprints are excluded from primary numerical scores under documented rules. Unresolved studies remain in a review queue.
 
@@ -69,3 +69,17 @@ The original five electrochemical searches severely underrepresented wireless bi
 **Provisional score in the live version:** 35% within-harvest, modality/year citation percentile; 25% relevant paper output; 20% first/last author proxy; 10% title-level translation proxy; 10% active publication years. This is **not** robust external field-normalisation or proof of clinical impact. Full source DOIs, evidence titles, recorded institutions and current screening audit must accompany any reported position. Ranking positions can change when query coverage improves.
 
 **Next validation stage:** Independent title/abstract screening, sampled precision/recall review per modality, full-text adjudication, author cross-database reconciliation and defensible career-stage/field-normalised measures.
+
+## Expanded electrical intervention literature (11 October 2026)
+
+A coverage audit revealed that the historical wireless-focused search and its generic `electric.field` electrochemical classifier missed major established electrical therapies and could mislabel electric-field cancer treatment as electrochemistry.
+
+The new **six-pathway** taxonomy is: (1) Tumour Treating Fields (TTFields), including alternating fields in oncology; (2) Electrochemotherapy, including electrode-assisted delivery of chemotherapy; (3) Electroporation and pulsed-field ablation, including reversible and irreversible pulses, H-FIRE, nsPEF and cardiac PFA; (4) Electrical neuromodulation, including DBS, VNS, SCS, tDCS, tACS and PNS; (5) Electrical stimulation of cells and tissues, including wound healing and regeneration; (6) Electrochemical redox and bipolar wireless systems.
+
+**Exclusion hierarchy:** Identify original work and source DOI; retain pure reviews and abstracts only in the bibliography; distinguish clinical patient intervention, in vivo animal efficacy, in vitro mechanistic intervention, and enabling-device research. Label original articles with more than one treatment approach separately. Multiple terms describing electricity do not create a Hybrid classification unless genuinely independent energy-delivery families are used.
+
+**Coverage audit:** The workflow fetches Europe PMC and OpenAlex publications from targeted search expressions and uses independent source-confirmed DOI sentinels for EF-14, ESOPE, IRE, pulsed-field cardiac ablation, deep-brain/tDCS neuromodulation and wound stimulation. The public `electrical_treatment_coverage_audit.json` reports for each treatment class the sentinel counts, machine-classified candidate count and query errors. It is a *discovery quality smoke test*, not scientific completeness or validated recall, and all full-text screening fields remain at zero pending assessment.
+
+**A defensible claim of comprehensive coverage requires** independently designed synonyms and database searches, search-string sensitivity comparisons, page-cap and reported-total audits, prospective capture–recapture/novel-hit saturation analysis, systematic forward/backward citation expansion, duplicate adjudication, blinded dual article-type and intervention screening, per-category precision/recall estimates with confidence intervals, and ORCID + publisher and institution reconciliation. A pass of the DOI sentinel tests is insufficient.
+
+**Ranking release:** Overall scores computed before and after this expansion have different comparison populations and should not be compared as changes in an investigator's actual scientific standing. Core and intervention-specific positions remain **exploratory** until independent screening and field/year/career-stage normalization have been established.
