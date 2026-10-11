@@ -39,8 +39,10 @@ def classify(records):
         if not 2000<=year<=2026:excluded["publication_year_out_of_scope"]+=1;continue
         if not r.get("openalex_id") or not isinstance(r.get("citations_openalex"),int):
             excluded["no_linked_openalex_work_or_citation"]+=1;continue
-        if re.match(r"^10\.(?:1101/|26434/chemrxiv)",str(r.get("doi") or ""),re.I):
+        if re.match(r"^10\.(?:1101/|26434/chemrxiv|2139/ssrn|48550/arxiv|20944/preprints|21203/rs)",str(r.get("doi") or ""),re.I):
             excluded["preprint_not_in_primary_ranking"]+=1;continue
+        if re.match(r"^10\.(?:17615/|25148/etd|3929/)",str(r.get("doi") or ""),re.I):
+            excluded["repository_record_requires_original_article"]+=1;continue
         # Some indexed supplement entries have their own DOIs but are
         # meeting abstracts, not independent peer-reviewed full articles.
         conference_abstract_dois={"10.1093/neuonc/noaf185.039"}
@@ -196,13 +198,31 @@ def institution_lookup(all_records,links):
         out[key]=sorted(byname.values(),key=lambda z:(-z["last_year"],-z["count"],z["name"].casefold()))
     return out
 
+def normalized_work_title(title):
+    """Conservative exact-normalized title, for duplicate manifestations per author."""
+    return re.sub(r"[^a-z0-9]+","",str(title or "").casefold())
+
+def evidence_priority(paper):
+    """Prefer publisher article to undated record, then stronger citation evidence."""
+    paper_type=(paper.get("openalex_work_type") or "").casefold()
+    doi=str(paper.get("doi") or "").casefold()
+    journal_doi=bool(doi and not re.match(
+        r"^10\.(?:17615/|25148/etd|3929/|48550/|2139/ssrn|1101/|21203/rs)",doi))
+    return (
+        int(paper_type=="article"),
+        int(journal_doi),
+        int(bool(doi)),
+        int(paper.get("citations") or 0),
+        int(paper.get("year") or 0),
+    )
+
 def make_ranks(included, all_records):
     links,conflicts=identity_map(all_records)
     institution_by_author=institution_lookup(all_records,links)
     cohorts=collections.defaultdict(list)
     for r in included:
         for mod in r["modalities"]:cohorts[(r["year"],mod)].append(r["citations_openalex"])
-    authors=collections.defaultdict(lambda:{"name":"","orcid":"","papers":{},"identity_sources":set()})
+    authors=collections.defaultdict(lambda:{"name":"","orcid":"","papers":{},"identity_sources":set(),"duplicates_suppressed":0})
     for r in included:
         mods=r["modalities"]
         percentile=round(sum(cohort_percentile(r["citations_openalex"],r["year"],m,cohorts) for m in mods)/len(mods),2)
@@ -220,9 +240,20 @@ def make_ranks(included, all_records):
             evidence={"title":r["title"],"doi":r.get("doi"),"url":r.get("openalex_id"),"year":r["year"],
                       "citations":r["citations_openalex"],"citation_percentile":percentile,
                       "modalities":mods,"authorship":position,"evidence_tier":r.get("evidence_tier","unclassified"),
-                      "institutions":rank_institution(a)}
-            k=r.get("doi") or r.get("openalex_id")
-            person["papers"][k]=evidence
+                      "institutions":rank_institution(a),
+                      "openalex_work_type":r.get("openalex_work_type") or "",
+                      "document_type_status":"metadata_article" if str(r.get("openalex_work_type") or "").casefold()=="article" else "not_confirmed"}
+            k=normalized_work_title(r.get("title")) or r.get("doi") or r.get("openalex_id")
+            # Same author + same normalized title is one research work, even
+            # when a repository copy has another DOI or publication year.
+            # The source links remain in the corpus for screening.
+            old=person["papers"].get(k)
+            if old:
+                person["duplicates_suppressed"]+=1
+                if evidence_priority(evidence)>evidence_priority(old):
+                    person["papers"][k]=evidence
+            else:
+                person["papers"][k]=evidence
     ranks={}
     for group in ["Overall",*MODALITIES,"Hybrid"]:
         rows=[]
@@ -244,7 +275,9 @@ def make_ranks(included, all_records):
                          "score":total,"publication_count":len(papers),
                          "indexed_citations":sum(p["citations"] for p in papers),
                          "first_last_papers":sum(p["authorship"] in ("first","last") for p in papers),
-                         "components":parts,"papers":papers})
+                         "components":parts,"papers":papers,
+                         "duplicates_suppressed":a["duplicates_suppressed"],
+                         "document_types_confirmed":sum(p.get("document_type_status")=="metadata_article" for p in papers)})
         rows.sort(key=lambda a:(-a["score"],-a["publication_count"],a["name"].casefold(),a["openalex_author_id"]))
         for i,a in enumerate(rows,1):a["rank"]=i if len(rows)>=10 else None
         ranks[group]=rows
@@ -279,6 +312,8 @@ def main():
                 "Institutions represent the most recent affiliation documented on harvested OpenAlex work records; they are not verified current employers.",
                 "Preprints, dissertations, books and conference materials are excluded by OpenAlex document type when available; works without DOI or PMID require review.",
                 "Original-publication status cannot be verified for many older records lacking source document-type metadata.",
+                "Exact-title duplicates are collapsed within each author; potentially different studies with the same title require adjudication.",
+                "Institutional repository deposits and DOI-marked preprints are excluded pending original journal source confirmation.",
                 "Citations are ranked within the harvested year/modality cohort, not global field-normalized citations.",
                 "Clinical translation is a title-keyword proxy, not validated clinical impact.",
                 "Scored positions are relative to this particular retrieved and machine-screened dataset, not an exhaustive world ranking.",
@@ -288,7 +323,7 @@ def main():
     out.write_text(json.dumps(result,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     csvpath=pathlib.Path(opts.csv);csvpath.parent.mkdir(parents=True,exist_ok=True)
     with csvpath.open("w",newline="",encoding="utf-8-sig") as f:
-        fields=["category","rank","researcher","openalex_author_id","orcid","institution","institution_year","institution_source_work","identity_method","score","machine_matched_papers","indexed_citations","first_last_papers",*SCORING_WEIGHTS]
+        fields=["category","rank","researcher","openalex_author_id","orcid","institution","institution_year","institution_source_work","identity_method","document_types_confirmed","duplicates_suppressed","score","machine_matched_papers","indexed_citations","first_last_papers",*SCORING_WEIGHTS]
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
         for category,rows in ranked.items():
             for r in rows:
@@ -296,6 +331,8 @@ def main():
                             "openalex_author_id":r["openalex_author_id"],"orcid":r["orcid"],
                             "institution":r["institution"],"institution_year":r["institution_year"],
                             "institution_source_work":r["institution_source_work"],"identity_method":r["identity_method"],
+                            "document_types_confirmed":r["document_types_confirmed"],
+                            "duplicates_suppressed":r["duplicates_suppressed"],
                             "score":r["score"],"machine_matched_papers":r["publication_count"],
                             "indexed_citations":r["indexed_citations"],"first_last_papers":r["first_last_papers"],
                             **r["components"]})
