@@ -149,7 +149,7 @@ def main():
             print("SEARCH",modality,phrase,flush=True)
             if a.source in ("both","epmc"): epmc_search(phrase,a.pages,a.epmc_page_size,records,audit)
             if a.source in ("both","openalex"):openalex_search(phrase,a.pages,a.openalex_page_size,records,audit)
-    arr=sorted(records.values(),key=lambda r:(r.get("year") or 0),reverse=True)
+    arr=sorted(records.values(),key=lambda r: int(r.get('year') or 0) if str(r.get('year') or '').isdigit() else 0,reverse=True)
     now=datetime.datetime.now(datetime.timezone.utc).isoformat()
     (folder/"candidates.json").write_text(json.dumps({"generated_utc":now,"scope":"candidate discovery only; not screened or exhaustive","records":arr},ensure_ascii=False,indent=2),encoding="utf8")
     (folder/"query_audit.json").write_text(json.dumps(audit,indent=2,ensure_ascii=False),encoding="utf8")
@@ -165,6 +165,11 @@ def main():
              "bounded_by_page_limits":True,"rankings_permitted":False,"full_text_screened":0,
              "note":"A successful run does not establish exhaustive retrieval, author identity or eligible field publications."}
     (folder/"summary.json").write_text(json.dumps(summary,indent=2),encoding="utf8")
+    # Export a dual-review-ready CSV; leave all eligibility decisions empty.
+    import subprocess
+    subprocess.run([sys.executable,str(pathlib.Path(__file__).with_name("build_screening_sheet.py")),
+                    "--input",str(folder/"candidates.json"),
+                    "--output",str(folder/"manual_screening_sheet.csv")],check=True)
     print(json.dumps(summary,indent=2))
     if not arr:raise SystemExit("ERROR: no records retrieved: inspect query_audit.json")
 if __name__=="__main__":main()
