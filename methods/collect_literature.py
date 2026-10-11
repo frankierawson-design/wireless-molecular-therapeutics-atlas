@@ -14,6 +14,32 @@ QUERIES = {
   "wireless electrochemical drug delivery",
   "electrochemical drug release therapy",
   "wireless electroceutical nanoparticles",
+  "bipolar electroactive conducting polymers cell stimulation",
+  "wirefree electrochemical stimulation biological cells",
+  "bipolar electrostimulation nerve cell differentiation",
+  "wireless control nerve growth bipolar electrodes",
+  "wireless bipolar electrode neuron growth",
+  "wirefree electrochemistry drug release",
+  "bipolar electrochemistry drug loading release",
+  "electrochemical release conducting polymer therapy",
+  "electrically controlled therapeutic molecule delivery",
+  "electroresponsive conducting polymer drug delivery",
+  "wireless organic electronic ion pump",
+  "photo powered ion pump neurotransmitter delivery",
+  "ultrasonically powered electrochemical drug release implant",
+  "wirelessly powered electrochemical drug release",
+  "wireless electrostimulation cancer nanoparticle",
+  "bio nano antenna cancer cell electrical signalling",
+  "electrical molecular quantum signalling apoptosis",
+  "electric field transmembrane electron transport cells",
+  "wireless electrochemistry cancer nanoparticle therapy",
+  "electrochemical generation therapeutic nitric oxide",
+  "electrochemical modulation cancer cell bioelectronics",
+  "wireless bioelectronic membrane potential glioblastoma",
+  "ferroelectric nanoparticle intracellular electric field cancer",
+  "nanoscale bipolar electrodes biological activity",
+  "contactless electrochemical therapeutic stimulation",
+  "redox controlled drug release electroactive biomaterials",
  ],
  "ultrasound": [
   "sonodynamic therapy nanoparticles cancer",
@@ -72,7 +98,7 @@ def merge(out,record):
         old=out[key]
         old["source_databases"]=sorted(set(old["source_databases"]+record["source_databases"]))
         old["source_queries"]=sorted(set(old["source_queries"]+record["source_queries"]))
-        for k in ("doi","pmid","openalex_id","title","year","abstract","citations_openalex"):
+        for k in ("doi","pmid","openalex_id","title","year","abstract","citations_openalex","publication_types","openalex_work_type"):
             if old.get(k) is None or old.get(k) == "":
                 if record.get(k) is not None and record.get(k) != "":
                     old[k]=record[k]
@@ -110,6 +136,7 @@ def epmc_search(phrase, pages, perpage, output, audit):
                 merge(output,{"title":hit.get("title") or "", "doi":doi_norm(hit.get("doi")),
                     "pmid":hit.get("pmid") or "", "openalex_id":"", "year":hit.get("pubYear"),
                     "abstract":re.sub("<[^>]*>"," ",hit.get("abstractText") or ""),
+                    "publication_types":[v.get("name") or "" for v in (hit.get("pubTypeList") or {}).get("pubType") or []],
                     "authors":epmc_authors(hit),"citations_openalex":None,
                     "source_databases":["Europe PMC"],"source_queries":[phrase],
                     "review_status":"UNSCREENED","identity_status":"UNVERIFIED"})
@@ -122,6 +149,16 @@ def epmc_search(phrase, pages, perpage, output, audit):
         except Exception as e:
             audit.append({"source":"Europe PMC","query":phrase,"page":page+1,"retrieved":0,"error":str(e),"complete_for_query":False})
             break
+def openalex_abstract(positions):
+    """Reconstruct a compact abstract from OpenAlex's inverted index."""
+    if not isinstance(positions,dict): return ""
+    terms=[]
+    for word,locations in positions.items():
+        for n in locations:
+            if isinstance(n,int) and 0<=n<5000:terms.append((n,word))
+    terms.sort()
+    return " ".join(word for _,word in terms)
+
 def openalex_search(phrase,pages,perpage,output,audit):
     cursor="*"
     for page in range(pages):
@@ -144,7 +181,9 @@ def openalex_search(phrase,pages,perpage,output,audit):
                 merge(output,{"title":hit.get("title") or hit.get("display_name") or "",
                     "doi":doi_norm(hit.get("doi")),"pmid":(hit.get("ids") or {}).get("pmid") or "",
                     "openalex_id":hit.get("id") or "", "year":hit.get("publication_year"),
-                    "abstract":"","authors":authors,"citations_openalex":hit.get("cited_by_count"),
+                    "abstract":openalex_abstract(hit.get("abstract_inverted_index")),
+                    "openalex_work_type":hit.get("type") or "",
+                    "authors":authors,"citations_openalex":hit.get("cited_by_count"),
                     "source_databases":["OpenAlex"],"source_queries":[phrase],
                     "review_status":"UNSCREENED","identity_status":"UNVERIFIED",
                     "author_source":"OpenAlex authorships (exact work/DOI)"})
