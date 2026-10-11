@@ -56,7 +56,7 @@ jobs:
           mkdir -p _harvest
           # Newer runs can be marked "successful" despite rate limits or
           # severe truncation. Validate their corpus before deployment.
-          RUNS="$(gh run list --repo "$GITHUB_REPO" --status success --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
           CHOSEN=""
           for TRY_ID in $COMPLETED_HARVEST_ID $RUNS; do
             rm -rf _harvest
@@ -81,10 +81,13 @@ jobs:
             fi
           done
           if [ -z "$CHOSEN" ]; then
-            echo "::error::No literature artifact passes the ≥10,000-record and ≥5,000 OpenAlex-ID gates. Previous website left intact."
+            echo "::error::No literature artifact passes coverage gates. Previous website left intact."
             exit 1
           fi
           echo "Using validated candidate harvest run: $CHOSEN"
+          cp _harvest/summary.json _site/data/search_summary.json
+          cp _harvest/query_audit.json _site/data/query_audit.json
+          printf '{"source_run_id":"%s","retrieval_conclusion":"provisional audited candidate artifact"}\n' "$CHOSEN" > _site/data/source_provenance.json
       - name: Validate identity, merge and institution regression tests
         run: python -m unittest discover -s tests -v
       - name: Calculate provisional, paper-backed rankings
