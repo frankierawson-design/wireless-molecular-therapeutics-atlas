@@ -124,6 +124,11 @@ DOI_SENTINELS=(
  "10.1021/acs.langmuir.6c00755",
  "10.1038/s43246-025-00750-1",
  "10.1038/s41528-019-0060-6",
+ "10.1021/acsomega.4c05794",   # Electric-field-enhanced chemotherapy response
+ "10.1002/smll.202102517",    # Transmembrane electron transport platform
+ "10.1186/s42234-024-00164-3", # Alternating-field device platform
+ "10.1021/acsanm.9b01374",   # Intracellular electrochemical sensing platform
+
  "10.1039/d5lc00708a",
  "10.1039/d3bm01946b",
  "10.1016/j.elecom.2024.107832",
