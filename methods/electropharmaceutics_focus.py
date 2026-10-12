@@ -30,13 +30,15 @@ PHARM=re.compile(r"\b(?:drug\w*|pharmacolog\w*|pharmaceut\w*|chemotherap\w*|"
  r"nanomedicin\w*|bio[- ]nanoantenna\w*|"
  r"drug[ -]resistan\w*|medicinal[ -]molecule\w*|"
  r"drug[ -](?:deliver\w*|releas\w*|uptake)|"
- r"molecular[ -](?:therap\w*|actuat\w*|releas\w*|deliver\w*))\b",re.I)
+ r"molecular[ -](?:therap\w*|actuat\w*|releas\w*|deliver\w*)|"
+ r"porphyrin\w*|redox[ -]mediator\w*)\b",re.I)
 INTERVENTION=re.compile(r"\b(?:deliv\w*|releas\w*|activat\w*|actuat\w*|"
  r"uptake|internalis\w*|internaliz\w*|"
  r"endosom\w*|sensitivity|sensiti[sz]\w*|"
  r"resistan\w*|cell[ -]death|apoptos\w*|"
  r"tumou?r[ -]response|"
  r"cell[ -]viability|electrochemotherap\w*|"
+ r"cell[ -]apoptos\w*|cell[ -]signall\w*|"
  r"neuromodulat\w*|redox[ -]state|bioavailabil\w*|"
  r"therap\w*|cytotoxi\w*|controlled)\b",re.I)
 JUST_ELECTRICAL=re.compile(r"\b(?:tumou?r[ -]treating[ -]fields?|ttfields?|"
@@ -61,13 +63,17 @@ REFERENCE_REVIEW={"10.1039/d3bm01946b","10.1016/j.elecom.2024.107832",
 
 def norm_doi(value):
     return re.sub(r"^https?://(?:dx\.)?doi\.org/","",str(value or "").strip().casefold())
+def tidy(s):
+    return str(s or "").replace("–","-").replace("—","-").replace("−","-").replace("‑","-").replace("\u00a0"," ")
+
 def candidate_role(paper):
     """Return one of direct_candidate, enabling_context, out_of_scope."""
-    title=str(paper.get("title") or "")
-    abstract=str(paper.get("abstract") or "")
+    title=tidy(paper.get("title"))
+    abstract=tidy(paper.get("abstract"))
     combined=title+" "+abstract
     if not (ELECTRIC.search(title) or
-            (ELECTRIC.search(abstract) and PHARM.search(title))):
+            (ELECTRIC.search(abstract) and PHARM.search(title)) or
+            (ELECTRO_MOLECULAR.search(title) and PHARM.search(abstract))):
         return "out_of_scope"
     # Co-treatment, TTFields + TMZ, electrical ablation and standalone
     # neurostimulation do not automatically establish electro-*mediated* drug
