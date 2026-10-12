@@ -41,6 +41,20 @@ QUERIES = {
   "contactless electrochemical therapeutic stimulation",
   "redox controlled drug release electroactive biomaterials",
  ],
+ "electropharmaceutics": [
+  "electric field enhanced chemotherapy drug sensitivity",
+  "alternating current drug resistance endosomal escape glioblastoma",
+  "electrically controlled nanoparticle drug delivery cell",
+  "electrochemotherapy bleomycin cisplatin reversible electroporation",
+  "electrically triggered molecular therapeutic redox signalling cancer",
+  "electrochemical release pharmacologically active compounds ion pumps",
+  "conductive polymer controlled drug release bioelectronics",
+  "wireless bipolar electrochemistry medicine apoptosis",
+  "electric fields intracellular drug trafficking",
+  "electroactivated nanomedicine therapeutic response",
+  "bioelectronic modulation pharmacological efficacy",
+  "electrically mediated pharmaceutics controlled release",
+ ],
  "ttfields": [
   "tumor treating fields glioblastoma clinical trial",
   "tumour treating fields anti mitotic alternating electric fields",
@@ -124,6 +138,11 @@ DOI_SENTINELS=(
  "10.1021/acs.langmuir.6c00755",
  "10.1038/s43246-025-00750-1",
  "10.1038/s41528-019-0060-6",
+ "10.1021/acsomega.4c05794",   # Electric-field-enhanced chemotherapy response
+ "10.1002/smll.202102517",    # Transmembrane electron transport platform
+ "10.1186/s42234-024-00164-3", # Alternating-field device platform
+ "10.1021/acsanm.9b01374",   # Intracellular electrochemical sensing platform
+
  "10.1039/d5lc00708a",
  "10.1039/d3bm01946b",
  "10.1016/j.elecom.2024.107832",
@@ -385,7 +404,7 @@ def main():
     p.add_argument("--epmc-page-size",type=int,default=250)
     p.add_argument("--openalex-page-size",type=int,default=100)
     p.add_argument("--source",choices=("both","epmc","openalex"),default="both")
-    p.add_argument("--only-modalities",default="",help="Comma-separated modality names, defaults to all")
+    p.add_argument("--only-modalities",default="electropharmaceutics,electrochemical,electrochemotherapy",help="Comma-separated query families; defaults to electro-mediated pharmaceutics only")
     p.add_argument("--baseline",default="",help="Existing candidates.json for incremental merge")
     p.add_argument("--baseline-audit",default="",help="Existing query_audit.json to preserve source provenance")
     p.add_argument("--doi-only",action="store_true",help="Only reconcile registered DOI sentinels against a substantial existing harvest")

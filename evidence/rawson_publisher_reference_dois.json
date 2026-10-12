@@ -1,0 +1,51 @@
+{
+  "status": "REFERENCE_DOI_SAMPLE_NOT_COMPLETE_BIBLIOGRAPHY",
+  "researcher": "Frankie J. Rawson",
+  "orcid": "0000-0002-4872-8928",
+  "institution": "University of Nottingham",
+  "source_explanation": "Publisher and university-repository verified named works; this sample is not an ORCID-export reconciliation or a complete list of works.",
+  "works": [
+    {
+      "doi": "10.1021/acsanm.9b01374",
+      "year": 2019,
+      "title": "Wireless Nanobioelectronics for Electrical Intracellular Sensing",
+      "anticipated_review_class": "enabling_context",
+      "source": "https://pubs.acs.org/doi/10.1021/acsanm.9b01374"
+    },
+    {
+      "doi": "10.1021/acsomega.1c03547",
+      "year": 2021,
+      "title": "Impedimetric Characterization of Bipolar Nanoelectrodes with Cancer Cells",
+      "anticipated_review_class": "enabling_context",
+      "source": "https://pubs.acs.org/doi/10.1021/acsomega.1c03547"
+    },
+    {
+      "doi": "10.1002/smll.202102517",
+      "year": 2021,
+      "title": "Electric Field Induced Biomimetic Transmembrane Electron Transport Using Carbon Nanotube Porins",
+      "anticipated_review_class": "mechanistic_context_pending_full_text",
+      "source": "https://onlinelibrary.wiley.com/doi/10.1002/smll.202102517"
+    },
+    {
+      "doi": "10.1038/s41565-023-01496-y",
+      "year": 2023,
+      "title": "Wireless electrical–molecular quantum signalling for cancer cell apoptosis",
+      "anticipated_review_class": "direct_therapeutic_candidate_pending_review",
+      "source": "https://www.nature.com/articles/s41565-023-01496-y"
+    },
+    {
+      "doi": "10.1021/acsomega.4c05794",
+      "year": 2024,
+      "title": "Tackling Anticancer Drug Resistance and Endosomal Escape in Aggressive Brain Tumors Using Bioelectronics",
+      "anticipated_review_class": "direct_therapeutic_candidate_pending_review",
+      "source": "https://pubs.acs.org/doi/10.1021/acsomega.4c05794"
+    },
+    {
+      "doi": "10.1186/s42234-024-00164-3",
+      "year": 2025,
+      "title": "Advancing cancer therapy with custom-built alternating electric field devices",
+      "anticipated_review_class": "platform_or_combination_requires_full_text",
+      "source": "https://link.springer.com/article/10.1186/s42234-024-00164-3"
+    }
+  ]
+}
