@@ -7,6 +7,7 @@ on:
       - Electrochemical expansion harvest
       - DOI sentinel reconciliation
       - Electrical therapies expansion harvest
+      - Electro-mediated pharmaceutics harvest
     types:
       - completed
   push:
@@ -19,6 +20,9 @@ on:
       - "methods/audit_ranking_quality.py"
       - "methods/build_electrochemical_queue.py"
       - "methods/collect_literature.py"
+      - "methods/electropharmaceutics_focus.py"
+      - "methods/audit_researcher_publications.py"
+      - "evidence/rawson_publisher_reference_dois.json"
       - "methods/electrical_treatment_coverage_audit.py"
       - "methods/build_electrical_treatment_queue.py"
       - ".github/workflows/electrical-therapies-expansion.yml"
@@ -55,6 +59,7 @@ jobs:
           else
             cp index.html _site/index.html
           fi
+          cp index.html _site/index.html
       - name: Retrieve latest completed candidate harvest
         env:
           GH_TOKEN: ${{ github.token }}
@@ -64,7 +69,7 @@ jobs:
           mkdir -p _harvest
           # Newer runs can be marked "successful" despite rate limits or
           # severe truncation. Validate their corpus before deployment.
-          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation" or .name == "Electrical therapies expansion harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation" or .name == "Electrical therapies expansion harvest" or .name == "Electro-mediated pharmaceutics harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
           CHOSEN=""
           for TRY_ID in $COMPLETED_HARVEST_ID $RUNS; do
             rm -rf _harvest
@@ -98,75 +103,37 @@ jobs:
           printf '{"source_run_id":"%s","retrieval_conclusion":"provisional audited candidate artifact"}\n' "$CHOSEN" > _site/data/source_provenance.json
       - name: Validate identity, merge and institution regression tests
         run: python -m unittest discover -s tests -v
-      - name: Calculate provisional, paper-backed rankings
+      - name: Generate narrowly scoped electro-mediated pharmaceutical researcher index
         run: |
-          python methods/build_provisional_rankings.py \
+          python methods/electropharmaceutics_focus.py \
             --input _harvest/candidates.json \
-            --output _site/data/provisional_rankings.json \
-            --csv _site/data/provisional_rankings.csv
+            --output _site/data/electropharmaceutics_rankings.json \
+            --csv _site/data/electropharmaceutics_rankings.csv \
+            --register _site/data/electropharmaceutics_screening_register.json
           python - <<'PY'
           import json
-          d=json.load(open("_site/data/provisional_rankings.json"))
-          assert d["summary"]["machine_screened_papers"] > 100
-          assert len(d["rankings"]["Overall"]) > 10
-          assert "Provisional" in d["ranking_label"]
-          print("Ranked overall:",len(d["rankings"]["Overall"]))
-          print("Screened papers:",d["summary"]["machine_screened_papers"])
-          print("Top 5:",[(r["name"],r["score"]) for r in d["rankings"]["Overall"][:5]])
+          d=json.load(open("_site/data/electropharmaceutics_rankings.json"))
+          assert d["scope"]=="Electro-Mediated Pharmaceutics"
+          assert d["scientific_validation"]=="NOT_INDEPENDENTLY_SCREENED"
+          assert set(d["rankings"])=={"Overall","Electro-Mediated Pharmaceutics"}
+          assert d["summary"]["machine_screened_papers"]>0
+          assert "TTFields" not in d["rankings"]
+          print("Focus only; no worldwide or cross-treatment numerical claims")
           PY
-      - name: Independently audit scored metadata before deployment
+      - name: Publish documented researcher paper omissions, exclusion and ORCID checks
         run: |
-          python methods/audit_ranking_quality.py \
-            --candidates _harvest/candidates.json \
-            --ranking _site/data/provisional_rankings.json \
-            --search-summary _harvest/summary.json \
-            --output _site/data/quality_audit.json
+          python methods/audit_researcher_publications.py \
+            --input _harvest/candidates.json \
+            --reference evidence/rawson_publisher_reference_dois.json \
+            --output _site/data/rawson_publication_audit.json
           python - <<'PY'
           import json
-          audit=json.load(open("_site/data/quality_audit.json"))
-          assert audit["status"] == "NOT_VALIDATED_WORLD_RANKING"
-          assert not audit["scored_work_metadata"]["explicit_nonoriginal"]
-          assert audit["duplicate_score_evidence_groups"] == 0
-          assert audit["scored_work_metadata"]["identifier_missing"] == 0
-          print("Scored research integrity checks passed; screening is still provisional")
+          report=json.load(open("_site/data/rawson_publication_audit.json"))
+          assert report["status"]=="BIBLIOGRAPHY_SAMPLE_NOT_EXHAUSTIVE"
+          assert report["full_text_screened_independently"]==0
+          assert report["total_reference_works"]>=6
+          print("Publisher-identified DOI sample:",report["found_in_candidate_corpus"],"of",report["total_reference_works"])
           PY
-      - name: Generate electrochemical DOI coverage audit for the website
-        run: |
-          python methods/electrochemical_seed_audit.py \
-            --input _harvest/candidates.json \
-            --output _site/data/electrochemical_coverage_audit.json
-      - name: Publish six-pathway electrical-treatment DOI and evidence coverage report
-        run: |
-          python methods/electrical_treatment_coverage_audit.py \
-            --input _harvest/candidates.json \
-            --query-audit _harvest/query_audit.json \
-            --output _site/data/electrical_treatment_coverage_audit.json
-          python - <<'PY'
-          import json
-          audit=json.load(open("_site/data/electrical_treatment_coverage_audit.json"))
-          expected={"TTFields","Electrochemotherapy","Electroporation","Neuromodulation",
-                    "Electrical Stimulation","Electrochemical"}
-          assert {p["pathway"] for p in audit["pathways"]}==expected
-          assert audit["validation_status"]=="MACHINE_SCREENED_NOT_INDEPENDENTLY_VALIDATED"
-          print("DOI provenance report present; scientific eligibility still not independently validated")
-          PY
-      - name: Export independently reviewable six-pathway electrical literature register
-        run: |
-          python methods/build_electrical_treatment_queue.py \
-            --input _harvest/candidates.json \
-            --output _site/data/electrical_treatment_screening_queue.json
-          python - <<'PY'
-          import json
-          d=json.load(open("_site/data/electrical_treatment_screening_queue.json"))
-          assert d["status"]=="UNVERIFIED_SCREENING_CANDIDATES_NOT_WORLD_CENSUS"
-          assert d["independent_full_text_screening_completed"]==0
-          print("Separate paper-level screening leads:",d["total_candidate_records"])
-          PY
-      - name: Publish electrochemical screening queue independently of citation eligibility
-        run: |
-          python methods/build_electrochemical_queue.py \
-            --input _harvest/candidates.json \
-            --output _site/data/electrochemical_screening_queue.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
