@@ -46,12 +46,13 @@ class ForsterCoverageTests(unittest.TestCase):
                         {"name": "Robert J. Forster"}]
         }, seed), "orcid_verified_in_work_metadata")
 
-    def test_visible_correction_and_explicit_unavailable_fallback(self):
+    def test_focused_site_does_not_claim_global_or_broad_treatment_standing(self):
         page = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("source-backed ranking reconciliation", page)
-        self.assertIn("ranking reconciliation still incomplete", page)
-        self.assertIn("DOI evidence file unavailable", page)
-        self.assertIn("not</strong> evidence of a lack of relevant research", page)
+        self.assertIn("Electro-Mediated Pharmaceutics Atlas", page)
+        self.assertIn("data/electropharmaceutics_rankings.json", page)
+        self.assertIn("No independent full-text adjudication", page)
+        self.assertIn("No defensible focused ranking artifact is available yet", page)
+        self.assertNotIn('<option value="TTFields">', page)
 
 
 if __name__ == "__main__":
