@@ -1,9 +1,9 @@
-name: Electrical therapies expansion harvest
+name: Electro-mediated pharmaceutics harvest
 on:
   workflow_dispatch:
     inputs:
       pages_per_query:
-        description: "OpenAlex and Europe PMC search pages for each electrical treatment query"
+        description: "Maximum pages for electro-mediated pharmaceutical evidence search; not exhaustive"
         type: choice
         options: ["3", "6", "10"]
         default: "3"
@@ -14,14 +14,16 @@ on:
       - "methods/collect_literature.py"
       - "methods/build_provisional_rankings.py"
       - "methods/electrical_treatment_coverage_audit.py"
-      - "methods/build_electrical_treatment_queue.py"
-      - "tests/test_electrical_treatment_expansion.py"
+      - "methods/electropharmaceutics_focus.py"
+      - "methods/audit_researcher_publications.py"
+      - "evidence/rawson_publisher_reference_dois.json"
+      - "tests/test_electropharmaceutics_scope.py"
       - ".github/workflows/electrical-therapies-expansion.yml"
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: electrical-therapies-expansion-${{ github.ref }}
+  group: electropharmaceutics-evidence-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   discover:
@@ -59,7 +61,7 @@ jobs:
           done
           if [ -z "$SELECTED" ]; then echo "::error::No substantial candidate baseline available"; exit 1; fi
           echo "BASELINE_RUN=$SELECTED" >> "$GITHUB_ENV"
-      - name: Discover TTFields, electrochemotherapy, electroporation, neuromodulation and electrical-stimulation studies
+      - name: Search electrically mediated pharmaceutical action and retrieve DOI source works
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
           PAGES_INPUT: ${{ inputs.pages_per_query }}
@@ -67,41 +69,35 @@ jobs:
           python methods/collect_literature.py \
             --baseline baseline/candidates.json \
             --baseline-audit baseline/query_audit.json \
-            --only-modalities ttfields,electrochemotherapy,electroporation,neuromodulation,electrical_stimulation \
+            --only-modalities electropharmaceutics,electrochemical,electrochemotherapy \
             --pages "${PAGES_INPUT:-3}" \
             --output output
-      - name: Rebuild provisional scores and treatment coverage report
+      - name: Recalculate only electro-mediated pharmaceutical candidate studies
         run: |
-          python methods/build_provisional_rankings.py \
+          python methods/electropharmaceutics_focus.py \
             --input output/candidates.json \
-            --output output/provisional_rankings.json \
-            --csv output/provisional_rankings.csv
-          python methods/electrical_treatment_coverage_audit.py \
+            --output output/electropharmaceutics_rankings.json \
+            --csv output/electropharmaceutics_rankings.csv \
+            --register output/electropharmaceutics_screening_register.json
+          python methods/audit_researcher_publications.py \
             --input output/candidates.json \
-            --query-audit output/query_audit.json \
-            --output output/electrical_treatment_coverage_audit.json
-          python methods/build_electrical_treatment_queue.py \
-            --input output/candidates.json \
-            --output output/electrical_treatment_screening_queue.json
-          python methods/electrochemical_seed_audit.py \
-            --input output/candidates.json \
-            --output output/electrochemical_coverage_audit.json
+            --reference evidence/rawson_publisher_reference_dois.json \
+            --output output/rawson_publication_audit.json
           python - <<'PY'
           import json
-          report=json.load(open("output/electrical_treatment_coverage_audit.json"))
-          ranking=json.load(open("output/provisional_rankings.json"))
-          old=json.load(open("baseline/candidates.json"))
-          new=json.load(open("output/candidates.json"))
-          if len(new["records"]) < len(old["records"]):raise SystemExit("Unexpected bibliographic record loss")
-          for path in report["pathways"]:
-              if path["sentinels_retrieved"]<1 or path["sentinels_machine_included"]<1:
-                  raise SystemExit("Important "+path["pathway"]+" discovery/eligibility sentinel not retrieved and classified; no release")
-              if path["machine_matched_papers"]<1:raise SystemExit("Missing clinical research: "+path["pathway"])
-              if path["completeness_confirmed"]:raise SystemExit("Cannot assert exhaustive coverage")
-          assert ranking["rankings"]["Overall"]
-          print("Machine-screened pathway coverage gates passed. Not a validated world ranking.")
+          ranking=json.load(open("output/electropharmaceutics_rankings.json"))
+          report=json.load(open("output/rawson_publication_audit.json"))
+          assert ranking["scientific_validation"]=="NOT_INDEPENDENTLY_SCREENED"
+          assert ranking["scope"]=="Electro-Mediated Pharmaceutics"
+          assert ranking["summary"]["machine_screened_papers"]>0
+          assert "TTFields" not in ranking["rankings"]
+          assert report["status"]=="BIBLIOGRAPHY_SAMPLE_NOT_EXHAUSTIVE"
+          assert report["found_in_candidate_corpus"]>=2, "DOI retrieval incomplete; do not replace current website"
+          print("Direct candidates:",ranking["summary"]["machine_screened_papers"])
+          print("Rawson reference DOIs matched:",report["found_in_candidate_corpus"],"/",report["total_reference_works"])
+          print("Publication eligibility and world rankings NOT independently verified")
           PY
-      - name: Upload reproducible expanded publications and reports
+      - name: Upload focused candidate corpus, DOI audit and machine-ranked context
         uses: actions/upload-artifact@v4
         with:
           name: literature-candidates-and-audit
