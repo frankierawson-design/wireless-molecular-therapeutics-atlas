@@ -69,9 +69,13 @@ jobs:
           mkdir -p _harvest
           # Newer runs can be marked "successful" despite rate limits or
           # severe truncation. Validate their corpus before deployment.
-          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 65 --json databaseId,name,createdAt --jq '[.[] | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation" or .name == "Electrical therapies expansion harvest" or .name == "Electro-mediated pharmaceutics harvest")] | sort_by(.createdAt) | reverse | .[].databaseId')"
+          # Always prefer successful scope-specific source collections over
+          # more recently completed DOI-only or unrelated broad harvests.
+          # Without this priority, scholar positions vary merely because
+          # different sized source datasets finish in a different order.
+          RUNS="$(gh run list --repo "$GITHUB_REPO" --status completed --limit 80 --json databaseId,name,createdAt,conclusion --jq '[.[] | select(.conclusion == "success") | select(.name == "Literature census (candidate harvest)" or .name == "Electrochemical expansion harvest" or .name == "DOI sentinel reconciliation" or .name == "Electrical therapies expansion harvest" or .name == "Electro-mediated pharmaceutics harvest")] | sort_by([(if .name == "Electro-mediated pharmaceutics harvest" then 4 elif .name == "Electrical therapies expansion harvest" then 3 elif .name == "DOI sentinel reconciliation" then 2 else 1 end), .createdAt]) | reverse | .[].databaseId')"
           CHOSEN=""
-          for TRY_ID in $COMPLETED_HARVEST_ID $RUNS; do
+          for TRY_ID in $RUNS; do
             rm -rf _harvest
             mkdir -p _harvest
             if ! gh run download "$TRY_ID" --repo "$GITHUB_REPO" --name "literature-candidates-and-audit" --dir _harvest >/dev/null 2>&1; then
@@ -100,7 +104,17 @@ jobs:
           echo "Using validated candidate harvest run: $CHOSEN"
           cp _harvest/summary.json _site/data/search_summary.json
           cp _harvest/query_audit.json _site/data/query_audit.json
-          printf '{"source_run_id":"%s","retrieval_conclusion":"provisional audited candidate artifact"}\n' "$CHOSEN" > _site/data/source_provenance.json
+          export CHOSEN_SOURCE="$CHOSEN"
+          python - <<'PY'
+          import json,os,pathlib
+          s=json.loads(pathlib.Path("_harvest/summary.json").read_text())
+          provenance={"source_run_id":os.environ.get("CHOSEN_SOURCE",""),
+             "source_candidate_records":s.get("candidate_records"),
+             "search_strings_executed":s.get("search_strings_executed"),
+             "search_errors":s.get("errors"),
+             "retrieval_conclusion":"provisional evidence only: not independently validated"}
+          pathlib.Path("_site/data/source_provenance.json").write_text(json.dumps(provenance),encoding="utf-8")
+          PY
       - name: Validate identity, merge and institution regression tests
         run: python -m unittest discover -s tests -v
       - name: Generate narrowly scoped electro-mediated pharmaceutical researcher index
