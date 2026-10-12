@@ -2,480 +2,240 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#102a32">
-<title>Wireless Molecular Therapeutics Atlas | Evidence, Methods & Researcher Rankings</title>
-<meta name="description" content="An independent, reproducible international evidence atlas for ultrasound, magnetic, optical, electrical, RF and hybrid wireless molecular therapies.">
+<meta name="theme-color" content="#102b30">
+<meta name="description" content="Electro-Mediated Pharmaceutics Atlas: auditable original research into electrically controlled medicines, molecular actuation and drug responses.">
+<title>Electro-Mediated Pharmaceutics Atlas — Evidence and Provisional Rankings</title>
 <style>
-:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#15333b;background:#f5f7f5}
-*{box-sizing:border-box}body{margin:0}a{color:#087b75}a:hover{text-decoration-thickness:2px}
-nav{padding:19px max(22px,calc((100% - 1080px)/2));background:#102a32;color:white;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-nav a{color:#c6e4da;font-size:14px;text-decoration:none;margin-right:15px}nav strong{font-size:14px;letter-spacing:.035em}
-.hero{background:#102a32;color:white;padding:85px max(22px,calc((100% - 1080px)/2)) 90px}
-.eyebrow{letter-spacing:.18em;text-transform:uppercase;font-size:11px;font-weight:800;color:#92c7b3}
-h1{font-size:clamp(40px,6vw,74px);letter-spacing:-.056em;line-height:1.04;max-width:870px;margin:22px 0 26px;font-weight:750}
-.hero p{max-width:760px;color:#c8d9d6;font-size:19px;line-height:1.6}.hero a{color:#102a32}
-.btn{display:inline-flex;text-decoration:none;background:#c5eac9;padding:14px 20px;border-radius:6px;font-weight:800;margin:12px 8px 0 0}
-.btn.secondary{background:transparent;color:#d9eee6;border:1px solid #769c9b}
-main{max-width:1080px;margin:auto;padding:50px 22px 100px}section{padding:22px 0 38px;border-bottom:1px solid #d5e0dc}
-h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.035em;margin:12px 0}
-section>p{line-height:1.75;color:#48636a;max-width:820px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
-.panel{border:1px solid #cfddd7;border-radius:12px;background:white;padding:22px}
-.panel h3{font-size:18px;margin:8px 0}.panel p{line-height:1.6;font-size:14px;color:#567079;margin:0}
-.label{font-size:11px;font-weight:800;color:#18817d;letter-spacing:.08em;text-transform:uppercase}
-.mono{font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;background:white;font-size:15px}th,td{text-align:left;border-bottom:1px solid #dde5e1;padding:14px}
-th{color:#54666d;font-size:12px;background:#edf4f0}
-.status{font-size:12px;display:inline-flex;padding:5px 9px;background:#edf0ef;border-radius:5px;color:#495b5f;font-weight:700}
-ol{line-height:1.9;color:#37565a}footer{background:#102a32;color:#c3dad4;padding:28px max(22px,calc((100% - 1080px)/2));font-size:13px;line-height:1.7}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding-top:50px;padding-bottom:58px}table{font-size:12px}th,td{padding:10px 7px}}
-
-.ranking-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
-.ranking-metrics .panel h3{font-size:32px;color:#123b3e;margin:7px 0}
-.ranking-tools{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin:18px 0}
-.ranking-tools label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:13px;color:#36595b;min-width:190px;flex:1}
-.ranking-tools select,.ranking-tools input{background:#fff;color:#16373a;border:1px solid #aecbc2;border-radius:8px;padding:13px;font-size:15px;width:100%;font-family:inherit}
-.ranking-scroll{overflow-x:auto;border:1px solid #d5e0dc;border-radius:9px}
-.ranking-scroll table{min-width:860px}
-.ranking-scroll th,.ranking-scroll td{padding:12px;line-height:1.35}
-.ranking-scroll th:nth-child(4),.ranking-scroll th:nth-child(5),.ranking-scroll th:nth-child(6){text-align:right}
-.ranking-scroll td:nth-child(4),.ranking-scroll td:nth-child(5),.ranking-scroll td:nth-child(6){text-align:right;font-variant-numeric:tabular-nums}
-.ranking-scroll button,.ranking-bottom button{border:1px solid #167e76;background:#fff;color:#126b65;padding:8px 12px;border-radius:7px;font-weight:700;cursor:pointer}
-.ranking-scroll button:hover,.ranking-bottom button:hover{background:#e2f1e9}
-.ranking-bottom{display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin-top:17px;font-size:14px}
-.ranking-method{background:#f4f8f5;border:1px solid #cbded4;border-radius:9px;padding:16px 20px;margin-top:23px;max-width:900px;line-height:1.7}
-.ranking-method summary{font-weight:800;cursor:pointer;color:#194a50}
-#rank-summary{font-size:13px;color:#53716d;margin:14px 0 12px}
-.rank-detail{border:1px solid #ccded4;border-radius:9px;padding:19px;margin-top:18px;background:white}
-.rank-detail h3{margin:0 0 10px}
-.rank-detail ul{padding-left:23px;line-height:1.6}
-.rank-detail li{margin:8px 0}
-.rank-detail .rowstat{font-size:13px;color:#4d6a68;margin-bottom:10px}
-@media(max-width:720px){.ranking-metrics{grid-template-columns:1fr 1fr}.ranking-metrics .panel:last-child{grid-column:span 2}.ranking-tools label{min-width:100%}.ranking-scroll{margin-left:-3px;margin-right:-3px}.ranking-metrics .panel h3{font-size:26px}}
-
-.inst-cell{min-width:160px;max-width:290px}.inst-cell small{display:block;color:#657e79;font-size:11px;margin-top:4px}.unverified{color:#748582;font-size:12px}
-@media(max-width:720px){
-.ranking-scroll{overflow:visible;border:0;background:transparent}
-.ranking-scroll table,.ranking-scroll tbody{display:block;width:100%;min-width:0;background:transparent}
-.ranking-scroll thead{display:none}
-.ranking-scroll tr{display:block;background:white;border:1px solid #cbded7;border-radius:12px;padding:8px 13px;margin:0 0 13px;box-shadow:0 2px 8px rgba(0,0,0,.025)}
-.ranking-scroll td,.ranking-scroll td:nth-child(4),.ranking-scroll td:nth-child(5),.ranking-scroll td:nth-child(6){display:flex;justify-content:space-between;align-items:center;text-align:right;gap:14px;padding:10px 0;border-bottom:1px solid #edf2ef;max-width:none;min-width:0}
-.ranking-scroll td:last-child{border-bottom:0}
-.ranking-scroll td::before{content:attr(data-label);font-size:12px;font-weight:750;color:#496e69;flex:0 0 98px;text-align:left}
-.ranking-scroll .inst-cell small{font-size:10px}
-.ranking-scroll td[data-label="Researcher"]{font-weight:750;color:#153c3d}
-.ranking-scroll td[data-label="Position"] strong{font-size:20px;color:#0b6664}
-}
-.electro-coverage{padding:32px 0 12px;margin-top:28px;border-top:1px solid #d7e5de}
-.electro-coverage>h3{font-size:24px;letter-spacing:-.02em;margin:13px 0}
-.electro-coverage>p{color:#52706d;line-height:1.7;max-width:850px}
-.electro-coverage .coverage-metrics .panel{padding:16px}
-.electro-coverage .coverage-metrics h3{font-size:27px;color:#164f50;margin-top:10px}
-.electro-coverage .ranking-scroll{margin-top:17px}
-.electro-coverage table{min-width:500px}
-.electro-coverage td:nth-child(2),.electro-coverage td:nth-child(3){text-align:left}
-.coverage-footer{font-size:13px}
-.coverage-state{font-size:12px;color:#41655e;background:#edf4ee;padding:5px 8px;border-radius:5px}
-
-.harvest-quality{padding:13px 16px;background:#f3f4ed;border:1px solid #d7dbc7;color:#526056;border-radius:9px;font-size:13px;line-height:1.55;margin:16px 0}
-
-.candidate-queue{margin-top:19px;background:white}
-.candidate-filter-label{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:750;color:#3c6261;max-width:550px}
-.candidate-filter-label input{padding:12px 13px;font-size:14px;border-radius:8px;border:1px solid #afc9bd;width:100%}
-#electro-queue-status{font-size:12px;color:#56736c;margin:13px 0}
-.candidate-queue .ranking-scroll{margin-top:12px;max-height:650px;overflow:auto}
-.candidate-queue table{min-width:640px}
-.candidate-queue td{font-size:13px}
-.candidate-queue td:nth-child(2){min-width:250px;max-width:400px}
-.candidate-queue .screening-status{display:inline-block;font-size:11px;line-height:1.4;color:#396159}
-@media(max-width:720px){.candidate-queue .ranking-scroll{max-height:none;overflow:visible}.candidate-queue .ranking-scroll td:nth-child(2){max-width:none;min-width:0}}
-
-.quality-review{padding:22px;margin:28px 0 20px;border-radius:9px;border:1px solid #bacfc8;background:#f1f7f3}
-.quality-review .eyebrow{color:#336963;letter-spacing:.09em}
-.quality-review>p{color:#375b58;line-height:1.65}
-.quality-audit-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
-.quality-audit-metrics>div{border:1px solid #ceded5;background:#fff;padding:13px;border-radius:8px}
-.quality-audit-metrics strong{display:block;font-size:26px;font-variant-numeric:tabular-nums;color:#204e4c}
-.quality-audit-metrics span{display:block;font-size:11px;color:#496d67;line-height:1.5;margin-top:5px}
-@media(max-width:720px){.quality-audit-metrics{grid-template-columns:1fr 1fr}.quality-review{padding:16px}}
-.validation-stage{border:1px solid #cad7d2;border-radius:10px;padding:23px;background:#f4f8f5;margin:25px 0}
-.validation-stage h3{font-size:23px;letter-spacing:-.025em;margin:8px 0 10px}
-.validation-stage p{line-height:1.65;max-width:870px;color:#315b55}
-.validation-stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:17px 0}
-.validation-stage-grid>div{border:1px solid #d9e5dd;padding:12px;background:white;border-radius:8px}
-.validation-stage-grid strong{font-size:22px;color:#145450;display:block}
-.validation-stage-grid span{font-size:12px;color:#4d6a64;display:block;margin-top:5px}
-@media(max-width:720px){.validation-stage-grid{grid-template-columns:1fr}.validation-stage{padding:16px}}
-.known-coverage{border-left:3px solid #426f69;padding:9px 0 12px 19px;margin:23px 0 25px}
-.known-coverage h3{font-size:20px;letter-spacing:-.01em;margin:8px 0}
-.known-coverage p{font-size:14px;line-height:1.7;color:#3f5e5b;max-width:890px;margin:8px 0}
-.known-coverage .eyebrow{color:#426f69}
-.therapy-coverage{padding:28px 0;margin:28px 0;border-block:1px solid #cdded7}
-.therapy-coverage table{min-width:650px}
-.therapy-coverage th{font-size:12px}
-.therapy-coverage td{font-size:14px;vertical-align:top}
-.therapy-coverage p{line-height:1.7;color:#45645f;max-width:900px}
-.therapy-coverage a{overflow-wrap:anywhere}
-@media(max-width:720px){.therapy-coverage .ranking-scroll{overflow-x:auto}
-.therapy-coverage table{display:table;min-width:650px}
-.therapy-coverage tr{display:table-row}
-.therapy-coverage td,.therapy-coverage th{display:table-cell!important;text-align:left!important;border-radius:0}
-.therapy-coverage td::before{display:none}}
+:root{color-scheme:light;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f6f8f5;color:#163839;scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0;min-width:320px}a{color:#08746c}a:hover{text-decoration-thickness:2px}button,input{font:inherit}
+header{background:linear-gradient(117deg,#0e292e 0%,#173c3e 55%,#154a46 100%);color:#fff}
+nav{max-width:1140px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:21px 25px;gap:20px;flex-wrap:wrap}
+.brand{font-size:14px;letter-spacing:.04em;font-weight:800;color:white;text-decoration:none}
+.brand span{color:#aee6bd}nav .links{display:flex;gap:23px;flex-wrap:wrap}nav .links a{color:#cee4df;text-decoration:none;font-size:13px}
+.hero{max-width:1140px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:52px;padding:75px 25px 88px;align-items:center}
+.eyebrow{text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:.18em;color:#1c8072}
+.hero .eyebrow{color:#aee6c3}
+h1{font-weight:760;letter-spacing:-.055em;font-size:clamp(44px,6vw,74px);line-height:1.065;margin:17px 0 22px}
+.hero p{font-size:18px;line-height:1.65;color:#d4e3dd;max-width:730px;margin:0 0 28px}
+.button{display:inline-flex;align-items:center;min-height:43px;padding:12px 17px;text-decoration:none;border-radius:8px;font-size:14px;font-weight:750;background:#c5e9c8;color:#10342d;margin:0 10px 9px 0}
+.button.ghost{background:transparent;border:1px solid #7da39b;color:#e1f3e7}
+.hero-graphic{border-radius:16px;border:1px solid #52817a;padding:26px 23px;background:#ffffff0c;position:relative;overflow:hidden}
+.hero-graphic svg{width:100%;display:block;stroke:#bfe6ca}
+.hero-graphic p{font-size:13px;color:#b9d6cc;margin:11px 0 0}
+main{max-width:1140px;margin:0 auto;padding:28px 25px 105px}section{padding:45px 0;border-bottom:1px solid #d7e4db}
+h2{font-size:clamp(27px,3.6vw,39px);margin:8px 0 15px;letter-spacing:-.035em;line-height:1.18}
+h3{font-size:20px;letter-spacing:-.024em;margin:6px 0 12px}
+.lead{line-height:1.75;max-width:860px;color:#496563}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.panel{border-radius:12px;border:1px solid #d4e3db;background:#fff;padding:21px}
+.panel h3{font-size:17px;margin:6px 0}.panel p{font-size:14px;color:#526e6a;line-height:1.6;margin:0}
+.panel .mini{font-size:10px;color:#197a70;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.metric{background:#fff;border:1px solid #d4e3db;border-radius:10px;padding:20px}
+.metric strong{font-size:30px;display:block;letter-spacing:-.03em;color:#164842}
+.metric span{color:#526966;font-size:12px;line-height:1.5}
+.flag{border-left:3px solid #c28b3b;background:#fffaf0;padding:14px 18px;margin:19px 0;color:#5a4b32;line-height:1.65;border-radius:0 8px 8px 0;font-size:14px}
+.filters{display:flex;align-items:end;gap:13px;margin:23px 0 13px;flex-wrap:wrap}
+.filters label{font-size:13px;font-weight:750;color:#345753;flex:1;min-width:250px}
+.filters input{display:block;width:100%;margin-top:8px;padding:12px;border-radius:8px;border:1px solid #b6ccc2;background:#fff;color:#153b3c}
+.table-wrap{border:1px solid #d4e1d9;border-radius:11px;overflow:auto;background:#fff}
+table{width:100%;border-collapse:collapse;min-width:710px;font-size:13px}
+th{background:#eff5f0;color:#46635e;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.035em}
+td,th{padding:15px 13px;border-bottom:1px solid #e3ebe6;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}td strong{color:#163b36}
+td small{display:block;color:#71837d;font-size:11px;margin-top:5px}
+.statline{font-size:13px;color:#55706a;margin:11px 0}
+button{border:1px solid #aacdc1;background:#f8fcf9;color:#126c63;padding:8px 11px;cursor:pointer;border-radius:7px;font-size:12px;font-weight:750}
+button:hover{background:#e5f4ed}button[hidden]{display:none}
+.more{margin:15px 0}.detail{background:white;border:1px solid #cbddd1;border-radius:10px;padding:22px;margin-top:19px;line-height:1.7}
+.detail[hidden]{display:none}.detail li{margin:8px 0}.detail ul{padding-left:20px}
+.download{font-size:13px;margin-top:14px;display:flex;flex-wrap:wrap;gap:20px}
+details{background:#fff;border:1px solid #d4e3db;border-radius:10px;padding:17px 20px;margin-top:19px}
+summary{font-size:14px;color:#214f49;cursor:pointer;font-weight:800}
+details p,details li{color:#526e68;line-height:1.7;font-size:14px}
+.status-pill{display:inline-flex;border-radius:5px;background:#edf4f0;padding:4px 7px;color:#3a6861;font-size:11px;font-weight:750}
+footer{background:#102d30;padding:28px max(25px,calc((100% - 1090px)/2));color:#bfd8d0;font-size:13px;line-height:1.7}
+footer a{color:#b0e9c9}
+@media(max-width:820px){.hero{grid-template-columns:1fr;gap:28px;padding-top:47px;padding-bottom:55px}.hero-graphic{max-width:440px}.grid,.metrics{grid-template-columns:1fr}nav .links{gap:12px}}
+@media(max-width:500px){.hero-graphic{display:none}h1{font-size:43px}td,th{padding:12px 10px}main{padding:15px 19px 70px}}
 </style>
 </head>
 <body>
-<nav><strong>MOLECULAR THERAPEUTICS <span style="color:#a1dcb5">/ ATLAS</span></strong><div><a href="#scope">Scope</a><a href="#ranking">Rankings</a><a href="#methods">Methodology</a><a href="#data">Evidence</a></div></nav>
-<header class="hero">
-<div class="eyebrow">International research atlas · Open methodology</div>
-<h1>Mapping wireless molecular therapeutics.</h1>
-<p>An evidence-led map of scientists and publications studying externally activated therapies, including acoustic, magnetic, optical, radiofrequency, electrical and hybrid systems.</p>
-<a class="btn" href="#ranking">View latest rankings ↗</a><a class="btn secondary" href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/literature-census.yml">View literature retrieval ↗</a>
+<header>
+<nav><a class="brand" href="#top">ELECTRO-MEDIATED <span>/ PHARMACEUTICS ATLAS</span></a><div class="links">
+<a href="#definition">Scope</a><a href="#researchers">Researchers</a><a href="#publications">Evidence</a><a href="#methods">Methods</a>
+</div></nav>
+<div class="hero" id="top"><div>
+<div class="eyebrow">Evidence map · Electrical control of pharmaceutical action</div>
+<h1>Where electricity meets medicine.</h1>
+<p>Mapping research where electrical or electrochemical processes mediate the delivery, activation, release, uptake or therapeutic action of medicines and bioactive molecules.</p>
+<a class="button" href="#researchers">Explore research comparison ↗</a><a class="button ghost" href="#publications">Inspect publication evidence ↗</a>
+</div>
+<div class="hero-graphic" aria-label="Illustration of electrical input driving molecular response">
+<svg viewBox="0 0 300 180" fill="none" role="img" aria-label="Electrical excitation connected to bioactive molecular response">
+<path d="M5 91h37l16-25 19 51 17-36h36l17-37 20 85 18-41h35l14-20 16 42 18-19h31" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#b8e7c7" stroke="none"><circle cx="35" cy="34" r="5"/><circle cx="190" cy="26" r="5"/><circle cx="255" cy="145" r="5"/><circle cx="218" cy="132" r="3"/></g>
+<g stroke-opacity=".32"><circle cx="150" cy="90" r="72"/><circle cx="150" cy="90" r="49"/><circle cx="150" cy="90" r="23"/></g>
+</svg>
+<p>Electrical input → interfacial or cellular transduction → molecular therapeutic response</p>
+</div></div>
 </header>
 <main>
-<section id="scope"><div class="eyebrow">01 / Research boundaries</div><h2>Wireless describes delivery, not mechanism.</h2><p>Energy modality, transduction mechanism, therapeutic endpoint and experimental evidence are classified independently. A treatment triggered by ultrasound, for example, is not automatically an electrochemical therapy.</p>
+<section id="definition">
+<div class="eyebrow">01 / Scientific boundary</div><h2>Pharmaceutical mediation, not electrical therapy in general.</h2>
+<p class="lead">Inclusion requires evidence that electricity changes a medicinal or bioactive molecular process. Wired and wireless approaches are eligible. A generic electrical cancer treatment, ablation, neuromodulation or tissue stimulation does not qualify simply because it uses electricity.</p>
 <div class="grid">
-<div class="panel"><div class="label">Acoustic</div><h3>Ultrasound</h3><p>Sonodynamic activity, piezoelectric stimulation, focused ultrasound and triggered delivery.</p></div>
-<div class="panel"><div class="label">Fields</div><h3>Magnetic</h3><p>Magnetothermal, magnetoelectric and magnetomechanical therapeutic pathways.</p></div>
-<div class="panel"><div class="label">Photonic</div><h3>Optical</h3><p>Photopharmacology, photoactivated therapies and NIR-triggered molecular release.</p></div>
-<div class="panel"><div class="label">Electromagnetic</div><h3>Radiofrequency</h3><p>RF-triggered release and remotely actuated molecular and cellular therapies.</p></div>
-<div class="panel"><div class="label">Electrical / redox</div><h3>Electrochemical</h3><p>Wireless bipolar electrochemistry, redox-controlled release and ion pumps.</p></div>
-<div class="panel"><div class="label">AC oncology</div><h3>TTFields</h3><p>Tumour Treating Fields and alternating-field cancer therapies.</p></div>
-<div class="panel"><div class="label">Pulse + drugs</div><h3>Electrochemotherapy</h3><p>Electropermeabilisation-assisted delivery of anticancer agents.</p></div>
-<div class="panel"><div class="label">Pulsed fields</div><h3>Electroporation</h3><p>Reversible/irreversible electroporation, H-FIRE and pulsed-field ablation.</p></div>
-<div class="panel"><div class="label">Nervous system</div><h3>Neuromodulation</h3><p>DBS, VNS, spinal cord stimulation and non-invasive neurostimulation.</p></div>
-<div class="panel"><div class="label">Regeneration</div><h3>Electrical Stimulation</h3><p>Wound healing, cell guidance, tissue repair and electrical rehabilitation.</p></div>
-<div class="panel"><div class="label">Combined</div><h3>Hybrid</h3><p>Cross-modality systems whose mechanistic pathways are explicitly documented.</p></div>
-</div></section>
-<section id="ranking">
-<div class="eyebrow">02 / Researcher comparison</div>
-<h2>Provisional researcher comparisons</h2>
-<p>Explore <strong>new, provisional rankings calculated from the 2026 OpenAlex and Europe PMC harvest, with ORCID-based author reconciliation and sourced publication affiliations</strong>. These are positions <em>within the retrieved, machine-screened research set</em>, not verified rankings of scientists worldwide. They update when a newly validated harvest is published.</p>
-<div class="ranking-metrics">
- <div class="panel"><div class="label">Harvested records</div><h3 class="mono" id="metric-candidates">—</h3><p>Deduplicated literature-search candidates</p></div>
- <div class="panel"><div class="label">Therapy-paper subset</div><h3 class="mono" id="metric-papers">—</h3><p>Automatically matched studies with author/citation identifiers; original status not always confirmed</p></div>
- <div class="panel"><div class="label">Researchers scored</div><h3 class="mono" id="metric-people">—</h3><p>Indexed authors meeting the minimum paper threshold for the overall view</p></div>
+<div class="panel"><div class="mini">Drug action</div><h3>Electrochemotherapy and uptake</h3><p>Electrical permeabilisation and field-mediated changes in drug uptake, sensitivity, resistance and intracellular trafficking.</p></div>
+<div class="panel"><div class="mini">Delivery</div><h3>Controlled molecular release</h3><p>Electrochemical pumps, conductive-polymer release, iontronics and electrically triggered delivery of active compounds.</p></div>
+<div class="panel"><div class="mini">Molecular actuation</div><h3>Electrochemical and nano-bioelectronic medicines</h3><p>Electrically controlled redox, bioactive nanomaterials and molecular signalling linked to a therapeutic endpoint.</p></div>
 </div>
-<section class="quality-review" aria-label="Research ranking reliability">
- <div class="eyebrow">Independent verification has not been completed</div>
- <p>The positions below are generated automatically. The international literature search is not exhaustive, and no studies have undergone independent full-text adjudication. Before using a position for a professional decision, check the scored papers and the data-quality audit.</p>
- <div class="quality-audit-metrics">
- <div><strong id="quality-unspecified">—</strong><span>Scored works with unconfirmed document type</span></div>
- <div><strong id="quality-identity">—</strong><span>Ambiguous ORCID mappings in the corpus</span></div>
- <div><strong id="quality-errors">—</strong><span>Recorded retrieval errors</span></div>
- <div><strong id="quality-fulltext">—</strong><span>Independently full-text-screened papers</span></div>
- </div>
- <p id="quality-status" role="status">Loading the published ranking audit…</p>
- <p><a href="data/quality_audit.json" download>Inspect full automated quality report (JSON) ↗</a> · <a href="data/quality_audit.csv" download>Download audit findings (CSV) ↗</a></p>
+<div class="flag"><strong>Boundary:</strong> TTFields combined with chemotherapy is not, by itself, evidence that the field mediates drug action. Pure device engineering, impedance sensing, transmembrane transport mechanisms and unmedicated cell stimulation remain visible as supporting context but are not automatically scored as pharmaceutical interventions.</div>
 </section>
-<section class="validation-stage" aria-label="Validation status">
- <div class="eyebrow">Scientific validation · in preparation</div>
- <h3>The independent review has not been completed</h3>
- <p>A frozen 24,904-record search harvest and a reproducible pilot sampling frame are available. The pilot assigns <strong>352 papers</strong> to two independent reviewers: all <strong>142 electrochemical candidates</strong> plus <strong>210 stratified controls</strong>. Both reviewers must complete their assessments before screening accuracy, recall or a validated researcher rank can be claimed.</p>
- <div class="validation-stage-grid">
- <div><strong>30</strong><span>software regression tests passed</span></div>
- <div><strong>0 / 352</strong><span>independent reviews completed</span></div>
- <div><strong>0</strong><span>independently adjudicated full texts</span></div>
- </div>
- <p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/blob/main/validation/PROTOCOL_v1.md">Read the prospective validation protocol ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/scientific-validation.yml">Review validation workflows ↗</a></p>
- <p><strong>Important:</strong> the position numbers shown below are exploratory sensitivity-sensitive research-index comparisons, not confirmed international rankings.</p>
-</section>
-<aside class="known-coverage" aria-label="Documented author coverage and identity issue">
- <div class="eyebrow">Open correction case · 11 October 2026</div>
- <h3 id="forster-case-heading">Robert J. Forster (Dublin City University): source-backed ranking reconciliation</h3>
- <p>Four original wireless stimulation and molecular-release studies, plus relevant reviews and enabling papers, now have exact DOI checks. Only original studies that pass the same eligibility rules as other researchers contribute to scores. An absent numerical position is <strong>not</strong> evidence of a lack of relevant research.</p>
- <p id="forster-audit-status" role="status">Checking the independently documented DOI records against the published harvest…</p>
- <p><a href="#electro-coverage">Inspect the DOI-by-DOI coverage checks ↓</a> · <a href="https://orcid.org/0000-0001-5079-3123" target="_blank" rel="noopener">Forster ORCID ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Report another author or publication error ↗</a></p>
- <p>Other unresolved ORCID/OpenAlex conflicts are recorded separately in the automated quality audit. Neither a matching surname nor a passing software test establishes a verified researcher identity.</p>
-</aside>
-<div class="ranking-tools">
- <label>Therapy pathway <select id="rank-category"><option value="Overall">Overall (exploratory)</option><option value="Ultrasound">Ultrasound</option><option value="Magnetic">Magnetic</option><option value="Optical">Optical</option><option value="Radiofrequency">Radiofrequency</option><option value="Electrochemical">Electrochemical / redox</option><option value="TTFields">Tumour Treating Fields</option><option value="Electrochemotherapy">Electrochemotherapy</option><option value="Electroporation">Electroporation and ablation</option><option value="Neuromodulation">Electrical neuromodulation</option><option value="Electrical Stimulation">Electrical cell and tissue stimulation</option><option value="Hybrid">Hybrid</option></select></label>
- <label>Find academic <input type="search" id="rank-search" placeholder="Search name or institution…"/></label>
+<section id="researchers">
+<div class="eyebrow">02 / Research contributions</div><h2>Provisional researcher comparison.</h2>
+<p class="lead">Only machine-screened electro-mediated pharmaceutical candidate studies contribute to these exploratory scores. The population is a bounded literature harvest, not a complete global field. Names and affiliations are drawn from publication metadata.</p>
+<div class="metrics">
+<div class="metric"><strong id="metric-corpus">—</strong><span>Bibliographic records searched</span></div>
+<div class="metric"><strong id="metric-eligible">—</strong><span>Machine-eligible pharmaceutical papers</span></div>
+<div class="metric"><strong id="metric-researchers">—</strong><span>Researchers meeting minimum candidate-paper threshold</span></div>
 </div>
-<div id="rank-summary" role="status">Loading the latest ranking dataset…</div>
-<div class="ranking-scroll">
- <table aria-label="Provisional researcher rankings"><thead><tr><th>Position</th><th>Researcher</th><th>Institution (documented affiliation)</th><th>Automated score</th><th>Matched papers</th><th>Indexed citations</th><th></th></tr></thead>
- <tbody id="rank-body"><tr><td colspan="7">Loading…</td></tr></tbody></table>
-</div>
-<div class="ranking-bottom"><button id="rank-more" type="button" hidden>Show more</button><a id="rank-csv" href="data/provisional_rankings.csv" download>Download full ranking (CSV) ↗</a><a id="rank-json" href="data/provisional_rankings.json" download>Download paper-level evidence (JSON) ↗</a></div>
-<div id="rank-detail" class="rank-detail" hidden></div>
-<div id="harvest-quality" class="harvest-quality" role="status">Retrieval coverage report is loading…</div>
-<section id="electrical-treatment-coverage" class="therapy-coverage" aria-label="Electrical treatment research coverage">
- <div class="eyebrow">Six clinical and experimental electrical-treatment pathways</div>
- <h3>Which electrical therapies and landmark publications were retrieved?</h3>
- <p>These are distinct treatment mechanisms, not synonyms for electrochemistry. The table separately reports machine-classified article candidates and independent reference-DOI retrieval checks. <strong>Neither measure verifies complete literature coverage or researcher ranking validity.</strong></p>
- <p id="electrical-coverage-status" role="status">Expanded electrical-treatment harvesting and DOI audit are pending. Do not infer complete coverage from older ranking tables.</p>
- <div class="ranking-scroll"><table aria-label="Electrical treatment evidence coverage"><thead><tr><th>Treatment pathway</th><th>Machine-matched candidates</th><th>Known DOIs retrieved</th><th>DOIs classified</th><th>Scientific validation</th></tr></thead>
-  <tbody id="electrical-coverage-body"><tr><td colspan="5">Awaiting the verified expanded search artifact.</td></tr></tbody></table></div>
- <details class="ranking-method"><summary>Inspect the landmark study DOI checks</summary>
-  <div class="ranking-scroll"><table aria-label="Electrical therapy DOI sentinels"><thead><tr><th>Pathway</th><th>Reference publication</th><th>DOI</th><th>Machine status</th></tr></thead>
-   <tbody id="electrical-sentinel-body"><tr><td colspan="4">Coverage report pending.</td></tr></tbody></table></div>
- </details>
- <details class="ranking-method" id="electrical-paper-directory">
- <summary>Search the electrical-treatment publication directory (<span id="electrical-queue-count">loading…</span>)</summary>
- <p>Discovery leads, not verified qualifying articles. Individual author attributions and intervention relevance require independent screening. Reviews are retained as contextual evidence, never automatically credited as original research.</p>
- <div class="ranking-tools">
-  <label>Research pathway <select id="electrical-queue-category">
-   <option value="all">All electrical treatments</option>
-   <option value="TTFields">Tumour Treating Fields</option>
-   <option value="Electrochemotherapy">Electrochemotherapy</option>
-   <option value="Electroporation">Electroporation and ablation</option>
-   <option value="Neuromodulation">Electrical neuromodulation</option>
-   <option value="Electrical Stimulation">Electrical cell and tissue stimulation</option>
-   <option value="Electrochemical">Electrochemical / redox</option>
-  </select></label>
-  <label>Find publication or researcher <input type="search" id="electrical-queue-search" placeholder="Search titles, researchers, DOI…"/></label>
- </div>
- <p id="electrical-queue-status" role="status">Loading full candidate register…</p>
- <div class="ranking-scroll"><table aria-label="Electrical-therapy literature screening candidates">
-   <thead><tr><th>Year</th><th>Publication</th><th>Source authors</th><th>Pathways</th><th>Review status</th></tr></thead>
-   <tbody id="electrical-queue-body"><tr><td colspan="5">Screening directory has not yet loaded.</td></tr></tbody>
- </table></div>
- <div class="ranking-bottom"><button id="electrical-queue-more" type="button" hidden>Show more publications</button>
-  <a href="data/electrical_treatment_screening_queue.csv" download>Download screening register (CSV) ↗</a>
-  <a href="data/electrical_treatment_screening_queue.json" download>Download screening evidence (JSON) ↗</a>
- </div>
- </details>
- <p><a href="data/electrical_treatment_coverage_audit.json" download>Download complete evidence audit (JSON) ↗</a> · <a href="data/electrical_treatment_coverage_audit.csv" download>Download landmark DOI checks (CSV) ↗</a> · <a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/electrical-therapies-expansion.yml">Inspect the expanded search workflow ↗</a></p>
+<div class="flag" id="ranking-caution" role="status"><strong>Not yet validated:</strong> No independent full-text adjudication, statistically demonstrated literature completeness or verified worldwide researcher standing. A researcher absent here may have relevant work that search or author disambiguation missed.</div>
+<div class="filters"><label>Find researcher or documented institute
+<input id="researcher-search" type="search" placeholder="Name, university or institute…"></label></div>
+<div class="statline" id="ranking-status" role="status">Loading the focused comparison…</div>
+<div class="table-wrap"><table aria-label="Exploratory researcher comparison in electro-mediated pharmaceutics">
+<thead><tr><th>Provisional position</th><th>Researcher</th><th>Recorded institution</th><th>Machine score</th><th>Linked papers</th><th>Evidence</th></tr></thead>
+<tbody id="ranking-body"><tr><td colspan="6">Awaiting the focused publication dataset.</td></tr></tbody>
+</table></div>
+<div class="more"><button id="rank-more" type="button" hidden>Show more researchers</button></div>
+<div class="detail" id="rank-detail" hidden></div>
+<div class="download"><a href="data/electropharmaceutics_rankings.csv" download>Download provisional comparison (CSV) ↗</a><a href="data/electropharmaceutics_rankings.json" download>Inspect scored papers (JSON) ↗</a></div>
 </section>
-<div id="electro-coverage" class="electro-coverage">
- <div class="eyebrow">Electrochemical literature coverage</div>
- <h3>Which publications are actually represented?</h3>
- <p>The electrochemical category is built from the latest machine-screened OpenAlex/Europe PMC candidate set. This audit checks known, independently identifiable studies—including wireless redox therapies, ion pumps and model-drug release—against the harvested records. Missing studies expose search gaps; reviews and mechanistic-only studies remain separately labelled.</p>
- <div class="grid coverage-metrics">
-  <div class="panel"><div class="label">Electrochemical studies</div><h3 id="electro-paper-count">—</h3></div>
-  <div class="panel"><div class="label">Ranked researchers</div><h3 id="electro-author-count">—</h3></div>
-  <div class="panel"><div class="label">DOI sentinel recovery</div><h3 id="electro-sentinel-count">—</h3></div>
- </div>
- <div class="ranking-scroll">
- <table aria-label="Known publication DOI coverage audit"><thead><tr><th>Publication family</th><th>Year / DOI</th><th>Search status</th><th>Author identity in harvested record</th></tr></thead>
- <tbody id="electro-audit-body"><tr><td colspan="4">Awaiting the updated coverage-audit dataset.</td></tr></tbody></table>
- </div>
- <p class="coverage-footer"><a href="data/electrochemical_coverage_audit.csv" download>Download the full DOI coverage audit (CSV) ↗</a></p>
-<details class="ranking-method candidate-queue">
- <summary>Explore additional electrochemical literature candidates (<span id="electro-queue-count">loading…</span>)</summary>
- <p>The documents below are DOI- or OpenAlex-linked screening leads, not automatically credited to scientists in the numerical rankings. Source and identity checks may still be missing. Reviews and non-therapeutic platforms are labelled separately.</p>
- <label class="candidate-filter-label">Search publication title or author <input id="electro-queue-search" type="search" placeholder="Search drug delivery, bipolar, ion pump, researcher…"/></label>
- <div id="electro-queue-status" role="status">Loading discovery bibliography…</div>
- <div class="ranking-scroll">
-  <table aria-label="Electrochemical papers awaiting review"><thead><tr><th>Year</th><th>Publication</th><th>Researchers in source metadata</th><th>Screening status</th></tr></thead>
-  <tbody id="electro-queue-body"><tr><td colspan="4">Loading…</td></tr></tbody></table>
- </div>
- <div class="ranking-bottom">
-  <button id="electro-queue-more" type="button" hidden>Show more papers</button>
-  <a href="data/electrochemical_screening_queue.csv" download>Download candidate publications (CSV) ↗</a>
- </div>
+<section id="publications">
+<div class="eyebrow">03 / Work-level verification</div><h2>Inspect the publications, not just the positions.</h2>
+<p class="lead">A paper can be found yet remain excluded for a defensible reason. The library distinguishes direct pharmaceutical-intervention candidates from enabling platforms and supporting science. Neither class is an independent full-text decision.</p>
+<div class="filters"><label>Search publication title, DOI or source author
+<input id="publication-search" type="search" placeholder="Chemotherapy, redox, Rawson, Forster…"></label></div>
+<div class="statline" id="publication-status" role="status">Retrieving publication evidence…</div>
+<div class="table-wrap"><table aria-label="Candidate papers and supporting electro-mediated pharmaceutical research">
+<thead><tr><th>Year</th><th>Publication and DOI</th><th>Machine classification</th><th>Independent review</th></tr></thead>
+<tbody id="publication-body"><tr><td colspan="4">Waiting for publication register.</td></tr></tbody>
+</table></div>
+<div class="more"><button type="button" id="paper-more" hidden>Show more publications</button></div>
+<div class="download"><a href="data/electropharmaceutics_screening_register.json" download>Download all candidate and context records ↗</a></div>
+<h3 style="margin-top:34px">Known paper-coverage audit: Frankie J. Rawson</h3>
+<p class="lead">Six independently identifiable publisher or university records form an initial test set. This <strong>is not a complete publication list</strong>. It will need reconciliation against the author's ORCID export and institutional bibliography before omission rates can be evaluated.</p>
+<div class="statline" id="author-audit-status">Loading known DOI checks…</div>
+<div class="table-wrap"><table aria-label="Rawson source-confirmed DOI sample and retrieval outcomes">
+<thead><tr><th>Year / DOI</th><th>Publisher-confirmed publication</th><th>Corpus</th><th>Authorship evidence</th><th>Scoring</th></tr></thead>
+<tbody id="author-audit-body"><tr><td colspan="5">Awaiting publication matching report.</td></tr></tbody></table></div>
+<div class="download"><a href="data/rawson_publication_audit.json" download>Download source-by-source DOI audit ↗</a>
+<a href="https://nottingham-repository.worktribe.com/person/235005/professor-frankie-rawson">Compare with Nottingham publication profile ↗</a></div>
+</section>
+<section id="methods">
+<div class="eyebrow">04 / Methods & uncertainty</div><h2>Evidence should precede position.</h2>
+<div class="grid">
+<div class="panel"><div class="mini">01 · Retrieve</div><h3>DOIs and source records</h3><p>Harvest OpenAlex and Europe PMC; preserve search strings and query errors; reconcile published DOI records without inventing missing publications.</p></div>
+<div class="panel"><div class="mini">02 · Screen</div><h3>Separate molecular mechanism</h3><p>Check that electrical input changes a pharmaceutical or therapeutic molecular response. Keep diagnostics, platforms, reviews and unmediated electrical treatment separate.</p></div>
+<div class="panel"><div class="mini">03 · Verify</div><h3>Independently adjudicate</h3><p>Confirm author identities, original research status, full-text mechanistic inclusion and field-specific retrieval performance before trusting positions.</p></div>
+</div>
+<details><summary>What does the current score mean?</summary>
+<p>The provisional index retains the Atlas's exploratory components: 35% citation standing within this harvested cohort, 25% publication output, 20% authorship position, 10% title-indicated translation, and 10% years active. These weights are not independently validated or externally normalised for this scientific field. They cannot establish an international league table.</p>
 </details>
-</div>
-<details class="ranking-method"><summary>How these scores are calculated</summary>
-<p><strong>Composite score (0–100):</strong> 35% within-harvest publication-year/modality citation percentile; 25% publication-output score; 20% first/last-authorship score; 10% title-indicated translational activity; and 10% publication-years active. Counts are logarithmically scaled. Overall requires at least three machine-matched papers; pathways require at least two.</p>
-<p><strong>Important for electrical treatments:</strong> Tumour Treating Fields, electrochemotherapy, electroporation, neuromodulation, tissue stimulation and redox electrochemistry are different clinical or mechanistic fields. New pathway positions are exploratory until field-specific recall, document eligibility and author identity are independently audited. Cross-pathway overall ranks should not be interpreted as a worldwide comparison.</p>
-<p><strong>Limitations:</strong> Classification uses titles and review indicators, not completed human full-text screening. Institutional affiliations are from dated publication metadata, not verified current appointments. Ranking uses only papers with OpenAlex citation and author IDs. The search is bounded; some scientists and their publications will be missing. Translation scoring is a title-keyword proxy, not proof of clinical efficacy. All metrics are dataset-relative, not globally field-normalised. Ambiguous author matches may remain. Read the methodology and source paper links before citing positions.</p>
+<details><summary>What is excluded from scoring?</summary>
+<p>Standalone tumour-treating fields, cardiac pulsed-field ablation, generic electrical wound care and neurostimulation; reviews, diagnostics, preprints and unverified journal status; and pure technology or electron-transfer studies lacking demonstrated pharmaceutical or molecular therapeutic effects. Such work may still be displayed as supporting context.</p>
 </details>
+<details><summary>How do I report an omitted paper or incorrect identity?</summary>
+<p>Include the DOI, publisher page, the researcher’s author identifier and which pharmaceutical action is electrically mediated. Missing works and disputed identities should be resolved for every researcher using the same criteria.</p>
+<a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Submit an evidence correction ↗</a>
+</details>
+<p class="download"><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas">View reproducible source and methodology ↗</a><a href="data/source_provenance.json">Source harvest identifier ↗</a></p>
 </section>
-<section id="methods"><div class="eyebrow">03 / Reproducible research</div><h2>Methodology and quality controls.</h2>
-<ol><li><strong>Discovery:</strong> Run documented queries through Europe PMC (including PubMed) and OpenAlex; retain exact search strings, date, pagination and failures.</li>
-<li><strong>Deduplication:</strong> Merge DOI, PMID and title–year matches, preserve source identifiers, and review ambiguous matches.</li>
-<li><strong>Eligibility:</strong> Two-stage abstract and full-text screening; separate original therapy evidence from reviews, diagnostics and enabling mechanisms.</li>
-<li><strong>Author identities:</strong> Check ORCID, institution, OpenAlex identifiers and original paper bylines. Unresolved names remain unranked.</li>
-<li><strong>Impact:</strong> Assess relevant original research, field- and year-normalised citations, authorship contribution, therapeutic translation and sustained influence; publish sensitivity tests.</li>
-<li><strong>Ranking release:</strong> Record denominators, exclusions, missingness, uncertainty and independent verification before displaying numeric positions.</li></ol>
-<p>Automated candidate discovery is <strong>not</strong> a complete or validated census. Page limits, access restrictions and review requirements are recorded explicitly.</p></section>
-<section id="data"><div class="eyebrow">04 / Open research infrastructure</div><h2>Inspect the evidence trail.</h2><p>Search candidate records are stored as reproducible GitHub Actions artifacts, with a query-level audit and unverified authorship metadata. They are not promoted into the rankings until they pass scientific screening and identity checks.</p>
-<div class="grid"><div class="panel"><div class="label">GitHub Actions</div><h3>Literature harvest</h3><p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/actions/workflows/literature-census.yml">Run and inspect the collection workflow ↗</a></p></div>
-<div class="panel"><div class="label">Open source</div><h3>Retrieval code</h3><p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/blob/main/methods/collect_literature.py">Inspect candidate retrieval code ↗</a></p></div>
-<div class="panel"><div class="label">Community review</div><h3>Suggest corrections</h3><p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas/issues">Submit corrections or missing papers ↗</a></p></div></div></section>
 </main>
-<footer><strong>Wireless Molecular Therapeutics Atlas</strong> — Independent, developing evidence map. No institutional endorsement or certified world scientist ranking is implied. <a style="color:#a8ebcb" href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas">Source repository</a>.</footer>
+<footer><strong>Electro-Mediated Pharmaceutics Atlas</strong> · Independent exploratory evidence infrastructure, not a university-endorsed ranking or validated worldwide scientist comparison.<p><a href="https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas">Source repository</a></p></footer>
 <script>
 (function(){
 "use strict";
-var data=null, rows=[], page=0, PAGE_SIZE=30;
-var get=function(id){return document.getElementById(id);};
-var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
-var url=function(s){return /^https:\/\/(openalex\.org|orcid\.org|doi\.org|pubmed\.ncbi\.nlm\.nih\.gov)\//i.test(s||"")?s:"#";};
-function render(reset){
- if(!data)return;
- if(reset)page=0;
- var category=get("rank-category").value, query=get("rank-search").value.trim().toLowerCase();
- var all=data.rankings[category]||[];
- rows=all.filter(function(x){return !query||x.name.toLowerCase().includes(query)||(x.institution||"").toLowerCase().includes(query);});
- var max=Math.min(rows.length,(page+1)*PAGE_SIZE);
- var insufficient=all.length<10;
- var visible=rows.slice(0,max);
- get("rank-body").innerHTML=visible.length?visible.map(function(r,i){
- return '<tr><td data-label="Position"><strong>'+(insufficient?'—':r.rank)+'</strong></td><td data-label="Researcher">'+esc(r.name)+'</td><td data-label="Institution" class="inst-cell">'+(r.institution&&r.institution!=='Not available'?esc(r.institution)+'<small>Affiliation evidence: '+esc(r.institution_year||'year unknown')+'</small>':'<span class="unverified">Not verified</span>')+'</td><td data-label="Automated score">'+r.score.toFixed(2)+'</td><td data-label="Matched papers">'+r.publication_count+'</td><td data-label="Indexed citations">'+r.indexed_citations.toLocaleString()+'</td><td data-label="Publication evidence"><button type="button" data-evidence="'+i+'" aria-label="View evidence for '+esc(r.name)+'">Papers</button></td></tr>';
- }).join(""):'<tr><td colspan="7">No scored researcher matches this filter.</td></tr>';
- get("rank-more").hidden=max>=rows.length;
- get("rank-summary").textContent=insufficient?category+" currently has only "+all.length+" scored researcher(s); no numerical ranking is meaningful. Showing evidence records only.":rows.length.toLocaleString()+" scored researcher(s) in "+category+" · showing "+visible.length+". Positions are corpus-relative and provisional.";
- get("rank-detail").hidden=true;get("rank-detail").innerHTML="";
+var focused=[],pubs=[],rankPage=0,paperPage=0,PAGE=25;
+function get(id){return document.getElementById(id);}
+function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function doiLink(doi){return "https://doi.org/"+encodeURIComponent(String(doi||"")).replace(/%2F/g,"/");}
+function number(n){return Number(n||0).toLocaleString();}
+function renderRank(reset){
+if(reset)rankPage=0;
+var query=get("researcher-search").value.toLowerCase().trim();
+var matches=focused.filter(function(r){return !query||(r.name+" "+(r.institution||"")).toLowerCase().includes(query);});
+var shown=matches.slice(0,(rankPage+1)*PAGE);
+get("ranking-status").textContent=number(matches.length)+" provisional eligible researchers match the current filter. Publication inclusion and researcher identities have not been independently validated.";
+get("ranking-body").innerHTML=shown.length?shown.map(function(r,i){
+var position=r.rank==null?"—":r.rank;
+return '<tr><td><strong>'+esc(position)+'</strong></td><td><strong>'+esc(r.name)+'</strong></td>'+
+'<td>'+esc(r.institution||"Not verified")+'<small>Publication affiliation: '+esc(r.institution_year||"year unavailable")+'</small></td>'+
+'<td>'+Number(r.score||0).toFixed(2)+'</td><td>'+number(r.publication_count)+'</td>'+
+'<td><button type="button" data-evidence="'+i+'">View papers</button></td></tr>';
+}).join(""):'<tr><td colspan="6">No researcher matches. This does not establish an absence of relevant publications.</td></tr>';
+get("rank-more").hidden=shown.length>=matches.length;
+get("rank-detail").hidden=true;get("rank-detail").innerHTML="";
+get("ranking-body").onclick=function(ev){var b=ev.target.closest("button[data-evidence]");if(!b)return;
+var r=matches[Number(b.getAttribute("data-evidence"))];if(!r)return;
+var body='<h3>'+esc(r.name)+'</h3><p>Provisional score: '+Number(r.score).toFixed(2)+
+' · '+number(r.publication_count)+' machine-eligible linked paper(s) · institute: '+esc(r.institution||"unknown")+'</p>';
+body+='<ul>'+(r.papers||[]).map(function(p){return '<li><a target="_blank" rel="noopener" href="'+esc(doiLink(p.doi))+'">'+esc(p.title)+
+'</a> · '+esc(p.year)+' · '+esc(p.evidence_tier||"candidate")+'</li>';}).join("")+'</ul>';
+body+='<p><small>Work-level original publication and pharmaceutical mediation require independent review.</small></p>';
+get("rank-detail").innerHTML=body;get("rank-detail").hidden=false;get("rank-detail").scrollIntoView({block:"nearest"});
+};
 }
-function showEvidence(i){
- var r=rows[i];if(!r)return;
- var parts=r.components||{};
- var body='<h3>'+esc(r.name)+'</h3><div class="rowstat">'+(r.rank==null?'No comparative rank':'Position '+r.rank)+' · Automated score '+r.score+' · '+r.publication_count+' matched study candidates · '+r.indexed_citations+' citation counts on those papers</div>';
- body+='<p>'+(r.openalex_author_id?'<a target="_blank" rel="noopener" href="'+url(r.openalex_author_id)+'">OpenAlex researcher identity ↗</a> ':'')+(r.orcid?'<a target="_blank" rel="noopener" href="'+url(r.orcid.indexOf("http")===0?r.orcid:"https://orcid.org/"+r.orcid)+'">ORCID ↗</a>':'')+'</p>';
- body+='<p><strong>Institution:</strong> '+esc(r.institution||'Not verified')+(r.institution_year?' (documented '+esc(r.institution_year)+')':'')+'. <em>Historical publication metadata; current employment not confirmed.</em></p>';
- body+='<p><strong>Document-type confidence:</strong> '+Number(r.document_types_confirmed||0)+' of '+r.publication_count+' scored works explicitly typed as original articles by source metadata. Exact-title duplicates suppressed: '+Number(r.duplicates_suppressed||0)+'. A type not recorded is not independently verified.</p>';
- body+='<p><strong>Score components:</strong> citation '+(parts.citation_impact||0)+', output '+(parts.relevant_output||0)+', authorship '+(parts.authorship_leadership||0)+', translational proxy '+(parts.translational_indicators||0)+', sustained activity '+(parts.sustained_activity||0)+'.</p>';
- body+='<h4>Linked studies in this ranking</h4><ul>'+r.papers.map(function(p){
-   var link=p.doi?"https://doi.org/"+encodeURI(p.doi):p.url;
-   return '<li><a target="_blank" rel="noopener" href="'+url(link)+'">'+esc(p.title)+'</a> ('+esc(p.year)+') · '+esc(p.citations)+' indexed citations · '+esc(p.authorship)+' author · '+esc(p.modalities.join(", "))+'</li>';
- }).join("")+'</ul>';
- var detail=get("rank-detail");detail.innerHTML=body;detail.hidden=false;detail.scrollIntoView({behavior:"smooth",block:"nearest"});
+function renderPublications(reset){
+if(reset)paperPage=0;
+var query=get("publication-search").value.toLowerCase().trim();
+var matches=pubs.filter(function(p){return !query||((p.title||"")+" "+(p.doi||"")+" "+(p.authors||[]).join(" ")).toLowerCase().includes(query);});
+var shown=matches.slice(0,(paperPage+1)*PAGE);
+get("publication-status").textContent=number(matches.length)+" molecular-electrical study candidate(s) or context record(s); "+
+number(shown.length)+" shown. No independent full-text screening completed.";
+get("publication-body").innerHTML=shown.length?shown.map(function(p){
+return '<tr><td>'+esc(p.year||"—")+'</td><td><a href="'+esc(doiLink(p.doi))+'" target="_blank" rel="noopener">'+esc(p.title)+'</a>'+
+'<small>'+esc(p.doi||"DOI not available")+' · '+esc((p.authors||[]).slice(0,3).join(", "))+'</small></td>'+
+'<td><span class="status-pill">'+(p.scored_machine_candidate?"Pharmaceutical candidate":"Supporting context")+'</span></td>'+
+'<td>Pending</td></tr>';}).join(""):'<tr><td colspan="4">No matching publications in the retrieved candidate set.</td></tr>';
+get("paper-more").hidden=shown.length>=matches.length;
 }
-get("rank-category").addEventListener("change",function(){render(true);});
-get("rank-search").addEventListener("input",function(){render(true);});
-get("rank-more").addEventListener("click",function(){page++;render(false);});
-get("rank-body").addEventListener("click",function(e){var button=e.target.closest("button[data-evidence]");if(button)showEvidence(Number(button.getAttribute("data-evidence")));});
-
-var paperQueue=[], queuePage=0;
-function showQueue(reset){
-  if(reset)queuePage=0;
-  var term=(get("electro-queue-search").value||"").trim().toLowerCase();
-  var found=paperQueue.filter(function(p){return !term||(p.title+" "+p.author_names.join(" ")).toLowerCase().includes(term);});
-  var show=found.slice(0,(queuePage+1)*30);
-  get("electro-queue-body").innerHTML=show.length?show.map(function(p){
-    var href=p.url&&/^https:\/\/(doi\.org|openalex\.org)\//.test(p.url)?p.url:"#";
-    var by=p.author_names.slice(0,4).join(", ")+(p.author_names.length>4?" et al.":"");
-    var mode=p.screening_status==="citation_eligible_machine_candidate"?"Machine eligible":
-      p.screening_status==="review/background_reference"?"Review/background":"Awaiting review";
-    return '<tr><td data-label="Year">'+esc(p.year)+'</td><td data-label="Publication"><a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a></td><td data-label="Authors">'+esc(by)+'</td><td data-label="Status"><span class="screening-status">'+esc(mode)+'</span></td></tr>';
-  }).join(""):'<tr><td colspan="4">No matching candidate publications.</td></tr>';
-  get("electro-queue-more").hidden=show.length>=found.length;
-  get("electro-queue-status").textContent=found.length+" candidate publications matching this filter; "+show.length+" displayed. This is not a peer-reviewed eligibility count.";
-}
-get("electro-queue-search").addEventListener("input",function(){showQueue(true);});
-get("electro-queue-more").addEventListener("click",function(){queuePage++;showQueue(false);});
-fetch("data/electrochemical_screening_queue.json",{cache:"no-store"})
- .then(function(res){if(!res.ok)throw new Error("Candidate queue unavailable");return res.json();})
- .then(function(d){paperQueue=d.papers||[];get("electro-queue-count").textContent=paperQueue.length.toLocaleString()+" records";showQueue(true);})
- .catch(function(){get("electro-queue-count").textContent="unavailable";get("electro-queue-status").textContent="The additional publication directory has not yet been deployed.";});
-fetch("data/search_summary.json",{cache:"no-store"})
- .then(function(res){if(!res.ok)throw new Error("Search audit not available");return res.json();})
- .then(function(s){
-    var err=Number(s.errors||0);
-    get("harvest-quality").textContent="Literature harvest: "+Number(s.candidate_records||0).toLocaleString()+
-      " unique candidates · "+Number(s.search_strings_executed||s.search_strings||0)+" new search terms executed · "+
-      err+" recorded query-page errors. "+(err?"Retrieval remains incomplete;":"Retrieval is still bounded by search and page limits;")+
-      " positions are provisional, not worldwide scientist rankings.";
- })
- .catch(function(){get("harvest-quality").textContent="Search audit unavailable. Positions remain provisional and coverage incomplete.";});
-fetch("data/quality_audit.json",{cache:"no-store"})
- .then(function(res){if(!res.ok)throw Error("Quality audit not found");return res.json();})
- .then(function(a){
-   get("quality-unspecified").textContent=Number(a.scored_work_metadata&&a.scored_work_metadata.unspecified_type||0).toLocaleString();
-   get("quality-identity").textContent=Number(a.orcid_mapping_conflicts||0).toLocaleString();
-   get("quality-errors").textContent=Number(a.search_query_errors||0).toLocaleString();
-   get("quality-fulltext").textContent=Number(a.full_text_screened||0).toLocaleString();
-   var row=a.scored_work_metadata||{};
-   get("quality-status").textContent="Automated audit: "+Number(a.unique_scored_work_records||0).toLocaleString()+" distinct scored-work records, of which "+Number(row.explicit_article||0).toLocaleString()+" explicitly identify an article document type. Duplicate-score groups: "+Number(a.duplicate_score_evidence_groups||0)+". Status: not a validated worldwide ranking.";
- })
- .catch(function(){get("quality-status").textContent="The independent ranking quality report is unavailable. Do not interpret provisional positions as verified.";});
-var electricalPapers=[], electricalPage=0, ELECTRICAL_PAGE_SIZE=30;
-function showElectricalPapers(reset){
- if(reset)electricalPage=0;
- var selected=get("electrical-queue-category").value;
- var term=(get("electrical-queue-search").value||"").trim().toLowerCase();
- var matches=electricalPapers.filter(function(p){
-    return (selected==="all"||(p.pathways||[]).includes(selected)) &&
-      (!term||((p.title||"")+" "+(p.doi||"")+" "+(p.author_names||[]).join(" ")).toLowerCase().includes(term));
- });
- var shown=matches.slice(0,(electricalPage+1)*ELECTRICAL_PAGE_SIZE);
- get("electrical-queue-body").innerHTML=shown.length?shown.map(function(p){
-    var href=p.url&&/^https:\/\/(doi\.org|openalex\.org)\//i.test(p.url)?p.url:"#";
-    var names=(p.author_names||[]).slice(0,4);
-    var authors=names.join(", ")+((p.author_names||[]).length>4?" et al.":"");
-    var state=p.screening_status==="review_or_background_candidate"?"Review/background":
-      p.screening_status==="machine_score_eligible_not_independently_screened"?"Machine eligible · not verified":"Needs screening";
-    return '<tr><td>'+esc(p.year||"—")+'</td><td><a target="_blank" rel="noopener" href="'+esc(href)+'">'+
-       esc(p.title)+'</a><small style="display:block">'+esc(p.doi||"OpenAlex identifier only")+'</small></td>'+
-       '<td>'+esc(authors||"Not identified")+'</td><td>'+esc((p.pathways||[]).join(", "))+
-       '</td><td>'+esc(state)+'</td></tr>';
- }).join(""):'<tr><td colspan="5">No matching candidate publications.</td></tr>';
- get("electrical-queue-more").hidden=shown.length>=matches.length;
- get("electrical-queue-status").textContent=matches.length.toLocaleString()+" publication leads matching this filter; "+
-   shown.length.toLocaleString()+" displayed. No independent full-text review completed.";
-}
-get("electrical-queue-category").addEventListener("change",function(){showElectricalPapers(true);});
-get("electrical-queue-search").addEventListener("input",function(){showElectricalPapers(true);});
-get("electrical-queue-more").addEventListener("click",function(){electricalPage++;showElectricalPapers(false);});
-fetch("data/electrical_treatment_screening_queue.json",{cache:"no-store"})
- .then(function(response){if(!response.ok)throw new Error("Candidate dataset unavailable");return response.json();})
- .then(function(result){
-    if(result.status!=="UNVERIFIED_SCREENING_CANDIDATES_NOT_WORLD_CENSUS")throw new Error("Dataset lacks scientific review warning");
-    electricalPapers=result.papers||[];
-    get("electrical-queue-count").textContent=electricalPapers.length.toLocaleString()+" candidates";
-    showElectricalPapers(true);
- })
- .catch(function(){
-    get("electrical-queue-count").textContent="pending";
-    get("electrical-queue-status").textContent="Publication-level electrical therapy directory is not deployed yet. No completeness claim can be made.";
- });
-fetch("data/electrical_treatment_coverage_audit.json",{cache:"no-store"})
- .then(function(res){if(!res.ok)throw new Error("Expanded treatment data not yet published");return res.json();})
- .then(function(a){
-   var groups=a.pathways||[], refs=a.sentinels||[];
-   if(a.validation_status!=="MACHINE_SCREENED_NOT_INDEPENDENTLY_VALIDATED" || groups.length!==6)
-     throw new Error("Incomplete coverage report");
-   get("electrical-coverage-status").textContent=
-     "Current stage: machine-discovered candidate papers only; 0 independently full-text-reviewed. "+
-     groups.reduce(function(s,x){return s+x.query_errors;},0)+" query-page error reports may include repeated historical runs. "+
-     "This is not a saturated or externally validated scientific census.";
-   get("electrical-coverage-body").innerHTML=groups.map(function(x){
-      return '<tr><td>'+esc(x.pathway)+'</td><td>'+Number(x.machine_matched_papers||0).toLocaleString()+
-       '</td><td>'+Number(x.sentinels_retrieved||0)+' / '+Number(x.known_doi_sentinels||0)+
-       '</td><td>'+Number(x.sentinels_machine_included||0)+' / '+Number(x.known_doi_sentinels||0)+
-       '</td><td>Awaiting independent screening</td></tr>';
-   }).join("");
-   get("electrical-sentinel-body").innerHTML=refs.map(function(r){
-     var state=!r.retrieved?"Not retrieved":r.classified_in_target_pathway?"Machine-classified, unverified":"Retrieved; not classified";
-     return '<tr><td>'+esc(r.pathway)+'</td><td>'+esc(r.label)+'</td>'+
-      '<td><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td>'+
-      '<td>'+esc(state)+'</td></tr>';
-   }).join("");
- })
- .catch(function(err){get("electrical-coverage-status").textContent=
-    "The six-pathway electrical-treatment audit is not yet available ("+err.message+
-    "). Existing scores must not be treated as comprehensive electrical-therapy rankings.";});
-fetch("data/electrochemical_coverage_audit.json",{cache:"no-store"})
- .then(function(res){if(!res.ok)throw new Error("Audit unavailable");return res.json();})
- .then(function(a){
-   get("electro-sentinel-count").textContent=a.retrieved+"/"+a.total_sentinels;
-   var forster=(a.records||[]).filter(function(r){return r.expected_orcid==="0000-0001-5079-3123";});
-   var retrieved=forster.filter(function(r){return r.retrieved;}).length;
-   var identified=forster.filter(function(r){return r.author_identity_status==="orcid_verified_in_work_metadata";}).length;
-   get("forster-audit-status").textContent=forster.length?
-     "DOI audit: "+retrieved+"/"+forster.length+" retrieved; "+identified+"/"+forster.length+" with work-level ORCID evidence; "+
-     (forster.length-retrieved)+" not retrieved; "+(retrieved-identified)+" require identity checking. Retrieval and identity do not establish ranking eligibility.":
-     "The current coverage file does not yet include the Forster correction records; identity and completeness remain unverified.";
-   get("electro-audit-body").innerHTML=(a.records||[]).map(function(r){
-     var klass=r.machine_status==="machine_included"?"Machine-included (eligibility unverified)":r.machine_status==="not_harvested"?"Not retrieved":r.expected_role==="review-not-ranked"?"Review (excluded from original-paper scores)":"Retrieved; not scored";
-     var identity=r.author_identity_status==="orcid_verified_in_work_metadata"?"ORCID matched to paper metadata":
-       r.author_identity_status==="name_only_identity_not_verified"?"Name only — verify identity":
-       r.author_identity_status==="expected_author_absent_from_work_metadata"?"Author not linked — investigate":
-       r.author_identity_status==="not_harvested"?"Not retrieved — check discovery":"Not assessed";
-     return '<tr><td data-label="Publication">'+esc(r.topic)+'</td><td data-label="DOI"><a target="_blank" rel="noopener" href="https://doi.org/'+encodeURI(r.doi)+'">'+esc(r.doi)+'</a></td><td data-label="Coverage"><span class="coverage-state">'+esc(klass)+'</span></td><td data-label="Identity">'+esc(identity)+'</td></tr>';
-   }).join("");
- })
-  .catch(function(){get("electro-audit-body").innerHTML='<tr><td colspan="4">Publication audit unavailable; no author attribution has been verified.</td></tr>';get("forster-audit-status").textContent="DOI evidence file unavailable; Robert J. Forster coverage and author identity remain unresolved.";});
-fetch("data/provisional_rankings.json",{cache:"no-store"}).then(function(res){if(!res.ok)throw new Error("HTTP "+res.status);return res.json();}).then(function(d){
- if(!d.rankings||!Array.isArray(d.rankings.Overall))throw new Error("Dataset has no ranking rows.");
- data=d;
- var sm=d.summary||{};
- get("metric-candidates").textContent=(sm.candidate_records||0).toLocaleString();
- get("metric-papers").textContent=(sm.machine_screened_papers||0).toLocaleString();
- get("metric-people").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Overall||0).toLocaleString();
- get("electro-paper-count").textContent=(sm.paper_modalities&&sm.paper_modalities.Electrochemical||0).toLocaleString();
- get("electro-author-count").textContent=(sm.ranked_researchers&&sm.ranked_researchers.Electrochemical||0).toLocaleString();
- var fr=(d.rankings.Electrochemical||[]).filter(function(r){return (r.orcid||"").includes("0000-0001-5079-3123");});
- if(fr.length===1){
-   get("forster-case-heading").textContent="Robert J. Forster (Dublin City University): included in provisional electrochemical comparison";
-   var rank=fr[0].rank==null?"No ordinal position assigned in this cohort":"Provisional electrochemical position "+fr[0].rank;
-   get("forster-case-heading").insertAdjacentText("beforeend"," — "+rank);
- } else {
-   get("forster-case-heading").textContent="Robert J. Forster (Dublin City University): ranking reconciliation still incomplete";
- }
- render(true);
-}).catch(function(err){get("rank-summary").textContent="Ranking data are not yet deployed ("+err.message+"). The literature harvest is available through the GitHub Actions link.";get("rank-body").innerHTML='<tr><td colspan="7">Waiting for a published ranking artifact.</td></tr>';});
+get("researcher-search").addEventListener("input",function(){renderRank(true);});
+get("rank-more").addEventListener("click",function(){rankPage++;renderRank(false);});
+get("publication-search").addEventListener("input",function(){renderPublications(true);});
+get("paper-more").addEventListener("click",function(){paperPage++;renderPublications(false);});
+fetch("data/electropharmaceutics_rankings.json",{cache:"no-store"})
+.then(function(r){if(!r.ok)throw Error("no focused evidence file");return r.json();})
+.then(function(d){
+if(d.scope!=="Electro-Mediated Pharmaceutics"||d.scientific_validation!=="NOT_INDEPENDENTLY_SCREENED")throw Error("wrong scoring scope");
+focused=(d.rankings||{}).Overall||[];
+var s=d.summary||{};
+get("metric-corpus").textContent=number(s.candidate_records);
+get("metric-eligible").textContent=number(s.machine_screened_papers);
+get("metric-researchers").textContent=number(focused.length);
+get("ranking-caution").textContent="Provisional, corpus-relative index. No independent review completed. The scientific scope is Electro-Mediated Pharmaceutics only; source harvesting and researcher disambiguation remain incomplete.";
+renderRank(true);
+})
+.catch(function(){get("ranking-status").textContent="Focused ranking is awaiting its validated-scope deployment; the old broad electrical-therapy positions are withdrawn.";get("ranking-body").innerHTML='<tr><td colspan="6">No defensible focused ranking artifact is available yet.</td></tr>';});
+fetch("data/electropharmaceutics_screening_register.json",{cache:"no-store"})
+.then(function(r){if(!r.ok)throw Error("register missing");return r.json();})
+.then(function(d){if(d.screening_status!=="NOT_INDEPENDENTLY_SCREENED")throw Error("wrong register");
+pubs=d.publications||[];renderPublications(true);})
+.catch(function(){get("publication-status").textContent="The focused publication register has not yet been deployed.";});
+fetch("data/rawson_publication_audit.json",{cache:"no-store"})
+.then(function(r){if(!r.ok)throw Error("DOI coverage audit missing");return r.json();})
+.then(function(d){if(d.status!=="BIBLIOGRAPHY_SAMPLE_NOT_EXHAUSTIVE")throw Error("scope conflict");
+get("author-audit-status").textContent=number(d.found_in_candidate_corpus)+" of "+number(d.total_reference_works)+
+" publisher-identified DOI records found; machine eligible "+number(d.machine_eligible)+
+". This is a six-work reference sample, NOT the full publication bibliography.";
+get("author-audit-body").innerHTML=(d.reference_works||[]).map(function(r){
+var identity=r.author_identity_status==="work_level_orcid_matches"?"ORCID in byline":r.author_identity_status==="matching_byline_only_identity_not_confirmed"?"Name only — verify":r.author_identity_status==="publication_not_harvested"?"Not retrieved":"Unresolved";
+return '<tr><td>'+esc(r.year)+'<small>'+esc(r.doi)+'</small></td><td><a target="_blank" rel="noopener" href="'+esc(r.publisher_source)+'">'+esc(r.title)+'</a></td>'+
+'<td>'+ (r.retrieved?"Retrieved":"Missing")+'</td><td>'+esc(identity)+'</td>'+
+'<td>'+(r.machine_eligible_publication?"Machine candidate":"Not scored")+'</td></tr>';
+}).join("");
+})
+.catch(function(){get("author-audit-status").textContent="Publisher DOI audit is not yet available; please do not infer a complete publication record.";});
 })();
 </script>
 </body></html>
