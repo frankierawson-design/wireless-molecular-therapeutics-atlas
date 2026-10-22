@@ -10,6 +10,9 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"methods"))
 from build_electrochemical_queue import collect,ELECTRICAL,REMOTE,THERAPY
 from build_provisional_rankings import classify
+from scopes import SCOPES
+from electropharmaceutics_focus import screen as focused_screen, candidate_role
+from build_electrical_treatment_queue import collect as broad_collect
 
 REFERENCE_SHA256="ee79f92617423900368049f5d1e2bbd0c097da8eb424f8a2eef7276e92f2bd59"
 SEED=20261011
@@ -21,13 +24,14 @@ BLIND_FIELDS=[
     "highest_evidence_tier_T0_T1_T2_T3_uncertain",
     "initial_eligibility_include_exclude_uncertain","reason_code",
     "supporting_text_or_page","reviewer_code","confidence_high_medium_low",
-    "review_date_yyyy_mm_dd"]
+    "review_date_yyyy_mm_dd", "full_text_verified_yes_no", "evidence_source_url",
+    "article_type_verified_yes_no_uncertain", "doi_pmid_verified_yes_no_uncertain"]
 KEY_FIELDS=[
     "record_id","frame_stratum","stratum_population","stratum_sample_size",
     "sampling_probability","inverse_probability_weight","title","year","doi","pmid",
     "openalex_work_id","publication_types","openalex_work_type",
     "machine_eligible_electrochemical","machine_queue_status",
-    "source_databases","original_author_byline","full_abstract","source_queries"]
+    "source_databases","original_author_byline","full_abstract","source_queries", "validation_scope", "machine_eligible"]
 
 def normal_doi(x):
     t=str(x or "").casefold().strip()
@@ -36,14 +40,24 @@ def normal_doi(x):
     return t
 def record_id(r):
     # Stable opaque id: no author, rank or classifier output in ID.
-    key=normal_doi(r.get("doi")) or str(r.get("openalex_id") or "") or (str(r.get("year"))+":"+str(r.get("title")))
+    key=normal_doi(r.get("doi")) or str(r.get("openalex_id") or "") or ("pmid:"+str(r["pmid"]) if r.get("pmid") else "") or (str(r.get("year"))+":"+str(r.get("title")))
     return "E"+hashlib.sha256(key.encode("utf-8")).hexdigest()[:18]
 def write_csv(path,fields,rows):
     with path.open("w",newline="",encoding="utf-8-sig") as f:
         w=csv.DictWriter(f,fieldnames=fields,extrasaction="ignore")
         w.writeheader();w.writerows(rows)
-def make_packets(records,n_negative=70,seed=SEED):
-    queue=collect(records)
+def make_packets(records,n_negative=70,seed=SEED,scope="legacy_wireless"):
+    if scope not in SCOPES:raise ValueError("Unknown validation scope")
+    if scope == "electropharmaceutics":
+        focused, _ = focused_screen(records)
+        focused_ids={record_id(r) for r in focused}
+        # Preserve distinct source records, including DOI-less duplicates, for
+        # reviewer reconciliation instead of merging them by title alone.
+        queue=[dict(r, _record_id=record_id(r)) for r in records if candidate_role(r)!="out_of_scope"]
+    elif scope == "electrical_therapies":
+        queue=broad_collect(records)["papers"]
+    else:
+        queue=collect(records)
     identified={}
     doi_to_id={}
     title_year_to_id={}
@@ -61,7 +75,7 @@ def make_packets(records,n_negative=70,seed=SEED):
     for q in queue:
         doi=normal_doi(q.get("doi"))
         key=(str(q.get("year") or ""),str(q.get("title") or "").strip().casefold())
-        rid=(doi_to_id.get(doi) if doi else None) or title_year_to_id.get(key)
+        rid=q.get("_record_id") or (doi_to_id.get(doi) if doi else None) or title_year_to_id.get(key)
         if not rid:unmatched.append(q);continue
         if rid in qindex and qindex[rid].get("title")!=q.get("title"):
             raise ValueError("Two different queue papers mapped to one record ID")
@@ -94,12 +108,15 @@ def make_packets(records,n_negative=70,seed=SEED):
         q=qindex.get(rid,{})
         eligible,exc=classify([r])
         status=bool(eligible and "Electrochemical" in eligible[0].get("modalities",[]))
+        if scope == "electropharmaceutics":status=rid in focused_ids
+        elif scope == "electrical_therapies":
+            status=bool(eligible and set(eligible[0].get("modalities",[])) & set(SCOPES[scope]))
         blinded.append({
             "record_id":rid,"title":r.get("title") or "",
             "publication_year":r.get("year") or "",
             "abstract_for_review":(r.get("abstract") or "")[:8000]})
         key.append({
-            "record_id":rid,"frame_stratum":stratum,
+            "record_id":rid,"frame_stratum":stratum,"validation_scope":scope, "machine_eligible":"include" if status else "exclude",
             "stratum_population":population,"stratum_sample_size":size,
             "sampling_probability":round(size/population,12) if population else 0,
             "inverse_probability_weight":round(population/size,10) if size else 0,
@@ -124,6 +141,7 @@ def main():
     p.add_argument("--expected-sha256",default=REFERENCE_SHA256)
     p.add_argument("--negative-per-stratum",type=int,default=70)
     p.add_argument("--seed",type=int,default=SEED)
+    p.add_argument("--scope", choices=tuple(SCOPES), default="legacy_wireless")
     a=p.parse_args()
     if a.negative_per_stratum<1:p.error("negative-per-stratum must be positive")
     source=pathlib.Path(a.candidates)
@@ -131,7 +149,7 @@ def main():
     if a.expected_sha256 and actual!=a.expected_sha256:
         raise SystemExit("FROZEN CORPUS HASH MISMATCH: expected "+a.expected_sha256+" actual "+actual)
     records=json.loads(source.read_text(encoding="utf-8"))["records"]
-    frames,blinded,key,sizes=make_packets(records,a.negative_per_stratum,a.seed)
+    frames,blinded,key,sizes=make_packets(records,a.negative_per_stratum,a.seed,a.scope)
     out=pathlib.Path(a.output);out.mkdir(parents=True,exist_ok=True)
     reviewer_files=[]
     for i,code in enumerate(("A","B")):
@@ -152,9 +170,9 @@ def main():
         cols=["reference_id","modality","doi","pmid","title",
               "independent_discovery_method","source_before_atlas_lookup","reviewer_confirmed_original_yes_no",
               "remote_actuation_yes_no","evidence_tier_T0_T1_T2_T3",
-              "independent_eligibility_include_exclude_uncertain","verification_url","reviewer_id","review_date"]
+              "independent_eligibility_include_exclude_uncertain","verification_url","reviewer_id","review_date","full_text_page_or_quotation"]
         w=csv.DictWriter(f,fieldnames=cols);w.writeheader()
-        for modality in ("Electrochemical","Ultrasound","Magnetic","Optical","Radiofrequency","Hybrid"):
+        for modality in SCOPES[a.scope]:
             w.writerow({"modality":modality})
     with (out/"author_identity_audit_BLANK.csv").open("w",newline="",encoding="utf-8-sig") as f:
         fields=["audit_id","paper_doi_or_openalex","byline_author_name","candidate_openalex_author_id",
@@ -162,7 +180,7 @@ def main():
                 "classification_correct_wrong_person_split_ambiguous_unverifiable","independent_reviewer",
                 "reconciled_identity","notes"]
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
-    manifest={"protocol_version":"v1.0","frozen_source_sha256":actual,
+    manifest={"protocol_version":"v1.1-amendment", "validation_scope":a.scope,"frozen_source_sha256":actual,
               "sampling_seed":a.seed,"negative_per_stratum":a.negative_per_stratum,
               "source_record_count":len(records),
               "frame_populations":{k:len(v) for k,v in frames.items()},
@@ -175,3 +193,4 @@ def main():
     print(json.dumps(manifest,indent=2))
     if not blinded:raise SystemExit("No screening candidates generated")
 if __name__=="__main__":main()
+

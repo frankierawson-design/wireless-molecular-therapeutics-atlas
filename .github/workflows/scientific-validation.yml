@@ -48,6 +48,7 @@ jobs:
       - name: Evaluate readiness without pretending independent review exists
         run: |
           python validation/evaluate_reviews.py \
+            --packet-manifest validation_output/packet_manifest.json \
             --reviewer-a validation_output/reviewer_A_blinded.csv \
             --reviewer-b validation_output/reviewer_B_blinded.csv \
             --adjudicator-key validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv \
@@ -108,3 +109,4 @@ jobs:
             validation_output/validation_readiness_report.json
             validation_output/exploratory_ranking_sensitivity.json
           retention-days: 90
+

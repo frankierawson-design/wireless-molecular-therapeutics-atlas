@@ -1,0 +1,63 @@
+name: Issue 11 release-gate audit (no publication)
+on:
+  push:
+    branches: [audit/issue-11-release-gates]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Retrieve the identified focused source artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p frozen-focused
+          gh run download 38212243948 --repo "$REPO" --name literature-candidates-and-audit --dir frozen-focused
+          test "$(sha256sum frozen-focused/candidates.json | cut -d ' ' -f1)" = "86519362e8e52083ddb1d18729f12ffe037199b0add51e54b7aae1ab0cf33323"
+      - name: Generate and check focused reviewer preparation
+        run: |
+          python validation/generate_review_packets.py --candidates frozen-focused/candidates.json --scope electropharmaceutics --expected-sha256 86519362e8e52083ddb1d18729f12ffe037199b0add51e54b7aae1ab0cf33323 --seed 20261022 --output packets
+          python validation/evaluate_reviews.py --scope electropharmaceutics --packet-manifest packets/packet_manifest.json --reviewer-a packets/reviewer_A_blinded.csv --reviewer-b packets/reviewer_B_blinded.csv --adjudicator-key packets/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv --adjudications packets/adjudication_BLANK.csv --reference-set packets/independent_reference_set_BLANK.csv --author-audit packets/author_identity_audit_BLANK.csv --candidates frozen-focused/candidates.json --output packets/readiness.json
+      - name: Retry three priority source queries without changing the Atlas
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python validation/retry_priority_queries.py --audit validation/audits/2026-10-22/focused/release_evidence_audit.json --output diagnostic-retry --limit 3 --pages 6
+      - name: Upload diagnostic evidence only
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-11-diagnostic-evidence
+          path: |
+            diagnostic-retry/
+            packets/readiness.json
+            packets/packet_manifest.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: focused-independent-reviewer-A
+          path: packets/reviewer_A_blinded.csv
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: focused-independent-reviewer-B
+          path: packets/reviewer_B_blinded.csv
+          retention-days: 90
+      # Never upload the coordinator's identity key or completed private reviews.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: focused-blank-coordinator-templates
+          path: |
+            packets/adjudication_BLANK.csv
+            packets/independent_reference_set_BLANK.csv
+            packets/author_identity_audit_BLANK.csv
+          retention-days: 90

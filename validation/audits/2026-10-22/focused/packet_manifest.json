@@ -1,0 +1,38 @@
+{
+  "protocol_version": "v1.1-amendment",
+  "validation_scope": "electropharmaceutics",
+  "frozen_source_sha256": "86519362e8e52083ddb1d18729f12ffe037199b0add51e54b7aae1ab0cf33323",
+  "sampling_seed": 20261022,
+  "negative_per_stratum": 70,
+  "source_record_count": 44047,
+  "frame_populations": {
+    "electro_queue_census": 2043,
+    "title_electrical_excluded": 2318,
+    "remote_therapy_non_electrical": 4149,
+    "background_random": 35537
+  },
+  "sample_sizes": {
+    "electro_queue_census": 2043,
+    "title_electrical_excluded": 70,
+    "remote_therapy_non_electrical": 70,
+    "background_random": 70
+  },
+  "total_sample": 2253,
+  "files_sha256": {
+    "author_identity_audit_BLANK.csv": "4fc3a7f5356d1e92cf8044d3085d57fd00029c93cecf55465d0214c574827c94",
+    "reviewer_B_blinded.csv": "f13b5338fd0f5053c6e1a3576da15399a4ed2380bd24d4ff4278e97ca012af0c",
+    "adjudication_BLANK.csv": "d5656e50a52dba3e3c6e564ba69758a72e92e3bb2d79001e103c2bd0cc9abeb1",
+    "reviewer_A_blinded.csv": "bd2477bb711c4d9275b92018d4444f0475e9eb0d58e385d9e75b2bc3ac844735",
+    "adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv": "c12f087e6de9563edfea5273ad32e81cf27649cad03a5f3d62095f1a11d0ca49",
+    "independent_reference_set_BLANK.csv": "6edeb5394c0d0736b8a32b2aca9978d4dac32c9e34fa095c2d7d950551ba81cc"
+  },
+  "reviewers_blinded_to": [
+    "machine_eligible_electrochemical",
+    "machine_queue_status",
+    "source_queries",
+    "doi",
+    "author bylines",
+    "ranking positions"
+  ],
+  "source_status": "not screened; no author or full-text validation implied"
+}

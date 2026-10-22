@@ -1,0 +1,176 @@
+{
+  "generated_utc": "2026-10-22T21:56:13.136102+00:00",
+  "validation_scope": "electropharmaceutics",
+  "status": "NOT_STARTED_OR_INCOMPLETE",
+  "scientific_release_permitted": false,
+  "review": {
+    "expected_records": 2253,
+    "paired_review_decisions": 0,
+    "independently_resolved": 0,
+    "adjudicated": 0,
+    "unresolved": 2253,
+    "pending_examples": [
+      {
+        "record_id": "E05ecdf9db1a2b940b0",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E651b6effa8f56521a3",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E50972eea80a1ac4403",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ec34b5645de718aadac",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E513eda1eab663bd98c",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E75ea558786d654ba76",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ea1e2950869a84b0a04",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ebaa4df3577e3469aa6",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E3520b999c4932c1245",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Eda5757c7435c65ac3d",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Eb53a5105df76ed0ae8",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ecff660385b53cfdd8a",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E29bee1d55dadd3e192",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ea2ee3a2fee1cf355a8",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E08be36c2119b9d7cc4",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Efc636091557db74b7d",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E0d2a77f37e2f4f29aa",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E38d59953d42663b570",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E5e4a895c9de88f7181",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ed76b5960e05114f31c",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E8f84129f89a5dbe0e6",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Eba2f2afbe16d409f61",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Eceea79f6b3a773fd98",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Edbe01c8567f1e491e9",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E6879ca806db10a7f87",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E8dcfefd25f42412e4e",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Ec7a303ebb75c8801ab",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "Eb6a1a4d478e2460944",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E0887f87ffa7d6cde82",
+        "reason": "reviewer decision missing"
+      },
+      {
+        "record_id": "E8b3dbdf4f8fc03c1e4",
+        "reason": "reviewer decision missing"
+      }
+    ],
+    "inter_review_agreement": null,
+    "validation_ready": false
+  },
+  "reference_recall": {
+    "reference_rows_submitted": 0,
+    "modalities": {
+      "Electro-Mediated Pharmaceutics": {
+        "total_reference_rows": 0,
+        "independent_verified_eligible": 0,
+        "known_sentinels_or_ineligible": 0,
+        "retrieved": 0,
+        "recall": null,
+        "wilson_95pct_ci": null,
+        "minimum_30_met": false,
+        "recall_point_ge_0_95": false
+      }
+    },
+    "status": "NOT_VALIDATED",
+    "unknown_modality_rows": 0,
+    "validation_scope": "electropharmaceutics"
+  },
+  "author_identity": {
+    "submitted": 0,
+    "verified_n": 0,
+    "codes": {},
+    "accuracy": null,
+    "wilson_95pct_ci": null,
+    "unresolved": 0,
+    "not_yet_validated": true
+  },
+  "remaining_release_gates": [
+    "search saturation and source coverage",
+    "ranked-cohort identity reconciliation",
+    "external normalization and rank uncertainty",
+    "independent scientific sign-off"
+  ],
+  "limitations": [
+    "Software checks supplied evidence fields; it cannot certify reviewer independence or truth.",
+    "Full-text reviews and independent reference selection require real reviewers.",
+    "Intervals are conditional on the sampled frame; missing literature is not bounded by this pilot.",
+    "Passing pilot thresholds never authorizes validated international rankings."
+  ]
+}

@@ -1,0 +1,163 @@
+source,query,query_families,status,latest_attempt_last_page,reported_total,latest_error
+Europe PMC,TTFields glioblastoma overall survival,ttfields,bounded_or_unresolved,3,2188,
+Europe PMC,alternating electric fields cancer cell division therapy,ttfields,bounded_or_unresolved,3,1587,
+Europe PMC,conductive polymer controlled drug release bioelectronics,electropharmaceutics,bounded_or_unresolved,3,923,
+Europe PMC,electric field enhanced chemotherapy drug sensitivity,electropharmaceutics,bounded_or_unresolved,3,4596,
+Europe PMC,electric field guided cell migration wound repair,electrical_stimulation,bounded_or_unresolved,3,1896,
+Europe PMC,electric field stimulation cancer cells apoptosis therapy,electrical_stimulation,bounded_or_unresolved,3,4712,
+Europe PMC,electric field transmembrane electron transport cells,electrochemical,bounded_or_unresolved,3,9231,
+Europe PMC,electric fields intracellular drug trafficking,electropharmaceutics,bounded_or_unresolved,3,1582,
+Europe PMC,electrical muscle stimulation rehabilitation trial,electrical_stimulation,bounded_or_unresolved,3,15195,
+Europe PMC,electrical stimulation osteogenesis bone healing,electrical_stimulation,bounded_or_unresolved,3,2922,
+Europe PMC,electrical stimulation tissue regeneration therapy,electrical_stimulation,bounded_or_unresolved,3,16553,
+Europe PMC,electrical stimulation wound healing randomized trial,electrical_stimulation,bounded_or_unresolved,3,2939,
+Europe PMC,electrically controlled nanoparticle drug delivery cell,electropharmaceutics,bounded_or_unresolved,3,2931,
+Europe PMC,electrically controlled therapeutic molecule delivery,electrochemical,bounded_or_unresolved,3,3290,
+Europe PMC,electrochemical drug release therapy,electrochemical,bounded_or_unresolved,3,14726,
+Europe PMC,electrochemical generation therapeutic nitric oxide,electrochemical,bounded_or_unresolved,3,4582,
+Europe PMC,electrochemical release conducting polymer therapy,electrochemical,bounded_or_unresolved,3,2018,
+Europe PMC,electromagnetic field activated therapy nanoparticles,radiofrequency,bounded_or_unresolved,3,3947,
+Europe PMC,focused ultrasound blood brain barrier drug delivery,ultrasound,bounded_or_unresolved,3,11132,
+Europe PMC,irreversible electroporation cancer ablation clinical trial,electroporation,bounded_or_unresolved,3,1521,
+Europe PMC,light activated molecular therapy,optical,bounded_or_unresolved,3,273238,
+Europe PMC,magnetically triggered drug delivery,magnetic,bounded_or_unresolved,3,4137,
+Europe PMC,magnetothermal therapy drug release,magnetic,bounded_or_unresolved,3,812,
+Europe PMC,near infrared triggered drug delivery,optical,bounded_or_unresolved,3,17348,
+Europe PMC,photoelectrochemical cancer treatment,optical,bounded_or_unresolved,3,1196,
+Europe PMC,pulsed field ablation cardiac atrial fibrillation trial,electroporation,bounded_or_unresolved,3,1316,
+Europe PMC,radiofrequency activated nanomedicine,radiofrequency,bounded_or_unresolved,3,887,
+Europe PMC,radiofrequency triggered drug delivery,radiofrequency,bounded_or_unresolved,3,2891,
+Europe PMC,remote controlled nanomedicine therapy,hybrid,bounded_or_unresolved,3,1949,
+Europe PMC,reversible electroporation drug delivery therapy,electroporation,bounded_or_unresolved,3,2848,
+Europe PMC,sonodynamic therapy nanoparticles cancer,ultrasound,bounded_or_unresolved,3,3425,
+Europe PMC,spinal cord stimulation chronic pain therapy trial,neuromodulation,bounded_or_unresolved,3,14706,
+Europe PMC,transcranial alternating current stimulation tACS clinical,neuromodulation,bounded_or_unresolved,3,2480,
+Europe PMC,transcranial direct current stimulation depression tDCS trial,neuromodulation,bounded_or_unresolved,3,4641,
+Europe PMC,transcutaneous electrical nerve stimulation pain randomized,neuromodulation,bounded_or_unresolved,3,7808,
+Europe PMC,tumor treating fields glioblastoma clinical trial,ttfields,bounded_or_unresolved,3,6261,
+Europe PMC,tumor treating fields non small cell lung cancer ovarian mesothelioma,ttfields,bounded_or_unresolved,3,825,
+Europe PMC,ultrasound controlled molecular therapy,ultrasound,bounded_or_unresolved,3,51933,
+Europe PMC,ultrasound triggered drug delivery,ultrasound,bounded_or_unresolved,3,17995,
+Europe PMC,vagus nerve stimulation epilepsy depression clinical trial,neuromodulation,bounded_or_unresolved,3,2332,
+Europe PMC,wireless electrochemical drug delivery,electrochemical,bounded_or_unresolved,3,2136,
+Europe PMC,wireless molecular therapeutics hybrid energy,hybrid,bounded_or_unresolved,3,804,
+Europe PMC,wireless organic electronic ion pump,electrochemical,bounded_or_unresolved,3,757,
+OpenAlex,ESOPE electrochemotherapy procedures outcomes,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,TTFields glioblastoma overall survival,ttfields,bounded_or_unresolved,3,2676,
+OpenAlex,alternating current drug resistance endosomal escape glioblastoma,electropharmaceutics,bounded_or_unresolved,3,942,
+OpenAlex,alternating electric fields cancer cell division therapy,ttfields,bounded_or_unresolved,3,4829,
+OpenAlex,bio nano antenna cancer cell electrical signalling,electrochemical,bounded_or_unresolved,3,3367,
+OpenAlex,bioelectronic modulation pharmacological efficacy,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,bipolar electroactive conducting polymers cell stimulation,electrochemical,bounded_or_unresolved,3,763,
+OpenAlex,bipolar electrochemistry cancer treatment,electrochemical,bounded_or_unresolved,3,1489,
+OpenAlex,bipolar electrochemistry drug loading release,electrochemical,bounded_or_unresolved,3,1203,
+OpenAlex,bipolar electrostimulation nerve cell differentiation,electrochemical,bounded_or_unresolved,3,465,
+OpenAlex,conductive polymer controlled drug release bioelectronics,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,contactless electrochemical therapeutic stimulation,electrochemical,bounded_or_unresolved,3,730,
+OpenAlex,deep brain stimulation Parkinson disease randomised trial,neuromodulation,bounded_or_unresolved,3,9059,
+OpenAlex,electric field enhanced chemotherapy drug sensitivity,electropharmaceutics,bounded_or_unresolved,3,12950,
+OpenAlex,electric field guided cell migration wound repair,electrical_stimulation,bounded_or_unresolved,3,7973,
+OpenAlex,electric field stimulation cancer cells apoptosis therapy,electrical_stimulation,bounded_or_unresolved,3,18089,
+OpenAlex,electric field transmembrane electron transport cells,electrochemical,bounded_or_unresolved,3,12474,
+OpenAlex,electric fields intracellular drug trafficking,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrical molecular quantum signalling apoptosis,electrochemical,bounded_or_unresolved,3,11501,
+OpenAlex,electrical muscle stimulation rehabilitation trial,electrical_stimulation,bounded_or_unresolved,3,55006,
+OpenAlex,electrical stimulation osteogenesis bone healing,electrical_stimulation,bounded_or_unresolved,3,7542,
+OpenAlex,electrical stimulation tissue regeneration therapy,electrical_stimulation,bounded_or_unresolved,3,59966,
+OpenAlex,electrical stimulation wound healing randomized trial,electrical_stimulation,bounded_or_unresolved,3,18105,
+OpenAlex,electrically controlled nanoparticle drug delivery cell,electropharmaceutics,bounded_or_unresolved,3,78549,
+OpenAlex,electrically controlled therapeutic molecule delivery,electrochemical,bounded_or_unresolved,3,83180,
+OpenAlex,electrically mediated pharmaceutics controlled release,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrically triggered molecular therapeutic redox signalling cancer,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electroactivated nanomedicine therapeutic response,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrochemical drug release therapy,electrochemical,bounded_or_unresolved,3,56852,
+OpenAlex,electrochemical generation therapeutic nitric oxide,electrochemical,bounded_or_unresolved,3,12841,
+OpenAlex,electrochemical modulation cancer cell bioelectronics,electrochemical,bounded_or_unresolved,3,3211,
+OpenAlex,electrochemical release conducting polymer therapy,electrochemical,bounded_or_unresolved,3,27729,
+OpenAlex,electrochemical release pharmacologically active compounds ion pumps,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrochemotherapy bleomycin cisplatin reversible electroporation,electropharmaceutics,bounded_or_unresolved,3,420,
+OpenAlex,electrochemotherapy bleomycin clinical trial cancer,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrochemotherapy cisplatin tumor metastases,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrochemotherapy endoscopic deep seated tumors,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electrochemotherapy melanoma head neck cancer,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electromagnetic field activated therapy nanoparticles,radiofrequency,bounded_or_unresolved,3,17827,
+OpenAlex,electropermeabilization bleomycin tumour treatment,electrochemotherapy,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,electroporation gene electrotransfer clinical therapy,electroporation,bounded_or_unresolved,3,1686,
+OpenAlex,electroresponsive conducting polymer drug delivery,electrochemical,bounded_or_unresolved,3,537,
+OpenAlex,ferroelectric nanoparticle intracellular electric field cancer,electrochemical,bounded_or_unresolved,3,643,
+OpenAlex,focused ultrasound blood brain barrier drug delivery,ultrasound,bounded_or_unresolved,3,35157,
+OpenAlex,high frequency irreversible electroporation H FIRE tumor,electroporation,bounded_or_unresolved,3,606,
+OpenAlex,irreversible electroporation cancer ablation clinical trial,electroporation,bounded_or_unresolved,3,4873,
+OpenAlex,light activated molecular therapy,optical,bounded_or_unresolved,3,771510,
+OpenAlex,magnetic field wireless neuromodulation nanoparticles,magnetic,bounded_or_unresolved,3,948,
+OpenAlex,magnetically triggered drug delivery,magnetic,bounded_or_unresolved,3,134008,
+OpenAlex,magnetoelectric nanoparticles therapy,magnetic,bounded_or_unresolved,3,1411,
+OpenAlex,magnetoelectric ultrasound cancer therapy,hybrid,bounded_or_unresolved,3,480,
+OpenAlex,magnetomechanical cell therapy,magnetic,bounded_or_unresolved,3,514,
+OpenAlex,magnetothermal therapy drug release,magnetic,bounded_or_unresolved,3,1538,
+OpenAlex,nanoscale bipolar electrodes biological activity,electrochemical,bounded_or_unresolved,3,3718,
+OpenAlex,nanosecond pulsed electric fields cancer cell ablation,electroporation,bounded_or_unresolved,3,4291,
+OpenAlex,near infrared triggered drug delivery,optical,bounded_or_unresolved,3,54973,
+OpenAlex,peripheral nerve stimulation therapeutic bioelectronics,neuromodulation,bounded_or_unresolved,3,2719,
+OpenAlex,photo powered ion pump neurotransmitter delivery,electrochemical,bounded_or_unresolved,3,999,
+OpenAlex,photocaged drug therapy,optical,bounded_or_unresolved,3,1565,
+OpenAlex,photoelectrochemical cancer treatment,optical,bounded_or_unresolved,3,7029,
+OpenAlex,photopharmacology photoswitchable drugs,optical,bounded_or_unresolved,3,781,
+OpenAlex,pulsed field ablation cardiac atrial fibrillation trial,electroporation,bounded_or_unresolved,3,9666,
+OpenAlex,radiofrequency activated nanomedicine,radiofrequency,bounded_or_unresolved,3,3803,
+OpenAlex,radiofrequency triggered drug delivery,radiofrequency,bounded_or_unresolved,3,12193,
+OpenAlex,redox controlled drug release electroactive biomaterials,electrochemical,bounded_or_unresolved,3,3189,
+OpenAlex,remote controlled nanomedicine therapy,hybrid,bounded_or_unresolved,3,9879,
+OpenAlex,reversible electroporation drug delivery therapy,electroporation,bounded_or_unresolved,3,5686,
+OpenAlex,sonodynamic therapy nanoparticles cancer,ultrasound,bounded_or_unresolved,3,6756,
+OpenAlex,spinal cord stimulation chronic pain therapy trial,neuromodulation,bounded_or_unresolved,3,61323,
+OpenAlex,transcranial alternating current stimulation tACS clinical,neuromodulation,bounded_or_unresolved,3,5010,
+OpenAlex,transcranial direct current stimulation depression tDCS trial,neuromodulation,bounded_or_unresolved,3,11855,
+OpenAlex,transcutaneous electrical nerve stimulation pain randomized,neuromodulation,bounded_or_unresolved,3,23329,
+OpenAlex,tumor treating fields glioblastoma clinical trial,ttfields,bounded_or_unresolved,3,65221,
+OpenAlex,tumor treating fields non small cell lung cancer ovarian mesothelioma,ttfields,bounded_or_unresolved,3,7561,
+OpenAlex,tumour treating fields anti mitotic alternating electric fields,ttfields,bounded_or_unresolved,3,1116,
+OpenAlex,ultrasonically powered electrochemical drug release implant,electrochemical,bounded_or_unresolved,3,4606,
+OpenAlex,ultrasound controlled molecular therapy,ultrasound,bounded_or_unresolved,3,224578,
+OpenAlex,ultrasound piezoelectric nanomedicine,ultrasound,bounded_or_unresolved,3,2170,
+OpenAlex,ultrasound triggered drug delivery,ultrasound,bounded_or_unresolved,3,73375,
+OpenAlex,vagus nerve stimulation epilepsy depression clinical trial,neuromodulation,bounded_or_unresolved,3,6122,
+OpenAlex,wireless bipolar electrochemistry cell therapy,electrochemical,bounded_or_unresolved,3,811,
+OpenAlex,wireless bipolar electrochemistry medicine apoptosis,electropharmaceutics,error,1,,HTTP Error 429: Too Many Requests
+OpenAlex,wireless bipolar electrode neuron growth,electrochemical,bounded_or_unresolved,3,1313,
+OpenAlex,wireless control nerve growth bipolar electrodes,electrochemical,bounded_or_unresolved,3,938,
+OpenAlex,wireless electrochemical drug delivery,electrochemical,bounded_or_unresolved,3,8102,
+OpenAlex,wireless electrochemistry cancer nanoparticle therapy,electrochemical,bounded_or_unresolved,3,1304,
+OpenAlex,wireless molecular therapeutics hybrid energy,hybrid,bounded_or_unresolved,3,2078,
+OpenAlex,wireless organic electronic ion pump,electrochemical,bounded_or_unresolved,3,6413,
+OpenAlex,wirelessly powered electrochemical drug release,electrochemical,bounded_or_unresolved,3,6979,
+OpenAlex DOI lookup,10.1001/jama.2015.16669,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1001/jama.2017.18718,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1002/advs.202516561,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1002/celc.202400506,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1002/smll.202102517,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1007/s00270-010-9964-1,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.apmr.2009.12.026,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.apmt.2020.100804,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.apmt.2022.101481,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.coelec.2023.101297,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.ejcsup.2006.08.002,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.elecom.2023.107626,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1016/j.elecom.2024.107832,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1021/acs.analchem.4c04454,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1021/acs.langmuir.6c00755,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1021/acsanm.9b01374,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1021/acsomega.1c03547,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1021/acsomega.4c05794,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1038/s41528-019-0060-6,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1038/s41565-023-01496-y,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1038/s41598-024-71236-2,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1038/s43246-025-00750-1,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1039/d3bm01946b,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1039/d4cc03996c,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1039/d5lc00708a,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1056/nejmoa060281,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1056/nejmoa1612999,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1056/nejmoa2307291,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1177/19322968211035128,,error,1,0,HTTP Error 429: Too Many Requests
+OpenAlex DOI lookup,10.1186/s42234-024-00164-3,,error,1,0,HTTP Error 429: Too Many Requests
