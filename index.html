@@ -166,7 +166,7 @@ if(reset)rankPage=0;
 var query=get("researcher-search").value.toLowerCase().trim();
 var matches=focused.filter(function(r){return !query||(r.name+" "+(r.institution||"")).toLowerCase().includes(query);});
 var shown=matches.slice(0,(rankPage+1)*PAGE);
-get("ranking-status").textContent=number(matches.length)+" provisional eligible researchers match the current filter. Publication inclusion and researcher identities have not been independently validated.";
+get("ranking-status").textContent=number(matches.length)+" researchers with machine-screened candidate papers match the current filter. Publication inclusion and researcher identities have not been independently validated.";
 get("ranking-body").innerHTML=shown.length?shown.map(function(r,i){
 var position=r.rank==null?"—":r.rank;
 return '<tr><td><strong>'+esc(position)+'</strong></td><td><strong>'+esc(r.name)+'</strong></td>'+
@@ -216,7 +216,7 @@ get("metric-researchers").textContent=number(focused.length);
 get("ranking-caution").textContent="Provisional, corpus-relative index. No independent review completed. The scientific scope is Electro-Mediated Pharmaceutics only; source harvesting and researcher disambiguation remain incomplete.";
 renderRank(true);
 })
-.catch(function(){get("ranking-status").textContent="Focused ranking is awaiting its validated-scope deployment; the old broad electrical-therapy positions are withdrawn.";get("ranking-body").innerHTML='<tr><td colspan="6">No defensible focused ranking artifact is available yet.</td></tr>';});
+.catch(function(){get("ranking-status").textContent="Focused comparison is awaiting deployment of the focused-scope dataset; the old broad electrical-therapy positions are withdrawn.";get("ranking-body").innerHTML='<tr><td colspan="6">No defensible focused ranking artifact is available yet.</td></tr>';});
 fetch("data/electropharmaceutics_screening_register.json",{cache:"no-store"})
 .then(function(r){if(!r.ok)throw Error("register missing");return r.json();})
 .then(function(d){if(d.screening_status!=="NOT_INDEPENDENTLY_SCREENED")throw Error("wrong register");
@@ -239,3 +239,4 @@ return '<tr><td>'+esc(r.year)+'<small>'+esc(r.doi)+'</small></td><td><a target="
 })();
 </script>
 </body></html>
+

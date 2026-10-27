@@ -29,10 +29,12 @@ jobs:
         run: |
           python validation/generate_review_packets.py --candidates frozen-focused/candidates.json --scope electropharmaceutics --expected-sha256 86519362e8e52083ddb1d18729f12ffe037199b0add51e54b7aae1ab0cf33323 --seed 20261022 --output packets
           python validation/evaluate_reviews.py --scope electropharmaceutics --packet-manifest packets/packet_manifest.json --reviewer-a packets/reviewer_A_blinded.csv --reviewer-b packets/reviewer_B_blinded.csv --adjudicator-key packets/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv --adjudications packets/adjudication_BLANK.csv --reference-set packets/independent_reference_set_BLANK.csv --author-audit packets/author_identity_audit_BLANK.csv --candidates frozen-focused/candidates.json --output packets/readiness.json
-      - name: Retry three priority source queries without changing the Atlas
+      - name: Check authenticated pagination on one priority OpenAlex query
+        id: retrieval
+        continue-on-error: true
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
-        run: python validation/retry_priority_queries.py --audit validation/audits/2026-10-22/focused/release_evidence_audit.json --output diagnostic-retry --limit 3 --pages 6
+        run: python validation/retry_priority_queries.py --audit validation/audits/2026-10-22/focused/release_evidence_audit.json --output diagnostic-retry --source OpenAlex --limit 1 --pages 2 --require-authenticated-pagination
       - name: Upload diagnostic evidence only
         uses: actions/upload-artifact@v4
         with:
@@ -61,3 +63,9 @@ jobs:
             packets/independent_reference_set_BLANK.csv
             packets/author_identity_audit_BLANK.csv
           retention-days: 90
+
+      - name: Require a demonstrated pagination result
+        if: steps.retrieval.outcome != 'success'
+        run: |
+          echo "::error::Authenticated pagination was blocked or not demonstrated. Inspect retry_summary.json. No scientific release is authorized."
+          exit 1
