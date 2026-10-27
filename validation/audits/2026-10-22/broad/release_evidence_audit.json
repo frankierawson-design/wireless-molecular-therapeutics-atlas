@@ -1,0 +1,2867 @@
+{
+  "source_run_id": "38158350451",
+  "source_artifact_id": "11709473620",
+  "source_generated_utc": "2026-10-11T17:18:01.114120+00:00",
+  "candidate_records": 41794,
+  "sha256": {
+    "candidates.json": "e740df30bfb8140b41d9350a1f3e92c730f52859e2a62952b208072953b4f2da",
+    "query_audit.json": "256cedbaa937cebec8f21f378326f395448af4902d09741c79e6c94faacd19a0",
+    "summary.json": "53a6907b5936ebb6600c2d45d419b016fb6cff1170fd71c37f08b66d459a031a"
+  },
+  "query_group_status_counts": {
+    "end_observed": 77,
+    "bounded_or_unresolved": 115
+  },
+  "historical_error_events": 18,
+  "latest_attempt_error_events": 0,
+  "independent_recall": null,
+  "scientific_release_permitted": false,
+  "limitations": [
+    "Page resets infer attempts: original logs lack run IDs and event timestamps.",
+    "End-of-results only concerns that query/source, not field completeness.",
+    "Source queries show recorded routes, not source-specific causal attribution.",
+    "No independent human decisions or scientific sign-off supplied."
+  ],
+  "queries": [
+    {
+      "source": "Europe PMC",
+      "query": "ESOPE electrochemotherapy procedures outcomes",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 101,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "Optune NovoTTF tumour treatment",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 46,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "TTFields glioblastoma overall survival",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2188,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "alternating electric fields cancer cell division therapy",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1587,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "bio nano antenna cancer cell electrical signalling",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 54,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "bipolar electroactive conducting polymers cell stimulation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 104,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "bipolar electrochemistry cancer treatment",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 197,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "bipolar electrochemistry drug loading release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 121,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "bipolar electrostimulation nerve cell differentiation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 126,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "contactless electrochemical therapeutic stimulation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 148,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "deep brain stimulation Parkinson disease randomised trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 707,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electric field guided cell migration wound repair",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1896,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electric field stimulation cancer cells apoptosis therapy",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4712,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electric field transmembrane electron transport cells",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 9631,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrical molecular quantum signalling apoptosis",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 636,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrical muscle stimulation rehabilitation trial",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 15195,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrical stimulation osteogenesis bone healing",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2922,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrical stimulation tissue regeneration therapy",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 16553,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrical stimulation wound healing randomized trial",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2939,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrically controlled therapeutic molecule delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3352,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemical drug release therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 14957,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemical generation therapeutic nitric oxide",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4652,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemical modulation cancer cell bioelectronics",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 458,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemical release conducting polymer therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2043,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemotherapy bleomycin clinical trial cancer",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 378,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemotherapy cisplatin tumor metastases",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 427,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemotherapy endoscopic deep seated tumors",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 44,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electrochemotherapy melanoma head neck cancer",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 426,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electromagnetic field activated therapy nanoparticles",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3947,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electropermeabilization bleomycin tumour treatment",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 39,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electroporation gene electrotransfer clinical therapy",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 517,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "electroresponsive conducting polymer drug delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 87,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "ferroelectric nanoparticle intracellular electric field cancer",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 119,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "focused ultrasound blood brain barrier drug delivery",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 11132,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "high frequency irreversible electroporation H FIRE tumor",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 222,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "irreversible electroporation cancer ablation clinical trial",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1521,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "light activated molecular therapy",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 273238,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetic field wireless neuromodulation nanoparticles",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 429,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetically triggered drug delivery",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4137,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetoelectric nanoparticles therapy",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 350,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetoelectric ultrasound cancer therapy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 139,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetomechanical cell therapy",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 144,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "magnetothermal therapy drug release",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 812,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "nanoscale bipolar electrodes biological activity",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 662,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "nanosecond pulsed electric fields cancer cell ablation",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 344,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "near infrared triggered drug delivery",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 17348,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "peripheral nerve stimulation therapeutic bioelectronics",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 585,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "photo powered ion pump neurotransmitter delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 144,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "photocaged drug therapy",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 408,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "photoelectrochemical cancer treatment",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1196,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "photopharmacology photoswitchable drugs",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 278,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "pulsed field ablation cardiac atrial fibrillation trial",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1316,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "radiofrequency activated nanomedicine",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 887,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "radiofrequency triggered drug delivery",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2891,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "redox controlled drug release electroactive biomaterials",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 686,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "remote controlled nanomedicine therapy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1949,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "reversible electroporation drug delivery therapy",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2848,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "sonodynamic therapy nanoparticles cancer",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3425,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "spinal cord stimulation chronic pain therapy trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 14706,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "transcranial alternating current stimulation tACS clinical",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2480,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "transcranial direct current stimulation depression tDCS trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4641,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "transcutaneous electrical nerve stimulation pain randomized",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 7808,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "tumor treating fields glioblastoma clinical trial",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 6261,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "tumor treating fields non small cell lung cancer ovarian mesothelioma",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 825,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "tumour treating fields anti mitotic alternating electric fields",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 318,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "ultrasonically powered electrochemical drug release implant",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 23,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "ultrasound controlled molecular therapy",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 51933,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "ultrasound piezoelectric nanomedicine",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 660,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "ultrasound triggered drug delivery",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 17995,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "vagus nerve stimulation epilepsy depression clinical trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2332,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wirefree electrochemical stimulation biological cells",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 2,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wirefree electrochemistry drug release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 2,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless bioelectronic membrane potential glioblastoma",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 62,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless bipolar electrochemistry cell therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 53,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless bipolar electrode neuron growth",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 289,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless control nerve growth bipolar electrodes",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 393,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless electroceutical nanoparticles",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 44,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless electrochemical drug delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2147,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless electrochemistry cancer nanoparticle therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 113,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless electrostimulation cancer nanoparticle",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 54,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless molecular therapeutics hybrid energy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 804,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wireless organic electronic ion pump",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 765,
+      "latest_error": ""
+    },
+    {
+      "source": "Europe PMC",
+      "query": "wirelessly powered electrochemical drug release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 469,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ESOPE electrochemotherapy procedures outcomes",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 386,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "Optune NovoTTF tumour treatment",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 143,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "TTFields glioblastoma overall survival",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2676,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "alternating electric fields cancer cell division therapy",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4829,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "bio nano antenna cancer cell electrical signalling",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3367,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "bipolar electroactive conducting polymers cell stimulation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 763,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "bipolar electrochemistry cancer treatment",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1489,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "bipolar electrochemistry drug loading release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1203,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "bipolar electrostimulation nerve cell differentiation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 465,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "contactless electrochemical therapeutic stimulation",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 730,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "deep brain stimulation Parkinson disease randomised trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 9059,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electric field guided cell migration wound repair",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 7973,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electric field stimulation cancer cells apoptosis therapy",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 18089,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electric field transmembrane electron transport cells",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 12474,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrical molecular quantum signalling apoptosis",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 11501,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrical muscle stimulation rehabilitation trial",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 55006,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrical stimulation osteogenesis bone healing",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 7542,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrical stimulation tissue regeneration therapy",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 59966,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrical stimulation wound healing randomized trial",
+      "query_families": [
+        "electrical_stimulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 18105,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrically controlled therapeutic molecule delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 83180,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemical drug release therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 56852,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemical generation therapeutic nitric oxide",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 12841,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemical modulation cancer cell bioelectronics",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3211,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemical release conducting polymer therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 27729,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemotherapy bleomycin clinical trial cancer",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1260,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemotherapy cisplatin tumor metastases",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1016,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemotherapy endoscopic deep seated tumors",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 72,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electrochemotherapy melanoma head neck cancer",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1052,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electromagnetic field activated therapy nanoparticles",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 17827,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electropermeabilization bleomycin tumour treatment",
+      "query_families": [
+        "electrochemotherapy"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 615,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electroporation gene electrotransfer clinical therapy",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1686,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "electroresponsive conducting polymer drug delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 537,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ferroelectric nanoparticle intracellular electric field cancer",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 643,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "focused ultrasound blood brain barrier drug delivery",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 35157,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "high frequency irreversible electroporation H FIRE tumor",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 606,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "irreversible electroporation cancer ablation clinical trial",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4873,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "light activated molecular therapy",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 771510,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetic field wireless neuromodulation nanoparticles",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 948,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetically triggered drug delivery",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 134008,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetoelectric nanoparticles therapy",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1411,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetoelectric ultrasound cancer therapy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 480,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetomechanical cell therapy",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 514,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "magnetothermal therapy drug release",
+      "query_families": [
+        "magnetic"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1538,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "nanoscale bipolar electrodes biological activity",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3718,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "nanosecond pulsed electric fields cancer cell ablation",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4291,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "near infrared triggered drug delivery",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 54973,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "peripheral nerve stimulation therapeutic bioelectronics",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2719,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "photo powered ion pump neurotransmitter delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 999,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "photocaged drug therapy",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1565,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "photoelectrochemical cancer treatment",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 7029,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "photopharmacology photoswitchable drugs",
+      "query_families": [
+        "optical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 781,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "pulsed field ablation cardiac atrial fibrillation trial",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 9666,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "radiofrequency activated nanomedicine",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3803,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "radiofrequency triggered drug delivery",
+      "query_families": [
+        "radiofrequency"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 12193,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "redox controlled drug release electroactive biomaterials",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 3189,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "remote controlled nanomedicine therapy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 9879,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "reversible electroporation drug delivery therapy",
+      "query_families": [
+        "electroporation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 5686,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "sonodynamic therapy nanoparticles cancer",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 6756,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "spinal cord stimulation chronic pain therapy trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 61323,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "transcranial alternating current stimulation tACS clinical",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 5010,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "transcranial direct current stimulation depression tDCS trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 11855,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "transcutaneous electrical nerve stimulation pain randomized",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 23329,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "tumor treating fields glioblastoma clinical trial",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 65221,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "tumor treating fields non small cell lung cancer ovarian mesothelioma",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 7561,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "tumour treating fields anti mitotic alternating electric fields",
+      "query_families": [
+        "ttfields"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1116,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ultrasonically powered electrochemical drug release implant",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 4606,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ultrasound controlled molecular therapy",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 224578,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ultrasound piezoelectric nanomedicine",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2170,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "ultrasound triggered drug delivery",
+      "query_families": [
+        "ultrasound"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 73375,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "vagus nerve stimulation epilepsy depression clinical trial",
+      "query_families": [
+        "neuromodulation"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 6122,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wirefree electrochemical stimulation biological cells",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 10,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wirefree electrochemistry drug release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 6,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless bioelectronic membrane potential glioblastoma",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 232,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless bipolar electrochemistry cell therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 811,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless bipolar electrode neuron growth",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1313,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless control nerve growth bipolar electrodes",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 2,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 938,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless electroceutical nanoparticles",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 2,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 195,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless electrochemical drug delivery",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 8102,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless electrochemistry cancer nanoparticle therapy",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 1304,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless electrostimulation cancer nanoparticle",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 220,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless molecular therapeutics hybrid energy",
+      "query_families": [
+        "hybrid"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 2078,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wireless organic electronic ion pump",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 1,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 6413,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex",
+      "query": "wirelessly powered electrochemical drug release",
+      "query_families": [
+        "electrochemical"
+      ],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 3,
+      "latest_attempt_end_of_results_observed": false,
+      "status": "bounded_or_unresolved",
+      "reported_total": 6979,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1001/jama.2015.16669",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1001/jama.2017.18718",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1002/advs.202516561",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1002/celc.202400506",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1007/s00270-010-9964-1",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.apmr.2009.12.026",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.apmt.2020.100804",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.apmt.2022.101481",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.coelec.2023.101297",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.ejcsup.2006.08.002",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.elecom.2023.107626",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1016/j.elecom.2024.107832",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1021/acs.analchem.4c04454",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1021/acs.langmuir.6c00755",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1021/acsomega.1c03547",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1038/s41528-019-0060-6",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1038/s41565-023-01496-y",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1038/s41598-024-71236-2",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1038/s43246-025-00750-1",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1039/d3bm01946b",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1039/d4cc03996c",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1039/d5lc00708a",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1056/nejmoa060281",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1056/nejmoa1612999",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1056/nejmoa2307291",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    },
+    {
+      "source": "OpenAlex DOI lookup",
+      "query": "10.1177/19322968211035128",
+      "query_families": [],
+      "historical_error_events": 0,
+      "latest_attempt_error_events": 0,
+      "latest_attempt_last_page": 1,
+      "latest_attempt_end_of_results_observed": true,
+      "status": "end_observed",
+      "reported_total": 1,
+      "latest_error": ""
+    }
+  ],
+  "clinical_sentinels": [
+    {
+      "doi": "10.1001/jama.2017.18718",
+      "expected_pathway": "TTFields",
+      "label": "EF-14 glioblastoma survival, 2017",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "Optune NovoTTF tumour treatment",
+        "TTFields glioblastoma overall survival",
+        "alternating electric fields cancer cell division therapy",
+        "tumor treating fields glioblastoma clinical trial",
+        "tumour treating fields anti mitotic alternating electric fields"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "TTFields"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1001/jama.2015.16669",
+      "expected_pathway": "TTFields",
+      "label": "EF-14 initial randomised report, 2015",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "Optune NovoTTF tumour treatment",
+        "TTFields glioblastoma overall survival",
+        "alternating electric fields cancer cell division therapy",
+        "tumor treating fields glioblastoma clinical trial",
+        "tumour treating fields anti mitotic alternating electric fields"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "TTFields"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1016/j.ejcsup.2006.08.002",
+      "expected_pathway": "Electrochemotherapy",
+      "label": "ESOPE cutaneous metastases prospective clinical report",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": false,
+      "ordinary_queries": [],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "exact_doi_only",
+      "in_register": true,
+      "register_pathways": [
+        "Electrochemotherapy"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1007/s00270-010-9964-1",
+      "expected_pathway": "Electroporation",
+      "label": "Irreversible electroporation of renal cell carcinoma",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": false,
+      "ordinary_queries": [],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "exact_doi_only",
+      "in_register": true,
+      "register_pathways": [
+        "Electroporation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1056/nejmoa2307291",
+      "expected_pathway": "Electroporation",
+      "label": "ADVENT pulsed field cardiac ablation trial",
+      "retrieved": true,
+      "source_databases": [
+        "Europe PMC",
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "pulsed field ablation cardiac atrial fibrillation trial"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "Electroporation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1056/nejmoa060281",
+      "expected_pathway": "Neuromodulation",
+      "label": "Randomised deep-brain stimulation for Parkinson disease",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": false,
+      "ordinary_queries": [],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "exact_doi_only",
+      "in_register": true,
+      "register_pathways": [
+        "Neuromodulation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1056/nejmoa1612999",
+      "expected_pathway": "Neuromodulation",
+      "label": "Transcranial direct-current stimulation trial",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "transcranial direct current stimulation depression tDCS trial"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "Neuromodulation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1177/19322968211035128",
+      "expected_pathway": "Electrical Stimulation",
+      "label": "Electrical stimulation for diabetic wound healing",
+      "retrieved": true,
+      "source_databases": [
+        "Europe PMC",
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "electrical stimulation wound healing randomized trial"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "Electrical Stimulation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    },
+    {
+      "doi": "10.1016/j.apmr.2009.12.026",
+      "expected_pathway": "Electrical Stimulation",
+      "label": "Pressure ulcer electrical-stimulation trial",
+      "retrieved": true,
+      "source_databases": [
+        "OpenAlex"
+      ],
+      "ordinary_query_recorded": true,
+      "ordinary_queries": [
+        "electrical stimulation wound healing randomized trial"
+      ],
+      "exact_doi_lookup_recorded": true,
+      "retrieval_route": "ordinary_query_recorded",
+      "in_register": true,
+      "register_pathways": [
+        "Electrical Stimulation"
+      ],
+      "classified_in_target_pathway": true,
+      "exclusion_or_mismatch": "",
+      "independent_full_text_verified": false
+    }
+  ]
+}

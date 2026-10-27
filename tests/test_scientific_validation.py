@@ -63,11 +63,20 @@ class ValidationTests(unittest.TestCase):
             {"record_id":"E2","initial_eligibility_include_exclude_uncertain":"include","reviewer_code":"R-A"}]
         rb=[{"record_id":"E1","initial_eligibility_include_exclude_uncertain":"include","reviewer_code":"R-B"},
             {"record_id":"E2","initial_eligibility_include_exclude_uncertain":"exclude","reviewer_code":"R-B"}]
+        for row in ra+rb:
+            row.update(review_date_yyyy_mm_dd="2026-10-22",reason_code="original intervention",
+                       full_text_verified_yes_no="yes",evidence_source_url="https://example.org/paper",
+                       supporting_text_or_page="page 3",article_type_verified_yes_no_uncertain="yes",
+                       doi_pmid_verified_yes_no_uncertain="yes",highest_evidence_tier_T0_T1_T2_T3_uncertain="T3")
         pending=ev.review_section(ra,rb,[],key)
         self.assertFalse(pending["validation_ready"])
         adj=[{"record_id":"E2","adjudicator_code":"R-C",
               "final_eligibility_include_exclude_uncertain":"exclude",
               "evidence_source_url":"https://doi.org/10.1000/test"}]
+        adj[0].update(adjudication_date_yyyy_mm_dd="2026-10-22",reviewer_A_locked_date="2026-10-22",
+                      reviewer_B_locked_date="2026-10-22",article_type_verified_yes_no_uncertain="yes",
+                      doi_pmid_verified_yes_no_uncertain="yes",full_text_page_or_quotation="page 4",
+                      exclusion_reason="wired-only outside legacy scope")
         result=ev.review_section(ra,rb,adj,key)
         self.assertTrue(result["validation_ready"])
         self.assertEqual(result["weighted_confusion"]["TP"],1)
@@ -100,3 +109,4 @@ class ValidationTests(unittest.TestCase):
         self.assertIn("citation_emphasis",result["modalities"]["Overall"]["comparison"])
 
 if __name__=="__main__":unittest.main()
+

@@ -49,6 +49,7 @@ Using the frozen artifact extracted to `frozen/`, run:
 python -m unittest discover -s tests -v
 python validation/generate_review_packets.py --candidates frozen/candidates.json --output validation_output --negative-per-stratum 70 --seed 20261011
 python validation/evaluate_reviews.py \
+  --packet-manifest validation_output/packet_manifest.json \
   --reviewer-a validation_output/reviewer_A_blinded.csv \
   --reviewer-b validation_output/reviewer_B_blinded.csv \
   --adjudicator-key validation_output/adjudicator_key_DO_NOT_SHARE_WITH_REVIEWERS.csv \
@@ -77,3 +78,8 @@ Read [PROTOCOL_v1.md](PROTOCOL_v1.md). This protocol is **prospectively timestam
 ## Privacy and masked review (11 October amendment)
 
 The repository and GitHub Actions workflow are **public**. GitHub artifact labels such as `coordinator-only` are not access controls. The reviewed scientific cohort must be distributed carefully: each reviewer receives only their own A/B masked worksheet; neither receives the coordinator key or the other reviewer's completed file before decisions are locked. Future public workflows **do not upload the source-to-record identity key**. A coordinator can regenerate it locally from the immutable 24,904-record source and the documented SHA-256/seed using `validation/generate_review_packets.py`. Preserve that mapping outside the public repository. If a privately downloaded older artifact contains the key, treat it as a convenience copy for the coordinator, not evidence that GitHub restricted access to it. The previous key already appeared in public workflow artifacts, so strict masking for anyone who inspected them cannot be guaranteed; record reviewer access/knowledge as a protocol deviation. Titles and abstracts are still visible and may themselves reveal researcher identity. Describe the process as **independent masked reviewer assessment**, not truly double-blind review.
+
+
+## 22 October release-gate audit
+
+See [scope and validation amendment](AMENDMENT_v1_1.md) and [artifact evidence audit](audits/2026-10-22/README.md). Clinical sentinel recovery is 9/9 in the broad artifact, but three are DOI-only; independent recall and rankings remain unvalidated.

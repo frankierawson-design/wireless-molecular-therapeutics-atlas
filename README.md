@@ -39,3 +39,8 @@ The experimental index uses 35% within-harvest/year citation percentile, 25% eli
 Research protocol: methods/SCREENING_AND_RANKING_PROTOCOL.md.
 Public site: https://frankierawson-design.github.io/wireless-molecular-therapeutics-atlas/
 Source repository: https://github.com/frankierawson-design/wireless-molecular-therapeutics-atlas
+
+
+## 22 October release-gate audit
+
+See [scope and validation amendment](validation/AMENDMENT_v1_1.md) and [artifact evidence audit](validation/audits/2026-10-22/README.md). Clinical sentinel recovery is 9/9 in the broad artifact, but three are DOI-only; independent recall and rankings remain unvalidated.
